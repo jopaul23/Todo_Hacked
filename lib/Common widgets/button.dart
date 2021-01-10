@@ -15,6 +15,14 @@ class Button extends StatelessWidget {
         margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         padding: EdgeInsets.symmetric(vertical: 2, horizontal: 15),
         decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Styles.grey4.withOpacity(0.03),
+              spreadRadius: 10,
+              blurRadius: 7,
+              offset: Offset(0, 2), // changes position of shadow
+            ),
+          ],
           color: buttoncolor,
           borderRadius: BorderRadius.circular(24),
         ),

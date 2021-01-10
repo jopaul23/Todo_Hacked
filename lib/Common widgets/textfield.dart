@@ -16,44 +16,30 @@ class _InputTextField extends State<InputTextField> {
       decoration: BoxDecoration(
         color: Styles.white1.withOpacity(.23),
         borderRadius: BorderRadius.circular(40),
+        boxShadow: [
+          BoxShadow(
+            color: Styles.grey4.withOpacity(0.01),
+            spreadRadius: 10,
+            blurRadius: 7,
+            offset: Offset(0, 2), // changes position of shadow
+          ),
+        ],
       ),
       height: 55,
       width: 300,
       alignment: Alignment.center,
-      child: GestureDetector(
-        onTap: () {
-          setState(() {
-            isTaped = true;
-          });
-        },
-        child: Stack(
-          children: [
-            Container(
-              width: 120,
-              child: TextField(
-                decoration: InputDecoration(
-                  //hintText: widget.labelText,
-                  hintStyle: TextStyle(
-                    color: Styles.white1.withOpacity(.59),
-                    fontSize: 25,
-                  ),
-                  suffixStyle: TextStyle(color: Styles.white1, fontSize: 25),
-                  border: InputBorder.none,
-                ),
-              ),
+      child: Container(
+        width: 120,
+        child: TextField(
+          decoration: InputDecoration(
+            hintText: widget.labelText,
+            hintStyle: TextStyle(
+              color: Styles.white1.withOpacity(.59),
+              fontSize: 25,
             ),
-            if (!isTaped)
-              Center(
-                heightFactor: 10,
-                child: Text(
-                  widget.labelText,
-                  style: TextStyle(
-                    color: Styles.white1.withOpacity(.59),
-                    fontSize: 25,
-                  ),
-                ),
-              )
-          ],
+            suffixStyle: TextStyle(color: Styles.white1, fontSize: 25),
+            border: InputBorder.none,
+          ),
         ),
       ),
     );
