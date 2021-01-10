@@ -11,6 +11,8 @@ abstract class Styles {
   );
   static Color t1Orange = Color(0xfff6961e);
 
+  static Color cream = Color(0xfff2f6e7);
+
   static Color white1 = Color(0xffffffff);
   static Color white2 = Color(0xfff6f6f6);
   static Color white3 = Color(0xfff2f2f2);
