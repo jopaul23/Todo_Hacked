@@ -1,4 +1,6 @@
+import 'package:Todo_App/HomePage/Widgets/mainPage.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'WelcomeScreen/Widgets/mainPage.dart';
 import 'TodoAddPage/Widgets/mainPage.dart';
 
@@ -13,10 +15,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Todo App',
       theme: ThemeData(
+        fontFamily: GoogleFonts.rubik().fontFamily,
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: TodoAddPage(),
+      home: HomePage(),
     );
   }
 }

@@ -11,7 +11,6 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    print(size.height);
     return Scaffold(
       body: ListView(
         padding: EdgeInsets.zero,
@@ -22,7 +21,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               gradient: Styles.t1Gradient,
             ),
             child: Column(
-              //mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
                   height: size.height * 0.09,
