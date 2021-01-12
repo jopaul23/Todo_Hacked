@@ -1,7 +1,9 @@
+import 'package:Todo_App/Common%20widgets/shadow.dart';
+import 'package:Todo_App/Helper%20Widgets/Clock/clock_body.dart';
 import 'package:Todo_App/styles/styles.dart';
 import 'package:flutter/material.dart';
 import "package:Todo_App/Common widgets/inputfield.dart";
-import 'package:Todo_App/Common widgets/button.dart';
+import 'package:Todo_App/Common widgets/dropdown.dart';
 
 class TodoAddPage extends StatefulWidget {
   @override
@@ -9,6 +11,7 @@ class TodoAddPage extends StatefulWidget {
 }
 
 class _TodoAddPageState extends State<TodoAddPage> {
+  OverlayEntry clock;
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -18,10 +21,11 @@ class _TodoAddPageState extends State<TodoAddPage> {
         children: <Widget>[
           Container(
             height: size.height * 0.098,
+            padding: EdgeInsets.only(left: 10),
             decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
-                    color: Styles.grey4.withOpacity(0.04),
+                    color: Styles.grey4.withOpacity(0.02),
                     spreadRadius: 10,
                     blurRadius: 7,
                     offset: Offset(0, 2), // changes position of shadow
@@ -29,8 +33,27 @@ class _TodoAddPageState extends State<TodoAddPage> {
                 ],
                 gradient: Styles.t1Gradient,
                 borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(25),
-                    bottomRight: Radius.circular(25))),
+                  bottomLeft: Radius.circular(25),
+                  bottomRight: Radius.circular(25),
+                )),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                    icon: Icon(
+                      Icons.arrow_back_ios_rounded,
+                      color: Styles.t1Orange.withOpacity(0.7),
+                      size: 40,
+                    ),
+                    onPressed: null),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: CustomDropdown(
+                    text: "Catagories",
+                  ),
+                ),
+              ],
+            ),
           ),
           SizedBox(
             height: size.height * 0.05,
@@ -39,10 +62,16 @@ class _TodoAddPageState extends State<TodoAddPage> {
             padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
             height: size.height * 0.06,
             child: TextField(
+              cursorHeight: 40,
+              cursorColor: Styles.grey1,
+              style: TextStyle(
+                fontSize: 30,
+                color: Styles.grey2,
+              ),
               decoration: InputDecoration(
                   hintText: "Add your text",
                   hintStyle: TextStyle(
-                    color: Styles.grey1,
+                    color: Styles.grey1.withOpacity(0.8),
                     fontWeight: FontWeight.w400,
                     fontSize: 30,
                   ),
@@ -59,10 +88,11 @@ class _TodoAddPageState extends State<TodoAddPage> {
                 size.height * 0.06,
             decoration: BoxDecoration(
               color: Styles.white3,
-              borderRadius: BorderRadius.circular(50),
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(50), topRight: Radius.circular(50)),
               boxShadow: [
                 BoxShadow(
-                  color: Styles.grey4.withOpacity(0.04),
+                  color: Styles.grey4.withOpacity(0.03),
                   spreadRadius: 10,
                   blurRadius: 9,
                   offset: Offset(0, 2), // changes position of shadow
@@ -78,8 +108,13 @@ class _TodoAddPageState extends State<TodoAddPage> {
                   text: "10:30",
                   buttoncolor: Styles.white3,
                   textcolor: Styles.grey2,
-                  icon: Icons.timer,
+                  icon: Icons.access_time,
                   width: 300,
+                  onPressed: () {
+                    debugPrint("Pressed");
+                    clock = _createClockOverlay();
+                    Overlay.of(context).insert(clock);
+                  },
                 ),
                 SizedBox(
                   height: size.height * 0.03,
@@ -116,5 +151,28 @@ class _TodoAddPageState extends State<TodoAddPage> {
         ],
       ),
     );
+  }
+
+  OverlayEntry _createClockOverlay() {
+    return OverlayEntry(builder: (context) {
+      return Align(
+        alignment: Alignment.center,
+        child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 30.0),
+            decoration: BoxDecoration(
+              color: Styles.white1,
+              borderRadius: const BorderRadius.all(Radius.circular(35.0)),
+              boxShadow: [
+                BoxShadow(
+                  color: Styles.grey4.withOpacity(0.01),
+                  spreadRadius: 10,
+                  blurRadius: 7,
+                  offset: Offset(0, 2), // changes position of shadow
+                ),
+              ],
+            ),
+            child: ClockBody()),
+      );
+    });
   }
 }

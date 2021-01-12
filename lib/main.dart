@@ -1,11 +1,12 @@
 import 'package:Todo_App/HomePage/Widgets/mainPage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hooks_riverpod/all.dart';
 import 'WelcomeScreen/Widgets/mainPage.dart';
 import 'TodoAddPage/Widgets/mainPage.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomePage(),
+      home: TodoAddPage(),
     );
   }
 }
