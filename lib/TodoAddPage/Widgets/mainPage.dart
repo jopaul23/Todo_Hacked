@@ -154,24 +154,26 @@ class _TodoAddPageState extends State<TodoAddPage> {
   }
 
   OverlayEntry _createClockOverlay() {
+    GlobalKey containerKey = GlobalKey();
     return OverlayEntry(builder: (context) {
       return Align(
         alignment: Alignment.center,
         child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 30.0),
-            decoration: BoxDecoration(
-              color: Styles.white1,
-              borderRadius: const BorderRadius.all(Radius.circular(35.0)),
-              boxShadow: [
-                BoxShadow(
-                  color: Styles.grey4.withOpacity(0.01),
-                  spreadRadius: 10,
-                  blurRadius: 7,
-                  offset: Offset(0, 2), // changes position of shadow
-                ),
-              ],
-            ),
-            child: ClockBody()),
+          margin: const EdgeInsets.symmetric(horizontal: 30.0),
+          decoration: BoxDecoration(
+            color: Styles.white1,
+            borderRadius: const BorderRadius.all(Radius.circular(35.0)),
+            boxShadow: [
+              BoxShadow(
+                color: Styles.grey4.withOpacity(0.01),
+                spreadRadius: 10,
+                blurRadius: 7,
+                offset: Offset(0, 2), // changes position of shadow
+              ),
+            ],
+          ),
+          child: ClockBody(),
+        ),
       );
     });
   }
