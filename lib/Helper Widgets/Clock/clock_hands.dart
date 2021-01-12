@@ -19,10 +19,7 @@ class ClockHands extends HookWidget {
           child: Stack(fit: StackFit.expand, children: <Widget>[
             CustomPaint(
               painter: HourHandPainter(
-                  hours: mode == TimeChangeMode.hour
-                      ? int.parse(hour)
-                      : int.parse(min) ~/ 5,
-                  minutes: 0),
+                  mode: mode, hours: int.parse(hour), minutes: int.parse(min)),
             )
           ]),
         ));

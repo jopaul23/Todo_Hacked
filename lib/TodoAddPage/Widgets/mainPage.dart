@@ -1,4 +1,4 @@
-import 'package:Todo_App/Common%20widgets/shadow.dart';
+import 'package:intl/intl.dart';
 import 'package:Todo_App/Helper%20Widgets/Clock/clock_body.dart';
 import 'package:Todo_App/styles/styles.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +12,16 @@ class TodoAddPage extends StatefulWidget {
 
 class _TodoAddPageState extends State<TodoAddPage> {
   OverlayEntry clock;
+  String time;
+
+  @override
+  void initState() {
+    DateTime now = DateTime.now();
+    time = DateFormat('kk:mm').format(now);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -105,7 +115,7 @@ class _TodoAddPageState extends State<TodoAddPage> {
                   height: size.height * 0.08,
                 ),
                 InputButton(
-                  text: "10:30",
+                  text: time,
                   buttoncolor: Styles.white3,
                   textcolor: Styles.grey2,
                   icon: Icons.access_time,
@@ -154,7 +164,6 @@ class _TodoAddPageState extends State<TodoAddPage> {
   }
 
   OverlayEntry _createClockOverlay() {
-    GlobalKey containerKey = GlobalKey();
     return OverlayEntry(builder: (context) {
       return Align(
         alignment: Alignment.center,
@@ -172,7 +181,19 @@ class _TodoAddPageState extends State<TodoAddPage> {
               ),
             ],
           ),
-          child: ClockBody(),
+          child: ClockBody(
+            isBeforeNoon: int.parse(time.split(":")[0]) < 12,
+            onClicked: (String hour, String minute, bool isBeforeNoon) {
+              print("$hour:$minute");
+              setState(() {
+                if (!isBeforeNoon) {
+                  if (hour != "12") hour = (12 + int.parse(hour)).toString();
+                } else if (hour == "12") hour = "00";
+                time = hour + ":" + minute;
+              });
+              clock.remove();
+            },
+          ),
         ),
       );
     });
