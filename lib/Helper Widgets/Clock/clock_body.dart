@@ -18,13 +18,23 @@ class ClockBody extends HookWidget {
     double angle;
     final bool isHourSelected = mode == TimeChangeMode.hour;
     return GestureDetector(
-      onPanStart: (DragStartDetails details) {},
+      onPanStart: (DragStartDetails details) {
+        Offset offset = details.localPosition;
+        angle = atan2(-(175 - offset.dx), (175 - offset.dy)) * 180 / pi;
+        angle = angle + 180;
+        int hour = ((angle + 15) ~/ 30 + 6) % 12;
+        int minute = ((angle + 3) ~/ 6 + 30) % 60;
+        print("hour : $hour");
+        print("minute : $minute");
+      },
       onPanUpdate: (DragUpdateDetails details) {
         Offset offset = details.localPosition;
         angle = atan2(-(175 - offset.dx), (175 - offset.dy)) * 180 / pi;
         angle = angle + 180;
         int hour = ((angle + 15) ~/ 30 + 6) % 12;
+        int minute = ((angle + 3) ~/ 6 + 30) % 60;
         print("hour : $hour");
+        print("minute : $minute");
         context.read(timeHourProvider).updateTime(hour.toString());
       },
       child: Stack(
