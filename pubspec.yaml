@@ -27,6 +27,7 @@ dependencies:
   flutter_hooks: ^0.15.0
   google_fonts: ^1.1.1
   hooks_riverpod: ^0.12.1
+  imagebutton: ^0.0.6
 
 dev_dependencies:
   flutter_test:

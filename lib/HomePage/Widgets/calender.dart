@@ -49,6 +49,7 @@ class Calender extends StatelessWidget {
                   return Container(
                     height: 25,
                     width: 30,
+                    margin: const EdgeInsets.only(left: 10.0),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,

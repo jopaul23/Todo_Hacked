@@ -42,8 +42,7 @@ class ClockBody extends HookWidget {
       child: Stack(
         children: [
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 100.0, vertical: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 80.0, vertical: 15),
             child: RichText(
                 text: TextSpan(
                     text: "$hour",
