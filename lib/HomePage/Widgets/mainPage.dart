@@ -6,15 +6,17 @@ import 'package:Todo_App/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
 import 'calender.dart';
 import 'search.dart';
 import 'todo_card.dart';
 
 class HomePage extends HookWidget {
+  final List<String> availableDates = [];
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final db = useProvider(databaseProvider);
+    final todoList = useProvider(todoListNotifierProvider.state);
     return BasicWidget(
       pageNo: 1,
       child: Container(
@@ -38,8 +40,9 @@ class HomePage extends HookWidget {
                 child: SingleChildScrollView(
                     padding: EdgeInsets.only(top: 5, bottom: 80),
                     child: StreamBuilder(
-                        stream: useProvider(database).watchAllTodoss(),
+                        stream: db.watchAllTodoss(),
                         builder: (context, AsyncSnapshot<List<Todo>> snapshot) {
+                          print("databse is called");
                           if (snapshot.hasData) {
                             final todos = snapshot.data;
                             return Column(
@@ -54,13 +57,14 @@ class HomePage extends HookWidget {
                                         HomePageTodoFunction.makeCard(todo);
                                     final String value =
                                         HomePageTodoFunction.getWeekDay(
-                                      index == 0
-                                          ? null
-                                          : todos[index - 1].dueDate,
                                       todo.dueDate,
                                     );
-                                    if (value == null) return card;
-                                    return addDate(value, card);
+                                    if (availableDates.contains(value))
+                                      return card;
+                                    else {
+                                      availableDates.add(value);
+                                      return addDate(value, card);
+                                    }
                                   }),
                                 )
                               ],

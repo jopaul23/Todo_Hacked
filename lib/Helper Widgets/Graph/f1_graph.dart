@@ -29,7 +29,15 @@ class BarChartTwoState extends State<BarChartTwo> {
       height: 250,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18.0),
-        color: Styles.white1,
+        color: Styles.white2,
+        boxShadow: [
+          BoxShadow(
+            color: Styles.grey4.withOpacity(0.02),
+            spreadRadius: 7,
+            blurRadius: 7,
+            offset: Offset(0, 2), // changes position of shadow
+          ),
+        ],
       ),
       margin: EdgeInsets.all(10.0),
       padding: const EdgeInsets.all(16),
@@ -43,7 +51,7 @@ class BarChartTwoState extends State<BarChartTwo> {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2),
               child: BarChart(
                 _mainBarData(),
               ),
@@ -59,7 +67,17 @@ class BarChartTwoState extends State<BarChartTwo> {
       maxY: 20,
       titlesData: _buildAxes(),
       borderData: FlBorderData(
-        show: false,
+        show: true,
+        border: const Border(
+          bottom: BorderSide(
+            color: const Color(0xffb3b3b3),
+            width: 3,
+          ),
+          left: BorderSide(
+            color: const Color(0xffb3b3b3),
+            width: 3,
+          ),
+        ),
       ),
       barGroups: _buildAllBars(),
     );
@@ -100,19 +118,20 @@ class BarChartTwoState extends State<BarChartTwo> {
       // Build Y axis.
       leftTitles: SideTitles(
         showTitles: true,
-        // textStyle: TextStyle(
-        //     color: const Color(0xff7589a2),
-        //     fontWeight: FontWeight.bold,
-        //     fontSize: 14),
-        margin: 32,
+        // getTextStyles:,
+        margin: 10,
         reservedSize: 14,
         getTitles: (value) {
           if (value == 0) {
-            return '2';
+            return '0';
+          } else if (value == 5) {
+            return '5';
           } else if (value == 10) {
-            return '4';
-          } else if (value == 19) {
-            return '6';
+            return '10';
+          } else if (value == 15) {
+            return '15';
+          } else if (value == 20) {
+            return '20';
           } else {
             return '';
           }
@@ -137,12 +156,12 @@ class BarChartTwoState extends State<BarChartTwo> {
       barRods: [
         BarChartRodData(
           y: y1,
-          colors: [Styles.t1Orange.withOpacity(0.8)],
+          colors: [Styles.t1Orange, Styles.t1Orange.withOpacity(0.9)],
           width: width,
         ),
         BarChartRodData(
           y: y2,
-          colors: [Styles.red],
+          colors: [Styles.red, Styles.red.withOpacity(0.9)],
           width: width,
         ),
       ],

@@ -30,6 +30,7 @@ class NavigationBar extends StatelessWidget {
         children: [
           TextButton(
             onPressed: () {
+              if(pageNum != 1)
               PageRouter.sailor.navigate(PageRouter.homePage);
             },
             child: Container(
@@ -45,6 +46,7 @@ class NavigationBar extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
+              if(pageNum != 2)
               PageRouter.sailor.navigate(PageRouter.favorites);
             },
             child: Container(
@@ -60,6 +62,7 @@ class NavigationBar extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
+              if(pageNum != 3)
               PageRouter.sailor.navigate(PageRouter.accountPage);
             },
             child: Container(

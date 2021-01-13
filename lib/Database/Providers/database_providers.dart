@@ -3,4 +3,15 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../todo.dart';
 
-final database = Provider<TodoDao>((ref) => TodoDao(TodoListDataBase()));
+final databaseProvider =
+    Provider<TodoDao>((ref) => TodoDao(TodoListDataBase()));
+
+final todoListNotifierProvider =
+    StateNotifierProvider<TodoListNotifier>((ref) => TodoListNotifier());
+
+class TodoListNotifier extends StateNotifier<List<Todo>> {
+  TodoListNotifier() : super([]);
+  void updateTodoList(List<Todo> todoList) {
+    state = todoList;
+  }
+}

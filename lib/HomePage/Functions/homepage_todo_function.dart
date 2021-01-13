@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
 class HomePageTodoFunction {
+  static List<String> availableDates = [];
   static String formatDueTime(DateTime date) {
     return DateFormat("EEE,kk:mm").format(date);
   }
@@ -17,18 +18,20 @@ class HomePageTodoFunction {
     );
   }
 
-  static String getWeekDay(DateTime dateToCompare, DateTime dateTocheck) {
-    print(dateToCompare);
+  static String getWeekDay(DateTime dateTocheck) {
     print(dateTocheck);
+    print("Avialbe dates $availableDates");
     final today = DateTime.now();
-    if (dateToCompare == null) if (today.day == dateTocheck.day) return "today";
-    if (dateTocheck.day == dateToCompare.day)
-      return null;
-    else if (dateTocheck.day == dateToCompare.day + 1)
+
+    if (today.day == dateTocheck.day)
+      return "today";
+    else if (dateTocheck.day == today.day + 1)
       return "Tommarrow";
     else {
       final format = DateFormat("d-M-y").format(dateTocheck);
       return "on " + format;
     }
   }
+
+  static search(String val) {}
 }

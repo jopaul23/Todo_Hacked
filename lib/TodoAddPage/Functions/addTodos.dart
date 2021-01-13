@@ -24,6 +24,6 @@ class AddTodos {
       remainderTime: Value(remainderTime),
       dueDate: Value(dueDate),
     );
-    container.read(database).insertTodos(task);
+    container.read(databaseProvider).insertTodos(task);
   }
 }

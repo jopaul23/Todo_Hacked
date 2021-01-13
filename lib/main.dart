@@ -1,11 +1,8 @@
-import 'package:Todo_App/HomePage/Widgets/mainPage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hooks_riverpod/all.dart';
-import 'AccountPage/Widgets/main_page.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'Router/page_router.dart';
 import 'WelcomeScreen/Widgets/mainPage.dart';
-import 'TodoAddPage/Widgets/mainPage.dart';
 
 void main() {
   PageRouter.createRoutes();

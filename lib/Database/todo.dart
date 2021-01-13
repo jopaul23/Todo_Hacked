@@ -33,15 +33,14 @@ class TodoDao extends DatabaseAccessor<TodoListDataBase> with _$TodoDaoMixin {
   // Called by the AppDatabase class
   TodoDao(this.db) : super(db);
 
-  Future<List<Todo>> getAllTodoss() {
+  Stream<List<Todo>> watchAllTodoss() {
     return (select(todos)
           ..orderBy([
             (u) => OrderingTerm(expression: u.dueDate, mode: OrderingMode.asc),
           ]))
-        .get();
+        .watch();
   }
 
-  Stream<List<Todo>> watchAllTodoss() => select(todos).watch();
   Future insertTodos(Insertable<Todo> todo) => into(todos).insert(todo);
   Future updateTodos(Insertable<Todo> todo) => update(todos).replace(todo);
   Future deleteTodos(Insertable<Todo> todo) => delete(todos).delete(todo);
