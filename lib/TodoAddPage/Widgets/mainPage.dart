@@ -1,7 +1,8 @@
-import 'package:Todo_App/Database/Providers/database_providers.dart';
+import 'package:Todo_App/Database/provider.dart';
 import 'package:Todo_App/Database/todo.dart';
 import 'package:Todo_App/Helper%20Widgets/dropdown.dart';
 import 'package:Todo_App/Helper%20Widgets/inputfield.dart';
+import 'package:Todo_App/TodoAddPage/Functions/addTodos.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:intl/intl.dart';
 import 'package:Todo_App/Helper%20Widgets/Clock/clock_body.dart';
@@ -170,23 +171,14 @@ class _TodoAddPageState extends State<TodoAddPage> {
                     textcolor: Styles.white3,
                     width: 200,
                     onPressed: () {
-                      // AddTodos addTodo = AddTodos(
-                      //     title: _controller.text,
-                      //     dueDate: date,
-                      //     tagName: "Work",
-                      //     tagColor: "#534234",
-                      //     remainderTime: "10:00 am");
-                      // addTodo.addTodo();
-
-                      final task = TodosCompanion(
+                      final todo = TodosCompanion(
                         tagColor: moor.Value("#000000"),
-                        tagName: moor.Value("Play"),
+                        tagName: moor.Value("play"),
                         title: moor.Value(_controller.text),
                         remainderTime: moor.Value("11:00 am"),
                         dueDate: moor.Value(date),
                       );
-                      db.insertTodos(task);
-                      debugPrint("todo list added");
+                      db.insertTodos(todo);
                     },
                   )
                 ],

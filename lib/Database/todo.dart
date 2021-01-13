@@ -41,6 +41,15 @@ class TodoDao extends DatabaseAccessor<TodoListDataBase> with _$TodoDaoMixin {
         .watch();
   }
 
+  Stream<List<Todo>> searchTodoss(String searchTodo) {
+    return (select(todos)
+          ..where((u) => u.title.like("%$searchTodo%"))
+          ..orderBy([
+            (u) => OrderingTerm(expression: u.dueDate, mode: OrderingMode.asc),
+          ]))
+        .watch();
+  }
+
   Future insertTodos(Insertable<Todo> todo) => into(todos).insert(todo);
   Future updateTodos(Insertable<Todo> todo) => update(todos).replace(todo);
   Future deleteTodos(Insertable<Todo> todo) => delete(todos).delete(todo);

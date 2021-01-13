@@ -36,9 +36,6 @@ class ClockBody extends HookWidget {
         } else
           context.read(timeMinuteProvider).updateTime(time);
       },
-      onPanEnd: (_) {
-        context.read(timeChangeModeProvider).changeMode(TimeChangeMode.minute);
-      },
       child: Stack(
         children: [
           Padding(

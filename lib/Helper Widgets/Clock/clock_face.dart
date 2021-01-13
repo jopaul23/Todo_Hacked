@@ -21,15 +21,6 @@ class ClockFace extends HookWidget {
               BoxDecoration(shape: BoxShape.circle, color: Styles.white1),
           child: Stack(
             children: <Widget>[
-              //dial and numbers go here
-              Container(
-                width: double.infinity,
-                height: double.infinity,
-                padding: const EdgeInsets.all(10.0),
-                child: CustomPaint(
-                  painter: ClockDialPainter(mode),
-                ),
-              ),
               //clock hands go here
               ClockHands(),
               //centerpoint

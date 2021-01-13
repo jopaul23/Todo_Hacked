@@ -33,7 +33,7 @@ class HourHandPainter extends CustomPainter {
 
     // Path path = new Path();
 
-    final circleOffset = Offset(radius, 0);
+    final circleOffset = Offset(radius + 5, 0);
     canvas.drawLine(circleOffset, Offset(0, 0), hourHandPaint);
 
     canvas.drawCircle(circleOffset, 15.0, hourHandPaint);

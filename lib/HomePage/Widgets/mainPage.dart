@@ -1,4 +1,4 @@
-import 'package:Todo_App/Database/Providers/database_providers.dart';
+import 'package:Todo_App/Database/provider.dart';
 import 'package:Todo_App/Database/todo.dart';
 import 'package:Todo_App/Helper%20Widgets/basic_widget.dart';
 import 'package:Todo_App/HomePage/Functions/homepage_todo_function.dart';
@@ -11,12 +11,13 @@ import 'search.dart';
 import 'todo_card.dart';
 
 class HomePage extends HookWidget {
-  final List<String> availableDates = [];
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     final db = useProvider(databaseProvider);
-    final todoList = useProvider(todoListNotifierProvider.state);
+    final mode = useProvider(homePageChangeModeProvider.state);
+
+    print("Cleared availble list");
     return BasicWidget(
       pageNo: 1,
       child: Container(
@@ -40,33 +41,45 @@ class HomePage extends HookWidget {
                 child: SingleChildScrollView(
                     padding: EdgeInsets.only(top: 5, bottom: 80),
                     child: StreamBuilder(
-                        stream: db.watchAllTodoss(),
+                        stream: mode == HomePageChangeMode.search
+                            ? db.searchTodoss(HomePageTodoFunction.searchTodos)
+                            : db.watchAllTodoss(),
                         builder: (context, AsyncSnapshot<List<Todo>> snapshot) {
-                          print("databse is called");
                           if (snapshot.hasData) {
+                            final List<String> availableDates = [];
+                            print("databse is called");
                             final todos = snapshot.data;
                             return Column(
                               children: [
                                 TodoListSearch(),
                                 const SizedBox(height: 10.0),
-                                Column(
-                                  children:
-                                      List.generate(todos.length, (int index) {
-                                    final Todo todo = todos[index];
-                                    final card =
-                                        HomePageTodoFunction.makeCard(todo);
-                                    final String value =
-                                        HomePageTodoFunction.getWeekDay(
-                                      todo.dueDate,
-                                    );
-                                    if (availableDates.contains(value))
-                                      return card;
-                                    else {
-                                      availableDates.add(value);
-                                      return addDate(value, card);
-                                    }
-                                  }),
-                                )
+                                if (todos.isEmpty)
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: size.height * 0.2),
+                                    child: Text("No todos availble"),
+                                  )
+                                else
+                                  Column(
+                                    children: List.generate(todos.length,
+                                        (int index) {
+                                      final Todo todo = todos[index];
+                                      final card = TodoCards(
+                                        todo: todo,
+                                      );
+                                      final String value =
+                                          HomePageTodoFunction.getWeekDay(
+                                        todo.dueDate,
+                                      );
+                                      print(availableDates);
+                                      if (availableDates.contains(value))
+                                        return card;
+                                      else {
+                                        availableDates.add(value);
+                                        return addDate(value, card);
+                                      }
+                                    }),
+                                  )
                               ],
                             );
                           }

@@ -1,26 +1,15 @@
 import 'package:Todo_App/Database/todo.dart';
-import 'package:Todo_App/HomePage/Widgets/todo_card.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter/material.dart';
+import 'package:moor/moor.dart';
 
 class HomePageTodoFunction {
-  static List<String> availableDates = [];
+  static String searchTodos;
   static String formatDueTime(DateTime date) {
     return DateFormat("EEE,kk:mm").format(date);
   }
 
-  static TodoCards makeCard(Todo todo) {
-    return TodoCards(
-      dateTime: formatDueTime(todo.dueDate),
-      title: todo.title,
-      tagColor: Color(int.parse("0xFF" + todo.tagColor.replaceFirst("#", ""))),
-      tagName: todo.tagName,
-    );
-  }
-
   static String getWeekDay(DateTime dateTocheck) {
-    print(dateTocheck);
-    print("Avialbe dates $availableDates");
     final today = DateTime.now();
 
     if (today.day == dateTocheck.day)
@@ -32,6 +21,17 @@ class HomePageTodoFunction {
       return "on " + format;
     }
   }
+}
 
-  static search(String val) {}
+final homePageChangeModeProvider =
+    StateNotifierProvider<HomePageChangeModeNotifier>(
+        (ref) => HomePageChangeModeNotifier());
+
+enum HomePageChangeMode { normal, search, favorites }
+
+class HomePageChangeModeNotifier extends StateNotifier<HomePageChangeMode> {
+  HomePageChangeModeNotifier() : super(HomePageChangeMode.normal);
+  void changeMode(HomePageChangeMode mode) {
+    state = mode;
+  }
 }
