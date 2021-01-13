@@ -14,15 +14,17 @@ class TodoCards extends StatelessWidget {
       margin: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 30.0),
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       decoration: BoxDecoration(
-          color: Styles.white1,
-          borderRadius: const BorderRadius.all(Radius.circular(30.0)),
-          boxShadow: [
-            BoxShadow(
-              color: Styles.grey1.withOpacity(0.2),
-              spreadRadius: 3,
-              blurRadius: 5,
-            ),
-          ]),
+        color: Styles.white2,
+        borderRadius: const BorderRadius.all(Radius.circular(30.0)),
+        boxShadow: [
+          BoxShadow(
+            color: Styles.grey4.withOpacity(0.02),
+            spreadRadius: 7,
+            blurRadius: 7,
+            offset: Offset(0, 2), // changes position of shadow
+          ),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         // mainAxisAlignment: MainAxisAlignment.spaceAround,

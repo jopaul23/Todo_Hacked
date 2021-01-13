@@ -55,7 +55,9 @@ class _TodoAddPageState extends State<TodoAddPage> {
                       color: Styles.t1Orange.withOpacity(0.7),
                       size: 40,
                     ),
-                    onPressed: null),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    }),
                 Align(
                   alignment: Alignment.bottomRight,
                   child: CustomDropdown(

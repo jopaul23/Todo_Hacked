@@ -24,10 +24,11 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.0
+  fl_chart: ^0.12.2
   flutter_hooks: ^0.15.0
   google_fonts: ^1.1.1
   hooks_riverpod: ^0.12.1
-  imagebutton: ^0.0.6
+  sailor: ^0.7.1
 
 dev_dependencies:
   flutter_test:

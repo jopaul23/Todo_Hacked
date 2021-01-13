@@ -1,3 +1,4 @@
+import 'package:Todo_App/Router/page_router.dart';
 import 'package:Todo_App/styles/styles.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,9 @@ class BasicWidget extends StatelessWidget {
             child: Align(
               alignment: Alignment.bottomRight,
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  PageRouter.sailor.navigate(PageRouter.todoAddPage);
+                },
                 child: Container(
                     width: 65,
                     height: 65,

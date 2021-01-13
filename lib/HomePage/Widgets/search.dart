@@ -19,10 +19,10 @@ class TodoListSearch extends StatelessWidget {
             ),
           ]),
       child: TextField(
-        style: TextStyle(fontSize: 20, color: Colors.black),
-        // onChanged: (val) {
-        //   debugPrint(val);
-        // },
+        style: TextStyle(fontSize: 20, color: Styles.grey2),
+        onSubmitted: (String val) {
+          debugPrint(val);
+        },
         decoration: InputDecoration(
             contentPadding: const EdgeInsets.only(left: 20.0),
             hintText: "Search",

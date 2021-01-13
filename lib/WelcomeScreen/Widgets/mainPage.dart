@@ -1,5 +1,6 @@
 import 'package:Todo_App/Helper%20Widgets/button.dart';
 import 'package:Todo_App/Helper%20Widgets/textfield.dart';
+import 'package:Todo_App/Router/page_router.dart';
 import 'package:flutter/material.dart';
 import 'package:Todo_App/styles/styles.dart';
 
@@ -52,7 +53,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ),
                 Button(
                   text: "CONTINUE",
-                  onPressed: () {},
+                  onPressed: () {
+                    PageRouter.sailor.navigate(PageRouter.homePage);
+                  },
                   textcolor: Styles.t1Orange,
                   buttoncolor: Styles.white1,
                 ),

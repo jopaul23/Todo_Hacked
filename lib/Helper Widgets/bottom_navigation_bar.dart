@@ -1,3 +1,4 @@
+import 'package:Todo_App/Router/page_router.dart';
 import 'package:Todo_App/styles/images.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:Todo_App/styles/styles.dart';
@@ -27,33 +28,49 @@ class NavigationBar extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Container(
-            width: size.width / 4.15,
-            child: Image(
-              image:
-                  pageNum == 1 ? ImportedImages.homeOn : ImportedImages.homeOff,
-              height: 32,
-              width: 32,
+          TextButton(
+            onPressed: () {
+              PageRouter.sailor.navigate(PageRouter.homePage);
+            },
+            child: Container(
+              width: size.width / 4.15,
+              child: Image(
+                image: pageNum == 1
+                    ? ImportedImages.homeOn
+                    : ImportedImages.homeOff,
+                height: 32,
+                width: 32,
+              ),
             ),
           ),
-          Container(
-            width: size.width / 4.15,
-            child: Image(
-              image: pageNum == 2
-                  ? ImportedImages.likedOn
-                  : ImportedImages.likedOff,
-              height: 32,
-              width: 32,
+          TextButton(
+            onPressed: () {
+              PageRouter.sailor.navigate(PageRouter.favorites);
+            },
+            child: Container(
+              width: size.width / 4.15,
+              child: Image(
+                image: pageNum == 2
+                    ? ImportedImages.likedOn
+                    : ImportedImages.likedOff,
+                height: 32,
+                width: 32,
+              ),
             ),
           ),
-          Container(
-            width: size.width / 4.15,
-            child: Image(
-              image: pageNum == 3
-                  ? ImportedImages.accountsOn
-                  : ImportedImages.accountsOff,
-              height: 32,
-              width: 32,
+          TextButton(
+            onPressed: () {
+              PageRouter.sailor.navigate(PageRouter.accountPage);
+            },
+            child: Container(
+              width: size.width / 4.15,
+              child: Image(
+                image: pageNum == 3
+                    ? ImportedImages.accountsOn
+                    : ImportedImages.accountsOff,
+                height: 32,
+                width: 32,
+              ),
             ),
           ),
         ],

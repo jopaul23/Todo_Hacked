@@ -13,4 +13,6 @@ abstract class ImportedImages {
       Image.asset("assets/Images/Accounts_on.png").image;
   static ImageProvider accountsOff =
       Image.asset("assets/Images/Accounts_off.png").image;
+  static ImageProvider accountsLarge =
+      Image.asset("assets/Images/Accounts_large.png").image;
 }
