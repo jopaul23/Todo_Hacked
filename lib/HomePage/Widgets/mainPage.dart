@@ -1,17 +1,17 @@
+import 'package:Todo_App/Database/Providers/database_providers.dart';
+import 'package:Todo_App/Database/todo.dart';
 import 'package:Todo_App/Helper%20Widgets/basic_widget.dart';
+import 'package:Todo_App/HomePage/Functions/homepage_todo_function.dart';
 import 'package:Todo_App/styles/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'calender.dart';
 import 'search.dart';
 import 'todo_card.dart';
 
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
+class HomePage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -36,54 +36,57 @@ class _HomePageState extends State<HomePage> {
                         topLeft: Radius.circular(40.0),
                         topRight: Radius.circular(40.0))),
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.only(top: 5, bottom: 80),
-                  child: Column(
-                    children: [
-                      TodoListSearch(),
-                      const SizedBox(height: 10.0),
-                      Text(
-                        "Today",
-                        style: TextStyle(
-                            color: Styles.grey1, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 10.0),
-                      TodoCards(
-                        dateTime: "Tue 12:00 pm",
-                        title: "Todo app to be completed",
-                        tagName: "Work",
-                        tagColor: Colors.amber,
-                      ),
-                      TodoCards(
-                        dateTime: "Wed 15:00 pm",
-                        title: "Garden Works",
-                        tagName: "Home",
-                        tagColor: Colors.teal,
-                      ),
-                      TodoCards(
-                          dateTime: "fri 06:30 am",
-                          title: "Walk in mrng",
-                          tagName: "walk",
-                          tagColor: Colors.blueGrey),
-                      TodoCards(
-                        dateTime: "Tue 12:00 pm",
-                        title: "Make cake",
-                        tagName: "cook",
-                        tagColor: Colors.orange,
-                      ),
-                      TodoCards(
-                        dateTime: "Tue 12:00 pm",
-                        title: "Make cake",
-                        tagName: "cook",
-                        tagColor: Colors.orange,
-                      ),
-                    ],
-                  ),
-                ),
+                    padding: EdgeInsets.only(top: 5, bottom: 80),
+                    child: StreamBuilder(
+                        stream: useProvider(database).watchAllTodoss(),
+                        builder: (context, AsyncSnapshot<List<Todo>> snapshot) {
+                          if (snapshot.hasData) {
+                            final todos = snapshot.data;
+                            return Column(
+                              children: [
+                                TodoListSearch(),
+                                const SizedBox(height: 10.0),
+                                Column(
+                                  children:
+                                      List.generate(todos.length, (int index) {
+                                    final Todo todo = todos[index];
+                                    final card =
+                                        HomePageTodoFunction.makeCard(todo);
+                                    final String value =
+                                        HomePageTodoFunction.getWeekDay(
+                                      index == 0
+                                          ? null
+                                          : todos[index - 1].dueDate,
+                                      todo.dueDate,
+                                    );
+                                    if (value == null) return card;
+                                    return addDate(value, card);
+                                  }),
+                                )
+                              ],
+                            );
+                          }
+                          return CircularProgressIndicator();
+                        })),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget addDate(String day, TodoCards card) {
+    return Column(
+      children: [
+        const SizedBox(height: 10.0),
+        Text(
+          "$day",
+          style: TextStyle(color: Styles.grey1, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 10.0),
+        card
+      ],
     );
   }
 }

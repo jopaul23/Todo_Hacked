@@ -29,10 +29,16 @@ dependencies:
   google_fonts: ^1.1.1
   hooks_riverpod: ^0.12.1
   sailor: ^0.7.1
+  moor: # use the latest version
+  sqlite3_flutter_libs: # Also use the latest version.
+  path_provider:
+  path:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  moor_generator: # use the latest version
+  build_runner:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

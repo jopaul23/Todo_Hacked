@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:Todo_App/Helper%20Widgets/dropdown.dart';
 import 'package:Todo_App/Helper%20Widgets/inputfield.dart';
+import 'package:Todo_App/TodoAddPage/Functions/addTodos.dart';
 import 'package:intl/intl.dart';
 import 'package:Todo_App/Helper%20Widgets/Clock/clock_body.dart';
 import 'package:Todo_App/styles/styles.dart';
@@ -12,12 +15,14 @@ class TodoAddPage extends StatefulWidget {
 
 class _TodoAddPageState extends State<TodoAddPage> {
   OverlayEntry clock;
-  String time;
-
+  DateTime date;
+  TextEditingController _controller;
   @override
   void initState() {
+    _controller = TextEditingController();
     DateTime now = DateTime.now();
-    time = DateFormat('kk:mm').format(now);
+    date = now;
+    print(date);
     super.initState();
   }
 
@@ -74,6 +79,7 @@ class _TodoAddPageState extends State<TodoAddPage> {
             padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
             height: size.height * 0.06,
             child: TextField(
+              controller: _controller,
               cursorHeight: 40,
               cursorColor: Styles.grey1,
               style: TextStyle(
@@ -117,7 +123,7 @@ class _TodoAddPageState extends State<TodoAddPage> {
                   height: size.height * 0.08,
                 ),
                 InputButton(
-                  text: time,
+                  text: DateFormat('kk:mm').format(date),
                   buttoncolor: Styles.white3,
                   textcolor: Styles.grey2,
                   icon: Icons.access_time,
@@ -132,11 +138,12 @@ class _TodoAddPageState extends State<TodoAddPage> {
                   height: size.height * 0.03,
                 ),
                 InputButton(
-                  text: "1 may 2020",
+                  text: DateFormat("d MMM y").format(date),
                   buttoncolor: Styles.white3,
                   textcolor: Styles.grey2,
                   icon: Icons.calendar_today_rounded,
                   width: 300,
+                  onPressed: displayCalender,
                 ),
                 SizedBox(
                   height: size.height * 0.03,
@@ -156,6 +163,16 @@ class _TodoAddPageState extends State<TodoAddPage> {
                   buttoncolor: Styles.t1Orange,
                   textcolor: Styles.white3,
                   width: 200,
+                  onPressed: () {
+                    AddTodos addTodo = AddTodos(
+                        title: _controller.text,
+                        dueDate: date,
+                        tagName: "Work",
+                        tagColor: "#534234",
+                        remainderTime: "10:00 am");
+                    addTodo.addTodo();
+                    debugPrint("todo list added");
+                  },
                 )
               ],
             ),
@@ -184,14 +201,20 @@ class _TodoAddPageState extends State<TodoAddPage> {
             ],
           ),
           child: ClockBody(
-            isBeforeNoon: int.parse(time.split(":")[0]) < 12,
+            isBeforeNoon: date.hour < 12,
             onClicked: (String hour, String minute, bool isBeforeNoon) {
               print("$hour:$minute");
+              String month = date.month.toString();
+              if (month.length == 1) month = "0" + month;
+              String day = date.day.toString();
+              if (day.length == 1) day = "0" + day;
+
               setState(() {
                 if (!isBeforeNoon) {
                   if (hour != "12") hour = (12 + int.parse(hour)).toString();
                 } else if (hour == "12") hour = "00";
-                time = hour + ":" + minute;
+                String dateString = "${date.year}-$month-$day $hour:$minute";
+                date = DateTime.parse(dateString);
               });
               clock.remove();
             },
@@ -199,5 +222,27 @@ class _TodoAddPageState extends State<TodoAddPage> {
         ),
       );
     });
+  }
+
+  void displayCalender() async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: date,
+        firstDate: DateTime.now(),
+        lastDate: DateTime.now().add(Duration(days: 2190)));
+    if (picked != null) {
+      String month = picked.month.toString();
+      if (month.length == 1) month = "0" + month;
+      String day = picked.day.toString();
+      if (day.length == 1) day = "0" + day;
+      String hour = date.hour.toString();
+      String minute = date.minute.toString();
+      if (hour.length == 1) hour = "0" + hour;
+      if (minute.length == 1) minute = "0" + minute;
+      String dateString = "${picked.year}-$month-$day $hour:$minute";
+      setState(() {
+        date = DateTime.parse(dateString);
+      });
+    }
   }
 }
