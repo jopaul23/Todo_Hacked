@@ -10,7 +10,6 @@ class TodoCards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 140,
       margin: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 30.0),
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       decoration: BoxDecoration(
@@ -46,8 +45,8 @@ class TodoCards extends StatelessWidget {
           Text("$title",
               style: TextStyle(
                   fontSize: 22,
-                  fontWeight: FontWeight.w500,
-                  color: Styles.grey4)),
+                  fontWeight: FontWeight.w600,
+                  color: Styles.grey4.withOpacity(0.9))),
           const SizedBox(height: 30.0),
           Row(
             children: [
@@ -59,7 +58,7 @@ class TodoCards extends StatelessWidget {
               const SizedBox(width: 5.0),
               Text(
                 "$dateTime",
-                style: TextStyle(fontSize: 15, color: Styles.grey4),
+                style: TextStyle(fontSize: 15, color: Styles.grey2),
               )
             ],
           ),

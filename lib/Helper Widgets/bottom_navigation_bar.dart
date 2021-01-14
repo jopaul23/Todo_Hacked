@@ -10,7 +10,7 @@ class NavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      height: 80,
+      height: 70,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(25),
@@ -30,49 +30,48 @@ class NavigationBar extends StatelessWidget {
         children: [
           TextButton(
             onPressed: () {
-              if(pageNum != 1)
-              PageRouter.sailor.navigate(PageRouter.homePage);
+              if (pageNum != 1) PageRouter.sailor.navigate(PageRouter.homePage);
             },
             child: Container(
-              width: size.width / 4.15,
+              width: size.width / 4.5,
               child: Image(
                 image: pageNum == 1
                     ? ImportedImages.homeOn
                     : ImportedImages.homeOff,
-                height: 32,
-                width: 32,
+                height: 27,
+                width: 27,
               ),
             ),
           ),
           TextButton(
             onPressed: () {
-              if(pageNum != 2)
-              PageRouter.sailor.navigate(PageRouter.favorites);
+              if (pageNum != 2)
+                PageRouter.sailor.navigate(PageRouter.favorites);
             },
             child: Container(
-              width: size.width / 4.15,
+              width: size.width / 5.1,
               child: Image(
                 image: pageNum == 2
                     ? ImportedImages.likedOn
                     : ImportedImages.likedOff,
-                height: 32,
-                width: 32,
+                height: 27,
+                width: 27,
               ),
             ),
           ),
           TextButton(
             onPressed: () {
-              if(pageNum != 3)
-              PageRouter.sailor.navigate(PageRouter.accountPage);
+              if (pageNum != 3)
+                PageRouter.sailor.navigate(PageRouter.accountPage);
             },
             child: Container(
-              width: size.width / 4.15,
+              width: size.width / 5.1,
               child: Image(
                 image: pageNum == 3
                     ? ImportedImages.accountsOn
                     : ImportedImages.accountsOff,
-                height: 32,
-                width: 32,
+                height: 27,
+                width: 27,
               ),
             ),
           ),

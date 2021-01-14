@@ -41,7 +41,7 @@ class BasicWidget extends StatelessWidget {
                         // borderRadius: const BorderRadius.all(Radius.circular(30.0)),
                         boxShadow: [
                           BoxShadow(
-                            color: Styles.grey1.withOpacity(0.6),
+                            color: Styles.grey1.withOpacity(0.3),
                             spreadRadius: 5,
                             blurRadius: 20,
                           ),

@@ -1,6 +1,6 @@
 import 'package:Todo_App/Database/Providers/database_providers.dart';
 import 'package:Todo_App/Database/todo.dart';
-import 'package:Todo_App/Helper%20Widgets/dropdown.dart';
+import 'package:Todo_App/Helper Widgets/DropDown/dropdown.dart';
 import 'package:Todo_App/Helper%20Widgets/inputfield.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:intl/intl.dart';
@@ -41,7 +41,7 @@ class _TodoAddPageState extends State<TodoAddPage> {
           children: <Widget>[
             Container(
               height: size.height * 0.098,
-              padding: EdgeInsets.only(left: 10),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
@@ -68,11 +68,18 @@ class _TodoAddPageState extends State<TodoAddPage> {
                       onPressed: () {
                         Navigator.pop(context);
                       }),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: CustomDropdown(
-                      text: "Catagories",
-                    ),
+                  SimpleAccountMenu(
+                    borderRadius: BorderRadius.circular(5),
+                    icons: [
+                      Icon(Icons.work_rounded),
+                      Icon(Icons.local_taxi),
+                      Icon(Icons.home_rounded),
+                      Icon(Icons.fitness_center)
+                    ],
+                    iconColor: Colors.white,
+                    onChange: (index) {
+                      print(index);
+                    },
                   ),
                 ],
               ),

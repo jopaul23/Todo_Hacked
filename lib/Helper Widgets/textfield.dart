@@ -51,6 +51,7 @@ class InputTextField extends HookWidget {
                 noCharacters.value = val.length;
             },
             textAlign: TextAlign.center,
+            cursorColor: Styles.white3.withOpacity(0.3),
             style: TextStyle(color: Styles.white1, fontSize: 25),
             decoration: InputDecoration(
               counterText: "",

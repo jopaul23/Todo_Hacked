@@ -1,6 +1,7 @@
 import 'package:Todo_App/HomePage/Functions/homepage_todo_function.dart';
 import 'package:Todo_App/styles/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 
 class TodoListSearch extends StatelessWidget {
   @override
@@ -21,6 +22,7 @@ class TodoListSearch extends StatelessWidget {
           ]),
       child: TextField(
         style: TextStyle(fontSize: 20, color: Styles.grey2),
+        cursorColor: Styles.grey2,
         onSubmitted: HomePageTodoFunction.search,
         decoration: InputDecoration(
             contentPadding: const EdgeInsets.only(left: 20.0),

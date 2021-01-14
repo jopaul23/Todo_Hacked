@@ -23,33 +23,34 @@ class _AccountPageState extends State<AccountPage> {
           child: Column(
             children: [
               SizedBox(
-                height: size.height * 0.05,
+                height: size.height * 0.04,
               ),
               Image(
                 image: ImportedImages.accountsLarge,
-                height: 64,
+                height: 50,
               ),
               SizedBox(
-                height: size.height * 0.02,
+                height: size.height * 0.01,
               ),
               Container(
-                height: 25,
+                height: 24,
                 child: Text(
                   "My account",
                   style: TextStyle(
                     fontFamily: GoogleFonts.rubik().fontFamily,
-                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 18,
                     color: Styles.white2,
                     decoration: TextDecoration.none,
                   ),
                 ),
               ),
               SizedBox(
-                height: size.height * 0.05,
+                height: size.height * 0.02,
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 25),
-                height: size.height - size.height * 0.12 - 25 - 64,
+                height: size.height - size.height * 0.07 - 24 - 50,
                 decoration: BoxDecoration(
                   color: Styles.white2.withOpacity(.96),
                   borderRadius: BorderRadius.only(
@@ -140,9 +141,8 @@ class BoxContainer extends StatelessWidget {
               number,
               style: TextStyle(
                   decoration: TextDecoration.none,
-                  fontFamily: GoogleFonts.rubik().fontFamily,
                   fontSize: 60,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
                   color: color),
             ),
           ),

@@ -17,16 +17,16 @@ class BarChartTwoState extends State<BarChartTwo> {
     [5, 12],
     [16, 12],
     [18, 5],
-    [20, 16],
+    [21, 16],
     [17, 6],
     [19, 1.5],
-    [10, 1.5]
+    [10, 1.5],
   ];
-
+  int maxValue = 21; //maxValue is the greatest no. in the weaklyData
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 250,
+      height: 270,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18.0),
         color: Styles.white2,
@@ -84,6 +84,7 @@ class BarChartTwoState extends State<BarChartTwo> {
   }
 
   FlTitlesData _buildAxes() {
+    int n = maxValue ~/ 4 + 1; //multiples of n will be displayed in y axis
     return FlTitlesData(
       show: true,
       // Build X axis.
@@ -97,19 +98,19 @@ class BarChartTwoState extends State<BarChartTwo> {
         getTitles: (double value) {
           switch (value.toInt()) {
             case 0:
-              return 'Mn';
+              return 'Mon';
             case 1:
-              return 'Te';
+              return 'Tue';
             case 2:
-              return 'Wd';
+              return 'Wed';
             case 3:
-              return 'Tu';
+              return 'Thu';
             case 4:
-              return 'Fr';
+              return 'Fri';
             case 5:
-              return 'St';
+              return 'Sat';
             case 6:
-              return 'Sn';
+              return 'Sun';
             default:
               return '';
           }
@@ -122,16 +123,22 @@ class BarChartTwoState extends State<BarChartTwo> {
         margin: 10,
         reservedSize: 14,
         getTitles: (value) {
-          if (value == 0) {
-            return '0';
-          } else if (value == 5) {
-            return '5';
-          } else if (value == 10) {
-            return '10';
-          } else if (value == 15) {
-            return '15';
-          } else if (value == 20) {
-            return '20';
+          int val;
+          if (value == n * 0) {
+            val = n * 0;
+            return '$val';
+          } else if (value == n * 1) {
+            val = n * 1;
+            return '$val';
+          } else if (value == n * 2) {
+            val = n * 2;
+            return '$val';
+          } else if (value == n * 3) {
+            val = n * 3;
+            return '$val';
+          } else if (value == n * 4) {
+            val = n * 4;
+            return '$val';
           } else {
             return '';
           }
