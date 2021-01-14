@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:Todo_App/styles/styles.dart';
 
@@ -24,6 +25,7 @@ class _HomeCalendarPageState extends State<HomeCalendarPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
+              width: 350,
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
@@ -36,55 +38,80 @@ class _HomeCalendarPageState extends State<HomeCalendarPage> {
                 color: Styles.white1,
                 borderRadius: BorderRadius.all(Radius.circular(30)),
               ),
-              child: TableCalendar(
-                initialCalendarFormat: CalendarFormat.month,
-                weekendDays: const [DateTime.sunday],
-                startingDayOfWeek: StartingDayOfWeek.sunday,
-                availableCalendarFormats: const {CalendarFormat.month: "month"},
-                calendarStyle: CalendarStyle(
-                    todayColor: Colors.white.withOpacity(0.3),
-                    selectedColor: Styles.white1,
-                    todayStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22.0,
-                        color: Colors.white)),
-                headerStyle: HeaderStyle(
-                  centerHeaderTitle: true,
-                  formatButtonDecoration: BoxDecoration(
-                    color: Colors.brown,
-                    borderRadius: BorderRadius.circular(22.0),
+              child: Column(
+                children: [
+                  TableCalendar(
+                    initialCalendarFormat: CalendarFormat.month,
+                    weekendDays: const [DateTime.sunday],
+                    startingDayOfWeek: StartingDayOfWeek.sunday,
+                    availableCalendarFormats: const {
+                      CalendarFormat.month: "month"
+                    },
+                    calendarStyle: CalendarStyle(
+                        todayColor: Colors.white.withOpacity(0.3),
+                        selectedColor: Styles.white1,
+                        todayStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 22.0,
+                            color: Styles.grey4)),
+                    headerStyle: HeaderStyle(
+                      centerHeaderTitle: true,
+                      // formatButtonDecoration: BoxDecoration(
+                      //   color: Colors.brown,
+                      //   borderRadius: BorderRadius.circular(22.0),
+                      // ),
+                      // formatButtonTextStyle: TextStyle(color: Colors.white),
+                      // formatButtonShowsNext: false,
+                    ),
+                    // onDaySelected: (date, events) {
+                    //   print(date.toUtc());
+                    // },
+                    builders: CalendarBuilders(
+                      selectedDayBuilder: (context, date, events) {
+                        print(date); //print the selected date
+                        // if (date < DateTime.now()) {
+                        return Container(
+                            margin: const EdgeInsets.all(5.0),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: Styles.t1Orange,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              date.day.toString(),
+                              style: TextStyle(color: Colors.white),
+                            ));
+                        //}
+                      },
+                      todayDayBuilder: (context, date, events) => Container(
+                          margin: const EdgeInsets.all(5.0),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              color: Styles.grey1.withOpacity(0.6),
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Text(
+                            date.day.toString(),
+                            style: TextStyle(color: Colors.white),
+                          )),
+                    ),
+                    calendarController: _controller,
                   ),
-                  formatButtonTextStyle: TextStyle(color: Colors.white),
-                  formatButtonShowsNext: false,
-                ),
-                // onDaySelected: (date, events) {
-                //   print(date.toUtc());
-                // },
-                builders: CalendarBuilders(
-                  selectedDayBuilder: (context, date, events) => Container(
-                      margin: const EdgeInsets.all(5.0),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          borderRadius: BorderRadius.circular(8.0)),
-                      child: Text(
-                        date.day.toString(),
-                        style: TextStyle(color: Colors.white),
-                      )),
-                  todayDayBuilder: (context, date, events) => Container(
-                      margin: const EdgeInsets.all(5.0),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(8.0)),
-                      child: Text(
-                        date.day.toString(),
-                        style: TextStyle(color: Colors.white),
-                      )),
-                ),
-                calendarController: _controller,
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: FlatButton(
+                      onPressed: () {
+                        print("OK");
+                      },
+                      child: Text("OK",
+                          style: TextStyle(
+                              fontSize: 30,
+                              color: Styles.red,
+                              fontWeight: FontWeight.bold)),
+                    ),
+                  )
+                ],
               ),
-            )
+            ),
           ],
         ),
       ),

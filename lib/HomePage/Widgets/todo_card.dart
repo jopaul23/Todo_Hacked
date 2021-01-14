@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:Todo_App/Database/provider.dart';
 import 'package:Todo_App/Database/todo.dart';
+import 'package:Todo_App/Helper%20Widgets/Toast/toast.dart';
 import 'package:Todo_App/HomePage/Functions/homepage_todo_function.dart';
 import 'package:Todo_App/HomePage/Widgets/edit_todos.dart';
 import 'package:Todo_App/styles/styles.dart';
@@ -12,12 +13,13 @@ import 'package:moor/moor.dart' as moor;
 
 class TodoCards extends HookWidget {
   final Todo todo;
-
-  const TodoCards({Key key, this.todo}) : super(key: key);
+  final Function(Todo) onCompleted;
+  const TodoCards({Key key, this.todo, this.onCompleted}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final GlobalKey cardKey = GlobalKey();
     final editOverlay = useState();
+    final opacity = useState(1.0);
     final completedTodo = useState(todo.completed);
     final db = useProvider(databaseProvider);
     final cardTapped = useState(false);
@@ -44,74 +46,115 @@ class TodoCards extends HookWidget {
           } else
             editOverlay.value.remove();
         },
-        child: Container(
-          key: cardKey,
-          margin: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 30.0),
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-          decoration: BoxDecoration(
-            color: Styles.white2,
-            borderRadius: const BorderRadius.all(Radius.circular(30.0)),
-            boxShadow: [
-              BoxShadow(
-                color: Styles.grey4.withOpacity(0.02),
-                spreadRadius: cardTapped.value ? 20 : 7,
-                blurRadius: 7,
-                offset: Offset(0, 2), // changes position of shadow
+        child: AnimatedOpacity(
+          opacity: opacity.value,
+          duration: const Duration(milliseconds: 1000),
+          child: Container(
+            key: cardKey,
+            margin:
+                const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 30.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            decoration: BoxDecoration(
+              color: Styles.white2,
+              borderRadius: const BorderRadius.all(Radius.circular(30.0)),
+              boxShadow: [
+                BoxShadow(
+                  color: Styles.grey4.withOpacity(0.02),
+                  spreadRadius: cardTapped.value ? 20 : 7,
+                  blurRadius: 7,
+                  offset: Offset(0, 2), // changes position of shadow
+                ),
+              ],
+            ),
+            child: Dismissible(
+              direction: DismissDirection.startToEnd,
+              key: Key(todo.id.toString()),
+              background: Container(
+                alignment: Alignment.centerLeft,
+                // margin: const EdgeInsets.only(
+                //     left: 20.0, right: 20.0, bottom: 30.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 30.0,
+                ),
+                decoration: BoxDecoration(
+                  color: Styles.red,
+                  borderRadius: const BorderRadius.all(Radius.circular(30.0)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Styles.grey4.withOpacity(0.02),
+                      spreadRadius: cardTapped.value ? 20 : 7,
+                      blurRadius: 7,
+                      offset: Offset(0, 2), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child:
+                    Icon(Icons.delete_forever, color: Styles.white1, size: 40),
               ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            // mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Row(
+              onDismissed: (direction) {
+                db.deleteTodos(todo);
+                Toast toast = Toast("Deleted Todo");
+                toast.showToast(context);
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  tags(),
-                  const SizedBox(width: 10.0),
-                  Icon(Icons.edit_outlined),
-                  Spacer(),
-                  Icon(Icons.favorite_border_rounded),
-                  const SizedBox(width: 5.0),
-                  Icon(Icons.notifications_none_rounded),
-                  const SizedBox(width: 5.0),
-                  // Icon(Icons.check_box_outline_blank_rounded)
-                  Checkbox(
-                    onChanged: (bool value) {
-                      completedTodo.value = value;
-                      final updateTodo = TodosCompanion(
-                          id: moor.Value(todo.id),
-                          tagColor: moor.Value(todo.tagColor),
-                          tagName: moor.Value(todo.tagName),
-                          title: moor.Value(todo.title),
-                          completed: moor.Value(value));
-                      db.updateTodos(updateTodo);
-                    },
-                    value: completedTodo.value,
-                  )
-                ],
-              ),
-              const SizedBox(height: 10.0),
-              Text("${todo.title}",
-                  style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w500,
-                      color: Styles.grey4)),
-              const SizedBox(height: 30.0),
-              Row(
-                children: [
-                  Icon(
-                    Icons.calendar_today_outlined,
-                    size: 30,
-                    color: Styles.t1Orange,
+                  Row(
+                    children: [
+                      tags(),
+                      const SizedBox(width: 10.0),
+                      Icon(Icons.edit_outlined),
+                      Spacer(),
+                      Icon(Icons.favorite_border_rounded),
+                      const SizedBox(width: 5.0),
+                      Icon(Icons.notifications_none_rounded),
+                      const SizedBox(width: 5.0),
+                      // Icon(Icons.check_box_outline_blank_rounded)
+                      Checkbox(
+                        onChanged: (bool value) {
+                          completedTodo.value = value;
+                          final updateTodo = TodosCompanion(
+                              id: moor.Value(todo.id),
+                              tagColor: moor.Value(todo.tagColor),
+                              tagName: moor.Value(todo.tagName),
+                              title: moor.Value(todo.title),
+                              completed: moor.Value(value));
+                          db.updateTodos(updateTodo);
+                          opacity.value = 0;
+                          onCompleted(todo);
+                          Toast toast = Toast("Marked as completed");
+                          toast.showToast(context);
+                        },
+                        value: completedTodo.value,
+                      )
+                    ],
                   ),
-                  const SizedBox(width: 5.0),
-                  Text(
-                    HomePageTodoFunction.formatDueTime(todo.dueDate),
-                    style: TextStyle(fontSize: 15, color: Styles.grey4),
-                  )
+                  const SizedBox(height: 10.0),
+                  Text("${todo.title}",
+                      style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w500,
+                          color: Styles.grey4)),
+                  const SizedBox(height: 30.0),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.calendar_today_outlined,
+                        size: 30,
+                        color: Styles.t1Orange,
+                      ),
+                      const SizedBox(width: 5.0),
+                      Text(
+                        HomePageTodoFunction.formatDueTime(todo.dueDate),
+                        style: TextStyle(fontSize: 15, color: Styles.grey4),
+                      )
+                    ],
+                  ),
                 ],
               ),
-            ],
+            ),
           ),
         ),
       ),

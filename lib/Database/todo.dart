@@ -35,6 +35,7 @@ class TodoDao extends DatabaseAccessor<TodoListDataBase> with _$TodoDaoMixin {
 
   Stream<List<Todo>> watchAllTodoss() {
     return (select(todos)
+          ..where((u) => u.completed.equals(false))
           ..orderBy([
             (u) => OrderingTerm(expression: u.dueDate, mode: OrderingMode.asc),
           ]))
