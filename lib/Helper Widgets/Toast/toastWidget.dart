@@ -54,10 +54,17 @@ class _ToastWidgetState extends State<ToastWidget>
         padding: const EdgeInsets.only(left: 20.0),
         height: _animationController.value * 50,
         alignment: Alignment.centerLeft,
-        color: widget.backgroundColor,
-        child: Text(
-          "${widget.message}",
-          style: widget.messageStyle,
+        decoration: BoxDecoration(
+          color: widget.backgroundColor,
+          borderRadius: BorderRadius.circular(20),
+        ),
+
+        child: Align(
+          alignment: Alignment.center,
+          child: Text(
+            "${widget.message}",
+            style: widget.messageStyle,
+          ),
         ),
       ),
     );

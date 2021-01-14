@@ -1,3 +1,4 @@
+import 'package:Todo_App/Helper%20Widgets/Reminder.dart';
 import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: WelcomeScreen(),
+      home: Reminder(),
     );
   }
 }

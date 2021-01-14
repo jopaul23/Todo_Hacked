@@ -10,7 +10,7 @@ class Toast {
   String message;
   Timer _timer;
   AnimationController animationController;
-  Color backgroundColor = Colors.black;
+  Color backgroundColor = Styles.grey2;
   Alignment alignment = Alignment.bottomCenter;
   TextStyle messageStyle = TextStyle(fontSize: 18, color: Styles.white1);
   Duration duration = const Duration(seconds: 3);

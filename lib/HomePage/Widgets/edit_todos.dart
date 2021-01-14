@@ -77,8 +77,8 @@ class EditTodo extends StatelessWidget {
                 // ),
                 InputButton(
                   text: "  Update task",
-                  buttoncolor: Styles.t1Orange,
-                  textcolor: Styles.white3,
+                  buttoncolor: Styles.white1.withOpacity(0.8),
+                  textcolor: Styles.t1Orange,
                   width: 200,
                   onPressed: () {
                     // final todo = TodosCompanion(
