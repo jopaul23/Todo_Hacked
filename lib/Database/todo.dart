@@ -50,6 +50,14 @@ class TodoDao extends DatabaseAccessor<TodoListDataBase> with _$TodoDaoMixin {
         .watch();
   }
 
+  Future getCompletedTask() {
+    return (select(todos)..where((u) => u.completed.equals(true))).get();
+  }
+
+  Future getPendingTask() {
+    return (select(todos)..where((u) => u.completed.equals(false))).get();
+  }
+
   Future insertTodos(Insertable<Todo> todo) => into(todos).insert(todo);
   Future updateTodos(Insertable<Todo> todo) => update(todos).replace(todo);
   Future deleteTodos(Insertable<Todo> todo) => delete(todos).delete(todo);

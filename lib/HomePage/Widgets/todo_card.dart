@@ -4,11 +4,11 @@ import 'package:Todo_App/Database/provider.dart';
 import 'package:Todo_App/Database/todo.dart';
 import 'package:Todo_App/HomePage/Functions/homepage_todo_function.dart';
 import 'package:Todo_App/HomePage/Widgets/edit_todos.dart';
-import 'package:Todo_App/TodoAddPage/Functions/addTodos.dart';
 import 'package:Todo_App/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:moor/moor.dart' as moor;
 
 class TodoCards extends HookWidget {
   final Todo todo;
@@ -30,7 +30,15 @@ class TodoCards extends HookWidget {
           cardTapped.value = !cardTapped.value;
           if (cardTapped.value) {
             editOverlay.value = OverlayEntry(builder: (context) {
-              return EditTodo(offset: pos[0], height: pos[1]);
+              final deviceHeight = MediaQuery.of(context).size.height;
+              final ShowEditWindow showEditWin = deviceHeight - pos[0].dy > 450
+                  ? ShowEditWindow.bottom
+                  : ShowEditWindow.top;
+              return EditTodo(
+                offset: pos[0],
+                height: pos[1],
+                viewPos: showEditWin,
+              );
             });
             Overlay.of(context).insert(editOverlay.value);
           } else
@@ -70,7 +78,13 @@ class TodoCards extends HookWidget {
                   Checkbox(
                     onChanged: (bool value) {
                       completedTodo.value = value;
-                      db.deleteTodos(todo);
+                      final updateTodo = TodosCompanion(
+                          id: moor.Value(todo.id),
+                          tagColor: moor.Value(todo.tagColor),
+                          tagName: moor.Value(todo.tagName),
+                          title: moor.Value(todo.title),
+                          completed: moor.Value(value));
+                      db.updateTodos(updateTodo);
                     },
                     value: completedTodo.value,
                   )
