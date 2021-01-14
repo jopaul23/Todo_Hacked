@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'Router/page_router.dart';
+import 'WelcomeScreen/Widgets/mainPage.dart';
 
 void main() {
-  runApp(MyApp());
+  PageRouter.createRoutes();
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -10,14 +15,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Todo App',
+      onGenerateRoute: PageRouter.sailor.generator(),
+      navigatorKey: PageRouter.sailor.navigatorKey,
       theme: ThemeData(
-      
+        fontFamily: GoogleFonts.rubik().fontFamily,
         primarySwatch: Colors.blue,
-
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Container(),
+      home: WelcomeScreen(),
     );
   }
 }
-
