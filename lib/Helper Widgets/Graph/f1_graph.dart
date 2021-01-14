@@ -3,6 +3,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class BarChartTwo extends StatefulWidget {
+  final List<List<double>> weeklyData;
+  const BarChartTwo({Key key, @required this.weeklyData}) : super(key: key);
   @override
   State<StatefulWidget> createState() => BarChartTwoState();
 }
@@ -12,16 +14,6 @@ class BarChartTwoState extends State<BarChartTwo> {
   final Color rightBarColor = const Color(0xffff5182);
   final double width = 9;
   int touchedGroupIndex;
-
-  final List<List<double>> weeklyData = [
-    [5, 12],
-    [16, 12],
-    [18, 5],
-    [20, 16],
-    [17, 6],
-    [19, 1.5],
-    [10, 1.5]
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -143,8 +135,9 @@ class BarChartTwoState extends State<BarChartTwo> {
   // Function to draw all the bars.
   List<BarChartGroupData> _buildAllBars() {
     return List.generate(
-      weeklyData.length, // y1                 // y2
-      (index) => _buildBar(index, weeklyData[index][0], weeklyData[index][1]),
+      widget.weeklyData.length, // y1                 // y2
+      (index) => _buildBar(
+          index, widget.weeklyData[index][0], widget.weeklyData[index][1]),
     );
   }
 

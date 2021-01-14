@@ -116,7 +116,17 @@ class _AccountPageState extends State<AccountPage> {
                     SizedBox(
                       height: size.width - size.width / 1.25 - 50,
                     ),
-                    BarChartTwo(),
+                    BarChartTwo(
+                      weeklyData: [
+                        [0, 0],
+                        [0, 0],
+                        [0, 0],
+                        [0, 0],
+                        [0, 0],
+                        [0, 0],
+                        [0, 0]
+                      ],
+                    ),
                   ],
                 ),
               )

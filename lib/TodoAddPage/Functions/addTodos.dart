@@ -26,6 +26,7 @@ class AddTodos {
         }
       } else if (hour == "12") // if it AM then change 12 to 00
         hour = "00";
+      else {}
       String month = date.month.toString();
       if (month.length == 1) month = "0" + month;
       String day = date.day.toString();

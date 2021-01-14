@@ -231,7 +231,7 @@ class _TodoAddPageState extends State<TodoAddPage> {
             isBeforeNoon: date.hour < 12,
             onClicked: (String hour, String minute, bool isBeforeNoon) {
               print("$hour:$minute");
-
+              addTodos.context = context;
               String dateString =
                   addTodos.formatDate(date, hour, minute, isBeforeNoon);
               if (dateString != null)

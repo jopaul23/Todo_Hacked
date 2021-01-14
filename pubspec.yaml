@@ -33,6 +33,7 @@ dependencies:
   path_provider: null
   sailor: ^0.7.1
   sqlite3_flutter_libs: null
+  table_calendar: ^2.1.0
 
 dev_dependencies:
   flutter_test:
