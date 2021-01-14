@@ -66,12 +66,13 @@ class HomePage extends HookWidget {
                                       final Todo todo = todos[index];
                                       final card = TodoCards(
                                         todo: todo,
+                                        onCompleted: (Todo todo) {},
                                       );
                                       final String value =
                                           HomePageTodoFunction.getWeekDay(
                                         todo.dueDate,
                                       );
-                                      print(availableDates);
+
                                       if (availableDates.contains(value))
                                         return card;
                                       else {

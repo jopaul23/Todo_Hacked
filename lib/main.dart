@@ -1,10 +1,13 @@
+import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'Router/page_router.dart';
 import 'WelcomeScreen/Widgets/mainPage.dart';
 
-void main() {
+void main() async {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await AndroidAlarmManager.initialize();
   PageRouter.createRoutes();
   runApp(ProviderScope(child: MyApp()));
 }
