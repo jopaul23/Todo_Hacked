@@ -116,9 +116,11 @@ class TodoCards extends HookWidget {
                           onPressed: () {
                             fav.value = !fav.value;
                             db.updateTodos(TodosCompanion(
+                              id: moor.Value(todo.id),
                               completed: moor.Value(todo.completed),
                               title: moor.Value(todo.title),
                               dueDate: moor.Value(todo.dueDate),
+                              remainderTime: moor.Value(DateTime.now()),
                               notificationOn: moor.Value(fav.value),
                               tagIconId: moor.Value(todo.tagIconId),
                             ));
