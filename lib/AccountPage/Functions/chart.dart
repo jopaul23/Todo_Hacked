@@ -10,8 +10,9 @@ class TodoChart {
   }
   Future init() async {
     _db = UserTodoDetails.database;
-    pendingTask = (await _db.getCompletedTask()).length;
-    completedTask = (await _db.getPendingTask()).length;
+
+    pendingTask = (await _db.getPendingTask()).length;
+    completedTask = (await _db.getCompletedTask()).length;
   }
 
   static createBox(String username) {
