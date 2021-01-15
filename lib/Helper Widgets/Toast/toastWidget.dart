@@ -43,28 +43,22 @@ class _ToastWidgetState extends State<ToastWidget>
   }
 
   Widget _toastWidget() {
-    return Card(
-      //shadowColor: Styles.grey1,
-      shape: RoundedRectangleBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(30.0))),
-      child: Container(
-        // duration: const Duration(milliseconds: 400),
-        // width: double.infinity,
-        //margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-        //padding: const EdgeInsets.only(left: 20.0),
-        height: _animationController.value * 50,
-        alignment: Alignment.centerLeft,
-        decoration: BoxDecoration(
+    return Container(
+      // duration: const Duration(milliseconds: 400),
+      // width: double.infinity,
+      //margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+      //padding: const EdgeInsets.only(left: 20.0),
+      height: _animationController.value * 50,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
           color: widget.backgroundColor,
-          borderRadius: BorderRadius.circular(20),
-        ),
+          borderRadius: const BorderRadius.all(Radius.circular(30.0))),
 
-        child: Align(
-          alignment: Alignment.center,
-          child: Text(
-            "${widget.message}",
-            style: widget.messageStyle,
-          ),
+      child: Align(
+        alignment: Alignment.center,
+        child: Text(
+          "${widget.message}",
+          style: widget.messageStyle,
         ),
       ),
     );

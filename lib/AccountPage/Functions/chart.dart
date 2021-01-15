@@ -1,13 +1,9 @@
 import 'package:Todo_App/AccountPage/Functions/user_details.dart';
-import 'package:Todo_App/Database/provider.dart';
-import 'package:hooks_riverpod/all.dart';
 
 class TodoChart {
   int pendingTask = 0, completedTask = 0;
   var _db;
-  TodoChart() {
-    // db = providerContainer.read(databaseProvider);
-  }
+
   Future init() async {
     _db = UserTodoDetails.database;
 
