@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:moor/moor.dart' as moor;
+import 'package:Todo_App/styles/images.dart';
 
 class TodoCards extends HookWidget {
   final Todo todo;
@@ -17,6 +18,7 @@ class TodoCards extends HookWidget {
   const TodoCards({Key key, this.todo, this.onCompleted}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    bool isLiked = false;
     final GlobalKey cardKey = GlobalKey();
     final editOverlay = useState();
     final opacity = useState(1.0);
@@ -105,9 +107,18 @@ class TodoCards extends HookWidget {
                     children: [
                       tags(),
                       const SizedBox(width: 10.0),
-                      Icon(Icons.edit_outlined),
                       Spacer(),
-                      Icon(Icons.favorite_border_rounded),
+                      TextButton(
+                          onPressed: () {
+                            isLiked = !isLiked;
+                          },
+                          child: Image(
+                            image: isLiked
+                                ? ImportedImages.heartOn
+                                : ImportedImages.heartOff,
+                            height: 20,
+                            width: 20,
+                          )),
                       const SizedBox(width: 5.0),
                       Icon(Icons.notifications_none_rounded),
                       const SizedBox(width: 5.0),

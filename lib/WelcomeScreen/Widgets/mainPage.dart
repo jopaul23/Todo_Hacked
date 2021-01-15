@@ -3,6 +3,7 @@ import 'package:Todo_App/Helper%20Widgets/textfield.dart';
 import 'package:Todo_App/Router/page_router.dart';
 import 'package:flutter/material.dart';
 import 'package:Todo_App/styles/styles.dart';
+import 'package:Todo_App/styles/images.dart';
 
 class WelcomeScreen extends StatefulWidget {
   @override
@@ -27,7 +28,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   height: size.height * 0.09,
                 ),
                 Image(
-                  image: Image.asset("assets/Images/L1.png").image,
+                  image: ImportedImages.logoCircle,
                   height: 64,
                   width: 64,
                 ),
