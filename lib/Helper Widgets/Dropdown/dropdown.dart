@@ -4,7 +4,7 @@ import 'package:Todo_App/styles/styles.dart';
 import 'arrow_clipper.dart';
 
 class SimpleAccountMenu extends StatefulWidget {
-  final List<Icon> icons;
+  final List<IconData> icons;
   final BorderRadius borderRadius;
   final Color backgroundColor;
   final Color iconColor;
@@ -32,11 +32,11 @@ class _SimpleAccountMenuState extends State<SimpleAccountMenu>
   OverlayEntry _overlayEntry;
   BorderRadius _borderRadius;
   AnimationController _animationController;
-  Icon selectedIcon;
+  IconData selectedIcon;
 
   @override
   void initState() {
-    selectedIcon = Icon(Icons.person);
+    selectedIcon = Icons.person;
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 250),
@@ -46,8 +46,8 @@ class _SimpleAccountMenuState extends State<SimpleAccountMenu>
     super.initState();
   }
 
-  void iconDataSwap(List<Icon> icons, int index) {
-    Icon tempIcon = selectedIcon;
+  void iconDataSwap(List<IconData> icons, int index) {
+    IconData tempIcon = selectedIcon;
     selectedIcon = icons[index];
     icons[index] = tempIcon;
   }
@@ -87,7 +87,7 @@ class _SimpleAccountMenuState extends State<SimpleAccountMenu>
         borderRadius: _borderRadius,
       ),
       child: IconButton(
-        icon: selectedIcon,
+        icon: Icon(selectedIcon),
         color: Styles.white1,
         onPressed: () {
           if (isMenuOpen) {
@@ -151,7 +151,7 @@ class _SimpleAccountMenuState extends State<SimpleAccountMenu>
                             child: Container(
                               width: buttonSize.width,
                               height: buttonSize.height,
-                              child: widget.icons[index],
+                              child: Icon(widget.icons[index]),
                             ),
                           );
                         }),

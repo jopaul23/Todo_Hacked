@@ -11,8 +11,9 @@ class PageRouter {
   static final String accountPage = "/accountPage";
   static final String favorites = "/favorites";
   static final String todoAddPage = "/todoAddPage";
-
+  static final List<Widget> stackedWidgets = [];
   static final sailor = Sailor();
+  static final observer = sailor.navigationStackObserver;
 
   static void createRoutes() {
     sailor.addRoutes([
@@ -27,12 +28,14 @@ class PageRouter {
       SailorRoute(
         name: homePage,
         builder: (context, args, params) {
+          debugPrint("HomePage  is stacked or removed");
           return HomePage();
         },
       ),
       SailorRoute(
         name: accountPage,
         builder: (context, args, params) {
+          debugPrint("account  is stacked or removed");
           return AccountPage();
         },
       ),
@@ -48,6 +51,7 @@ class PageRouter {
         name: todoAddPage,
         // params: [SailorParam(name: "id", isRequired: true)],
         builder: (context, args, params) {
+          debugPrint("addpage  is stacked or removed");
           return TodoAddPage();
         },
       ),

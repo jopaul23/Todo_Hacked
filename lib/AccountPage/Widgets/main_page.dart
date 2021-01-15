@@ -1,3 +1,4 @@
+import 'package:Todo_App/AccountPage/Functions/chart.dart';
 import 'package:Todo_App/Database/provider.dart';
 import 'package:Todo_App/Helper%20Widgets/Graph/f1_graph.dart';
 import 'package:Todo_App/Helper%20Widgets/basic_widget.dart';
@@ -14,6 +15,18 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
+  TodoChart _chart;
+  @override
+  void initState() {
+    _chart = TodoChart();
+    _chart.init().then((_) {
+      print(_chart.getChartData().userLoggedDate);
+      setState(() {});
+    });
+
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return BasicWidget(
@@ -82,36 +95,23 @@ class _AccountPageState extends State<AccountPage> {
                     SizedBox(
                       height: size.height * 0.04,
                     ),
-                    Consumer(builder: (context, watch, _) {
-                      final db = watch(databaseProvider);
-                      return Row(
-                        children: [
-                          FutureBuilder<List>(
-                              future: db.getCompletedTask(),
-                              builder: (context, snapshot) {
-                                final completedTask = snapshot.data ?? [];
-                                return BoxContainer(
-                                  text: "Completed tasks",
-                                  number: "${completedTask.length}",
-                                  // number: "${accountFunctions.getCompletedTask()}",
-                                  color: Styles.t1Orange,
-                                );
-                              }),
-                          Spacer(),
-                          FutureBuilder<List>(
-                              future: db.getPendingTask(),
-                              builder: (context, snapshot) {
-                                final pendingTask = snapshot.data ?? [];
-                                return BoxContainer(
-                                  text: "Pending tasks",
-                                  number: "${pendingTask.length}",
-                                  // number: "${accountFunctions.getPendingTask()}",
-                                  color: Styles.red,
-                                );
-                              })
-                        ],
-                      );
-                    }),
+                    Row(
+                      children: [
+                        BoxContainer(
+                          text: "Completed tasks",
+                          number: "${_chart.completedTask}",
+                          // number: "${accountFunctions.getCompletedTask()}",
+                          color: Styles.t1Orange,
+                        ),
+                        Spacer(),
+                        BoxContainer(
+                          text: "Pending tasks",
+                          number: "${_chart.pendingTask}",
+                          // number: "${accountFunctions.getPendingTask()}",
+                          color: Styles.red,
+                        )
+                      ],
+                    ),
                     SizedBox(
                       height: size.width - size.width / 1.25 - 50,
                     ),

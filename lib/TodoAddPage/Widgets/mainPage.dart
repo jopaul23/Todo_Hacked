@@ -3,7 +3,7 @@ import 'package:Todo_App/Database/todo.dart';
 import 'package:Todo_App/Helper%20Widgets/Dropdown/dropdown.dart';
 import 'package:Todo_App/Helper%20Widgets/calender.dart';
 import 'package:Todo_App/Helper%20Widgets/inputfield.dart';
-import 'package:Todo_App/HomePage/Widgets/calender.dart';
+import 'package:Todo_App/Router/page_router.dart';
 import 'package:Todo_App/TodoAddPage/Functions/addTodos.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:intl/intl.dart';
@@ -21,9 +21,18 @@ class _TodoAddPageState extends State<TodoAddPage> {
   OverlayEntry clock;
   DateTime date;
   TextEditingController _controller;
+  final tagIcons = [
+    Icons.work_rounded,
+    Icons.local_taxi,
+    Icons.home_rounded,
+    Icons.fitness_center
+  ];
   AddTodos addTodos;
+  IconData tagIcon = Icons.person;
   @override
   void initState() {
+    print(PageRouter.observer.getRouteNameStack());
+    // print(PageRouter.observer.navigator.mounted);
     _controller = TextEditingController();
     addTodos = AddTodos(context);
     DateTime now = DateTime.now();
@@ -74,15 +83,10 @@ class _TodoAddPageState extends State<TodoAddPage> {
                       }),
                   SimpleAccountMenu(
                     borderRadius: BorderRadius.circular(5),
-                    icons: [
-                      Icon(Icons.work_rounded),
-                      Icon(Icons.local_taxi),
-                      Icon(Icons.home_rounded),
-                      Icon(Icons.fitness_center)
-                    ],
+                    icons: tagIcons,
                     iconColor: Colors.white,
                     onChange: (index) {
-                      print(index);
+                      tagIcon = tagIcons[index];
                     },
                   ),
                 ],
@@ -156,7 +160,6 @@ class _TodoAddPageState extends State<TodoAddPage> {
                           icon: Icons.access_time,
                           width: 300,
                           onPressed: () {
-                            debugPrint("Pressed");
                             clock = _createClockOverlay();
                             Overlay.of(context).insert(clock);
                           },
@@ -192,10 +195,9 @@ class _TodoAddPageState extends State<TodoAddPage> {
                           width: 200,
                           onPressed: () {
                             final todo = TodosCompanion(
-                              tagColor: moor.Value("#000000"),
-                              tagName: moor.Value("play"),
+                              tagIconId: moor.Value(tagIcon.codePoint),
                               title: moor.Value(_controller.text),
-                              remainderTime: moor.Value("11:00 am"),
+                              remainderTime: moor.Value(DateTime.now()),
                               dueDate: moor.Value(date),
                             );
                             addTodos

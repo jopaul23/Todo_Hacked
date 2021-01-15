@@ -1,5 +1,6 @@
 import 'package:Todo_App/Database/todo.dart';
 import 'package:Todo_App/Helper%20Widgets/Toast/toast.dart';
+import 'package:Todo_App/Notification/alarm_callback.dart';
 import 'package:Todo_App/Notification/alarm_manager.dart';
 import 'package:Todo_App/Router/page_router.dart';
 import 'package:android_alarm_manager/android_alarm_manager.dart';
@@ -49,27 +50,22 @@ class AddTodos {
     toast.showToast(context);
   }
 
-  _alarmCallback() {
-    print("[*] Called from AlarmManager");
-    NotificationManager n = new NotificationManager();
-    n.initNotificationManager();
-    n.showNotificationWithDefaultSound("Title", "This is the body");
-
-    return;
-  }
-
-  void add(TodosCompanion todo) {
+  void add(TodosCompanion todo) async {
     String message = validateTitleText(todo.title.value);
     if (message == null) {
-      db.insertTodos(todo);
-      // _alarmCallback();
-      // AndroidAlarmManager.oneShotAt(
-      //         DateTime.now().add(Duration(seconds: 5)), 0, _alarmCallback,
-      //         exact: true,
-      //         allowWhileIdle: true,
-      //         wakeup: true,
-      //         rescheduleOnReboot: true,
-      //         alarmClock: true);
+      await db.insertTodos(todo);
+      final result = await db.getTodo(todo);
+      print(result);
+      int id = result[result.length - 1].id;
+      // AlarmCallback.db = db;
+      // AlarmCallback.alarmCallback(10);
+      AndroidAlarmManager.oneShotAt(
+          todo.dueDate.value, id, AlarmCallback.alarmCallback,
+          exact: true,
+          allowWhileIdle: true,
+          wakeup: true,
+          rescheduleOnReboot: true,
+          alarmClock: true);
 
       Toast toast = Toast("Todo Added ");
       toast.showToast(context);

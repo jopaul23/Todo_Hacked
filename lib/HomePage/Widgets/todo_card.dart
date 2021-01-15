@@ -5,6 +5,7 @@ import 'package:Todo_App/Database/todo.dart';
 import 'package:Todo_App/Helper%20Widgets/Toast/toast.dart';
 import 'package:Todo_App/HomePage/Functions/homepage_todo_function.dart';
 import 'package:Todo_App/HomePage/Widgets/edit_todos.dart';
+import 'package:Todo_App/styles/images.dart';
 import 'package:Todo_App/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -17,11 +18,13 @@ class TodoCards extends HookWidget {
   const TodoCards({Key key, this.todo, this.onCompleted}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    print(todo.tagIconId);
     final GlobalKey cardKey = GlobalKey();
     final editOverlay = useState();
     final opacity = useState(1.0);
     final completedTodo = useState(todo.completed);
     final db = useProvider(databaseProvider);
+    final fav = useState(todo.notificationOn);
     final cardTapped = useState(false);
     return BackdropFilter(
       filter: ImageFilter.blur(
@@ -103,24 +106,43 @@ class TodoCards extends HookWidget {
                 children: [
                   Row(
                     children: [
-                      tags(),
-                      const SizedBox(width: 10.0),
-                      Icon(Icons.edit_outlined),
+                      Icon(
+                        IconData(todo.tagIconId, fontFamily: 'MaterialIcons'),
+                        color: Styles.t1Orange,
+                      ),
+
                       Spacer(),
-                      Icon(Icons.favorite_border_rounded),
-                      const SizedBox(width: 5.0),
-                      Icon(Icons.notifications_none_rounded),
+                      TextButton(
+                          onPressed: () {
+                            fav.value = !fav.value;
+                            db.updateTodos(TodosCompanion(
+                              completed: moor.Value(todo.completed),
+                              title: moor.Value(todo.title),
+                              dueDate: moor.Value(todo.dueDate),
+                              notificationOn: moor.Value(fav.value),
+                              tagIconId: moor.Value(todo.tagIconId),
+                            ));
+                          },
+                          child: Image(
+                            image: fav.value
+                                ? ImportedImages.heartOn
+                                : ImportedImages.heartOff,
+                            height: 20,
+                            width: 20,
+                          )),
+
                       const SizedBox(width: 5.0),
                       // Icon(Icons.check_box_outline_blank_rounded)
                       Checkbox(
-                        onChanged: (bool value) {
+                        onChanged: (bool value) async {
                           completedTodo.value = value;
                           final updateTodo = TodosCompanion(
                               id: moor.Value(todo.id),
-                              tagColor: moor.Value(todo.tagColor),
-                              tagName: moor.Value(todo.tagName),
+                              tagIconId: moor.Value(todo.tagIconId),
                               title: moor.Value(todo.title),
                               completed: moor.Value(value));
+                          await Future.delayed(
+                              const Duration(milliseconds: 700));
                           db.updateTodos(updateTodo);
                           opacity.value = 0;
                           onCompleted(todo);
@@ -161,24 +183,23 @@ class TodoCards extends HookWidget {
     );
   }
 
-  Widget tags() {
-    return Container(
-      alignment: Alignment.center,
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 2.0),
-      decoration: BoxDecoration(
-          color: Color(int.parse("0xFF" + todo.tagColor.replaceFirst("#", ""))),
-          borderRadius: const BorderRadius.all(Radius.circular(30.0))),
-      child: Text(
-        "${todo.tagName}",
-        style: TextStyle(color: Styles.white3),
-      ),
-    );
-  }
+  // Widget tags() {
+  //   return Container(
+  //     alignment: Alignment.center,
+  //     padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 2.0),
+  //     decoration: BoxDecoration(
+  //         color: Color(int.parse("0xFF" + todo.tagColor.replaceFirst("#", ""))),
+  //         borderRadius: const BorderRadius.all(Radius.circular(30.0))),
+  //     child: Text(
+  //       "${todo.tagName}",
+  //       style: TextStyle(color: Styles.white3),
+  //     ),
+  //   );
+  // }
 
   List findDropdownData(GlobalKey cardKey) {
     RenderBox renderBox = cardKey.currentContext.findRenderObject();
     final height = renderBox.size.height;
-    final width = renderBox.size.width;
     Offset offset = renderBox.localToGlobal(Offset.zero);
     // xPosition = offset.dx;
     // yPosition = offset.dy;

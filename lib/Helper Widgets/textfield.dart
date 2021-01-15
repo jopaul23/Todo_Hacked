@@ -49,6 +49,7 @@ class InputTextField extends HookWidget {
                     TextPosition(offset: textController.text.length));
               } else
                 noCharacters.value = val.length;
+              onChanged(textController.text);
             },
             textAlign: TextAlign.center,
             style: TextStyle(color: Styles.white1, fontSize: 25),

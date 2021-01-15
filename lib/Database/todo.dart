@@ -8,13 +8,12 @@ part 'todo.g.dart';
 
 class Todos extends Table {
   IntColumn get id => integer().autoIncrement()();
-  TextColumn get title => text().withLength(min: 3, max: 16)();
-  TextColumn get tagName => text().withLength(min: 1, max: 6)();
-  TextColumn get tagColor => text().withLength(min: 1, max: 7)();
-  TextColumn get remainderTime => text().nullable()();
+  TextColumn get title => text()();
+  IntColumn get tagIconId => integer()();
+  DateTimeColumn get remainderTime => dateTime().nullable()();
   DateTimeColumn get dueDate => dateTime().nullable()();
   BoolColumn get completed => boolean().withDefault(Constant(false))();
-  BoolColumn get notificationOn => boolean().withDefault(Constant(false))();
+  BoolColumn get notificationOn => boolean().withDefault(Constant(true))();
 }
 
 @UseMoor(tables: [Todos])
@@ -58,6 +57,12 @@ class TodoDao extends DatabaseAccessor<TodoListDataBase> with _$TodoDaoMixin {
   Future getPendingTask() {
     return (select(todos)..where((u) => u.completed.equals(false))).get();
   }
+
+  Future getTodosUsingId(int id) {
+    return (select(todos)..where((u) => u.id.equals(id))).get();
+  }
+
+  Future getTodo(Insertable<Todo> todo) => select(todos).get();
 
   Future insertTodos(Insertable<Todo> todo) => into(todos).insert(todo);
   Future updateTodos(Insertable<Todo> todo) => update(todos).replace(todo);
