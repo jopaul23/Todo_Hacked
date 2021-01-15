@@ -18,6 +18,7 @@ class TodoChart {
   static createBox(String username) {
     UserTodoDetails userTodoDetails = UserTodoDetails()
       ..userName = username
+      ..lastModifedDate = DateTime.now().subtract(Duration(days: 1))
       ..userLoggedDate = DateTime.now();
     UserTodoDetails.hiveBox.put(0, userTodoDetails);
   }

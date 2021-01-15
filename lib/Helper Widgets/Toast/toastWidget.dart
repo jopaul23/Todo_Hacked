@@ -49,7 +49,7 @@ class _ToastWidgetState extends State<ToastWidget>
           borderRadius: const BorderRadius.all(Radius.circular(30.0))),
       child: Container(
         // duration: const Duration(milliseconds: 400),
-        // width: double.infinity,
+        width: 250,
         //margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
         //padding: const EdgeInsets.only(left: 20.0),
         height: _animationController.value * 50,

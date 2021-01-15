@@ -97,7 +97,7 @@ class TodoCards extends HookWidget {
               ),
               onDismissed: (direction) {
                 db.deleteTodos(todo);
-                Toast toast = Toast("Deleted Todo");
+                Toast toast = Toast("Deleted task");
                 toast.showToast(context);
               },
               child: Column(
