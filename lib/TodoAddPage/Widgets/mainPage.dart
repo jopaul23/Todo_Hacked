@@ -1,6 +1,9 @@
 import 'package:Todo_App/Database/provider.dart';
 import 'package:Todo_App/Database/todo.dart';
+import 'package:Todo_App/Helper%20Widgets/Clock/Providers/time_provider.dart';
+import 'package:Todo_App/Helper%20Widgets/Clock/clock_digital_display.dart';
 import 'package:Todo_App/Helper%20Widgets/Dropdown/dropdown.dart';
+import 'package:Todo_App/Helper%20Widgets/Toast/toast.dart';
 import 'package:Todo_App/Helper%20Widgets/calender.dart';
 import 'package:Todo_App/Helper%20Widgets/inputfield.dart';
 import 'package:Todo_App/Router/page_router.dart';
@@ -18,8 +21,9 @@ class TodoAddPage extends StatefulWidget {
 }
 
 class _TodoAddPageState extends State<TodoAddPage> {
-  OverlayEntry clock;
+  OverlayEntry clock, reminder;
   DateTime date;
+  String reminderTime;
   TextEditingController _controller;
   final tagIcons = [
     Icons.work_rounded,
@@ -37,7 +41,6 @@ class _TodoAddPageState extends State<TodoAddPage> {
     addTodos = AddTodos(context);
     DateTime now = DateTime.now();
     date = now;
-    print(date);
     super.initState();
   }
 
@@ -179,33 +182,47 @@ class _TodoAddPageState extends State<TodoAddPage> {
                           height: size.height * 0.03,
                         ),
                         InputButton(
-                          text: "30 mins before",
+                          text: reminderTime != null
+                              ? addTodos.formatReminder(reminderTime)
+                              : "Set Reminder",
                           buttoncolor: Styles.white3,
                           textcolor: Styles.grey2,
                           icon: Icons.notifications,
                           width: 300,
+                          onPressed: () {
+                            reminder = _createReminderOverlay();
+                            Overlay.of(context).insert(reminder);
+                          },
                         ),
                         SizedBox(
                           height: size.height * 0.04,
                         ),
                         InputButton(
-                          text: "   Add task",
-                          buttoncolor: Styles.t1Orange,
-                          textcolor: Styles.white3,
-                          width: 200,
-                          onPressed: () {
-                            final todo = TodosCompanion(
-                              tagIconId: moor.Value(tagIcon.codePoint),
-                              title: moor.Value(_controller.text),
-                              remainderTime: moor.Value(DateTime.now()),
-                              dueDate: moor.Value(date),
-                            );
-                            addTodos
-                              ..context = context
-                              ..db = db
-                              ..add(todo);
-                          },
-                        )
+                            text: "   Add task",
+                            buttoncolor: Styles.t1Orange,
+                            textcolor: Styles.white3,
+                            width: 200,
+                            onPressed: () {
+                              if (reminderTime != null) {
+                                final remind = DateTime.now().add(Duration(
+                                    hours:
+                                        int.parse(reminderTime.substring(0, 2)),
+                                    minutes:
+                                        int.parse(reminderTime.substring(3))));
+                                final todo = TodosCompanion(
+                                    tagIconId: moor.Value(tagIcon.codePoint),
+                                    title: moor.Value(_controller.text),
+                                    remainderTime: moor.Value(remind),
+                                    dueDate: moor.Value(date),
+                                    notificationOn: moor.Value(false));
+                                addTodos
+                                  ..context = context
+                                  ..db = db
+                                  ..add(todo);
+                              } else {
+                                Toast("Set a reminder")..showToast(context);
+                              }
+                            })
                       ],
                     ),
                   )
@@ -217,6 +234,15 @@ class _TodoAddPageState extends State<TodoAddPage> {
   }
 
   OverlayEntry _createClockOverlay() {
+    print(date);
+    String hour = date.hour.toString();
+    String minute = date.minute.toString();
+    print(hour);
+    final bool isBeforeNoon = date.hour < 12;
+    TimeProvider timeProvider = TimeProvider()
+      ..updateHour(
+          isBeforeNoon ? hour : "${int.parse(hour) - 12}", isBeforeNoon)
+      ..updateMinute(minute);
     return OverlayEntry(builder: (context) {
       return Align(
         alignment: Alignment.center,
@@ -235,18 +261,24 @@ class _TodoAddPageState extends State<TodoAddPage> {
             ],
           ),
           child: ClockBody(
-            isBeforeNoon: date.hour < 12,
-            onClicked: (String hour, String minute, bool isBeforeNoon) {
-              print("$hour:$minute");
+            digitalClock: DigitalClock.normal,
+            timeContainer: timeProvider,
+            beforeNoon: isBeforeNoon,
+            onClicked: (String hour, String minute) {
               addTodos.context = context;
+              if (addTodos.formatDate(date, hour, minute)) {
+                String month = date.month.toString();
+                String day = date.day.toString();
+                if (month.length == 1) month = "0" + month;
+                if (day.length == 1) day = "0" + day;
 
-              String dateString =
-                  addTodos.formatDate(date, hour, minute, isBeforeNoon);
-              if (dateString != null)
+                String dateString = "${date.year}-$month-$day $hour:$minute:00";
+                // if (dateString != null)
                 setState(() {
                   date = DateTime.parse(dateString);
                 });
-              clock.remove();
+                clock.remove();
+              }
             },
           ),
         ),
@@ -255,28 +287,73 @@ class _TodoAddPageState extends State<TodoAddPage> {
   }
 
   void displayCalender() async {
-    // final DateTime picked = await showDatePicker(
-    //     context: context,
-    //     initialDate: date,
-    //     firstDate: DateTime.now(),
-    //     lastDate: DateTime.now().add(Duration(days: 2190)));
-    // if (picked != null) {
-    //   String month = picked.month.toString();
-    //   if (month.length == 1) month = "0" + month;
-    //   String day = picked.day.toString();
-    //   if (day.length == 1) day = "0" + day;
-    //   String hour = date.hour.toString();
-    //   String minute = date.minute.toString();
-    //   if (hour.length == 1) hour = "0" + hour;
-    //   if (minute.length == 1) minute = "0" + minute;
-    //   String dateString = "${picked.year}-$month-$day $hour:$minute";
-    //   setState(() {
-    //     date = DateTime.parse(dateString);
-    //   });
-    // }
-    final OverlayEntry calenderOverlay = OverlayEntry(builder: (context) {
-      return HomeCalendarPage();
+    OverlayEntry calenderOverlay;
+    calenderOverlay = OverlayEntry(builder: (context) {
+      final Size size = MediaQuery.of(context).size;
+      return Positioned(
+        top: size.height * 0.5 - 200,
+        // left: size.width * 0.5 - 200,
+        left: 25,
+        child: Center(
+          child: HomeCalendarPage(
+            onSelected: (picked) {
+              calenderOverlay.remove();
+              String month = picked.month.toString();
+              if (month.length == 1) month = "0" + month;
+              String day = picked.day.toString();
+              if (day.length == 1) day = "0" + day;
+              String hour = date.hour.toString();
+              String minute = date.minute.toString();
+              if (hour.length == 1) hour = "0" + hour;
+              if (minute.length == 1) minute = "0" + minute;
+              String dateString = "${picked.year}-$month-$day $hour:$minute";
+              setState(() {
+                date = DateTime.parse(dateString);
+              });
+            },
+          ),
+        ),
+      );
     });
     Overlay.of(context).insert(calenderOverlay);
+  }
+
+  OverlayEntry _createReminderOverlay() {
+    TimeProvider timeProvider = TimeProvider()
+      ..time = reminderTime == null ? "12:00" : reminderTime;
+
+    return OverlayEntry(builder: (context) {
+      return Align(
+        alignment: Alignment.center,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 30.0),
+          decoration: BoxDecoration(
+            color: Styles.white1,
+            borderRadius: const BorderRadius.all(Radius.circular(35.0)),
+            boxShadow: [
+              BoxShadow(
+                color: Styles.grey4.withOpacity(0.01),
+                spreadRadius: 10,
+                blurRadius: 7,
+                offset: Offset(0, 2), // changes position of shadow
+              ),
+            ],
+          ),
+          child: ClockBody(
+            timeContainer: timeProvider,
+            digitalClock: DigitalClock.remainder,
+            beforeNoon: true,
+            onClicked: (String hour, String minute) {
+              print("$hour:$minute");
+              setState(() {
+                reminderTime = "$hour:$minute";
+              });
+
+              reminder.remove();
+            },
+          ),
+        ),
+      );
+    });
   }
 }

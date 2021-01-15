@@ -1,7 +1,6 @@
 import 'package:Todo_App/Database/todo.dart';
 import 'package:Todo_App/Helper%20Widgets/Toast/toast.dart';
 import 'package:Todo_App/Notification/alarm_callback.dart';
-import 'package:Todo_App/Notification/alarm_manager.dart';
 import 'package:Todo_App/Router/page_router.dart';
 import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,37 +16,35 @@ class AddTodos {
     return null;
   }
 
-  String formatDate(
-      DateTime date, String hour, String minute, bool isBeforeNoon) {
-    final now = DateTime.now();
+  String formatReminder(String time) {
+    List<dynamic> split = time.split(":");
+    List intTime = [];
 
-    if (!isBeforeNoon) {
-      if (now.day < date.day ||
-          now.hour <= int.parse(hour) + 12 && now.minute <= int.parse(minute)) {
-        // checks if the time is before Noon ie AM
-        if (hour != "12")
-          hour = (12 + int.parse(hour)).toString();
-        else if (hour == "12") // if it AM then change 12 to 00
-          hour = "00";
-        String month = date.month.toString();
-        if (month.length == 1) month = "0" + month;
-        String day = date.day.toString();
-        if (day.length == 1) day = "0" + day;
-        String dateString = "${date.year}-$month-$day $hour:$minute";
-        return dateString;
-      }
-      showError();
-    } else if (now.day < date.day ||
-        now.hour <= int.parse(hour) && now.minute <= int.parse(minute)) {
-    } else
-      showError();
-    return null;
+    intTime.add(int.parse(split[0]));
+    intTime.add(int.parse(split[1]));
+    print(intTime);
+    if (intTime[0] == 0)
+      return "${intTime[1]} mins before";
+    else if (intTime[1] == 0)
+      return "${intTime[0]} hours before";
+    else {
+      print("called");
+      return "${intTime[0]} hours & ${intTime[1]} min before";
+    }
   }
 
-  void showError() {
-    const String errorMsg = "Time should greater than current time";
-    Toast toast = Toast(errorMsg);
-    toast.showToast(context);
+  bool formatDate(DateTime date, String hour, String minute) {
+    final now = DateTime.now();
+
+    if (now.day > date.day ||
+        now.hour >= int.parse(hour) && now.minute >= int.parse(minute)) {
+      const String errorMsg = "Time should greater than current time";
+      Toast toast = Toast(errorMsg);
+      toast.showToast(context);
+      return false;
+    } else {
+      return true;
+    }
   }
 
   void add(TodosCompanion todo) async {
@@ -60,7 +57,7 @@ class AddTodos {
       // AlarmCallback.db = db;
       // AlarmCallback.alarmCallback(10);
       AndroidAlarmManager.oneShotAt(
-          todo.dueDate.value, id, AlarmCallback.alarmCallback,
+          todo.remainderTime.value, id, AlarmCallback.alarmCallback,
           exact: true,
           allowWhileIdle: true,
           wakeup: true,

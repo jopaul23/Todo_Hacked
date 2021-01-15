@@ -41,6 +41,7 @@ class InputTextField extends HookWidget {
         ),
         BoxShadowContainer(
           child: TextField(
+            cursorColor: Styles.white1,
             controller: textController,
             onChanged: (String val) {
               if (val.length > maxLength) {

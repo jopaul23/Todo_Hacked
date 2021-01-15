@@ -1,21 +1,37 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final timeHourProvider =
-    StateNotifierProvider<TimeHourNotifier>((_) => TimeHourNotifier());
+class TimeProvider {
+  String time = "12:00";
+  void updateHour(String hour, bool isBeforeNoon) {
+    final List split = time.split(":");
+    if (isBeforeNoon) {
+      if (hour.length == 1)
+        hour = "0" + hour;
+      else if (hour == "12") hour = "00";
+    } else {
+      hour = (int.parse(hour) + 12).toString();
+    }
+    split[0] = hour;
+    time = split[0] + ":" + split[1];
+  }
 
-final timeMinuteProvider =
-    StateNotifierProvider<TimeMinuteNotifier>((_) => TimeMinuteNotifier());
-
-class TimeHourNotifier extends StateNotifier<String> {
-  TimeHourNotifier() : super("12");
-  void updateTime(String hour) => state = hour;
+  void updateMinute(String min) {
+    final List split = time.split(":");
+    if (min.length == 1) min = "0" + min;
+    split[1] = min;
+    time = split[0] + ":" + split[1];
+  }
 }
 
-class TimeMinuteNotifier extends StateNotifier<String> {
-  TimeMinuteNotifier() : super("00");
-  void updateTime(String min) => state = min;
-}
+// class TimeMinuteNotifier extends StateNotifier<String> {
+//   static String initialminute;
+
+//   TimeMinuteNotifier() : super(initialminute) {
+//     print(initialminute);
+//   }
+//   void updateTime(String min) => state = min;
+// }
 
 enum TimeChangeMode { minute, hour }
 

@@ -18,16 +18,23 @@ class HomePage extends HookWidget {
     final Size size = MediaQuery.of(context).size;
     final db = useProvider(databaseProvider);
     final mode = useProvider(homePageChangeModeProvider.state);
+    final changeMode = useProvider(homePageChangeModeProvider);
     final widget = useState(homePage);
-    return widget.value(db, mode, size);
+    return widget.value(db, mode, changeMode, size);
   }
 
-  Widget homePage(db, mode, Size size) {
+  Widget homePage(db, mode, changeMode, Size size) {
     if (UserTodoDetails.database == null) UserTodoDetails.database = db;
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: BasicWidget(
-        pageNo: 1,
+        pageNo: mode == HomePageChangeMode.favorites ? 2 : 1,
+        onFavClicked: () {
+          changeMode.changeMode(HomePageChangeMode.favorites);
+        },
+        onHomeClicked: () {
+          changeMode.changeMode(HomePageChangeMode.normal);
+        },
         child: Container(
           height: size.height,
           decoration: BoxDecoration(
@@ -52,7 +59,9 @@ class HomePage extends HookWidget {
                           stream: mode == HomePageChangeMode.search
                               ? db.searchTodoss(
                                   HomePageTodoFunction.searchTodos)
-                              : db.watchAllTodoss(),
+                              : mode == HomePageChangeMode.favorites
+                                  ? db.watchFav()
+                                  : db.watchAllTodoss(),
                           builder:
                               (context, AsyncSnapshot<List<Todo>> snapshot) {
                             if (snapshot.hasData) {
@@ -76,7 +85,7 @@ class HomePage extends HookWidget {
                                         final Todo todo = todos[index];
                                         final card = TodoCards(
                                           todo: todo,
-                                          onCompleted: (Todo todo) {},
+                                          onCompleted: (index) {},
                                         );
                                         final String value =
                                             HomePageTodoFunction.getWeekDay(

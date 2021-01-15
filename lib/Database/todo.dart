@@ -50,6 +50,15 @@ class TodoDao extends DatabaseAccessor<TodoListDataBase> with _$TodoDaoMixin {
         .watch();
   }
 
+  Stream<List<Todo>> watchFav() {
+    return (select(todos)
+          ..where((u) => u.notificationOn.equals(true))
+          ..orderBy([
+            (u) => OrderingTerm(expression: u.dueDate, mode: OrderingMode.asc),
+          ]))
+        .watch();
+  }
+
   Future getCompletedTask() {
     return (select(todos)..where((u) => u.completed.equals(true))).get();
   }

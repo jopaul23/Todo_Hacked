@@ -8,8 +8,10 @@ import 'bottom_navigation_bar.dart';
 class BasicWidget extends StatelessWidget {
   final Widget child;
   final int pageNo;
-
-  const BasicWidget({Key key, this.pageNo, this.child}) : super(key: key);
+  final Function() onFavClicked, onHomeClicked;
+  const BasicWidget(
+      {Key key, this.pageNo, this.child, this.onFavClicked, this.onHomeClicked})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +23,8 @@ class BasicWidget extends StatelessWidget {
           Align(
             alignment: Alignment.bottomCenter,
             child: NavigationBar(
+              onFavClicked: onFavClicked,
+              onHomeClicked: onHomeClicked,
               pageNum: pageNo,
             ),
           ),
