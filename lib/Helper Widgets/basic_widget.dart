@@ -16,49 +16,51 @@ class BasicWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      body: Stack(
-        children: [
-          child,
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: NavigationBar(
-              onFavClicked: onFavClicked,
-              onHomeClicked: onHomeClicked,
-              pageNum: pageNo,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 30.0, right: 20.0),
-            child: Align(
-              alignment: Alignment.bottomRight,
-              child: InkWell(
-                onTap: () {
-                  PageRouter.sailor.navigate(PageRouter.todoAddPage);
-                },
-                child: Container(
-                    width: 65,
-                    height: 65,
-                    decoration: BoxDecoration(
-                        color: Styles.t1Orange,
-                        shape: BoxShape.circle,
-                        // borderRadius: const BorderRadius.all(Radius.circular(30.0)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Styles.grey1.withOpacity(0.3),
-                            spreadRadius: 5,
-                            blurRadius: 20,
-                          ),
-                        ]),
-                    child: Icon(
-                      Icons.add,
-                      color: Styles.white2,
-                      size: 50,
-                    )),
+    return SafeArea(
+      child: Scaffold(
+        body: Stack(
+          children: [
+            child,
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: NavigationBar(
+                onFavClicked: onFavClicked,
+                onHomeClicked: onHomeClicked,
+                pageNum: pageNo,
               ),
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.only(bottom: 30.0, right: 20.0),
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: InkWell(
+                  onTap: () {
+                    PageRouter.sailor.navigate(PageRouter.todoAddPage);
+                  },
+                  child: Container(
+                      width: 65,
+                      height: 65,
+                      decoration: BoxDecoration(
+                          color: Styles.t1Orange,
+                          shape: BoxShape.circle,
+                          // borderRadius: const BorderRadius.all(Radius.circular(30.0)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Styles.grey1.withOpacity(0.3),
+                              spreadRadius: 5,
+                              blurRadius: 20,
+                            ),
+                          ]),
+                      child: Icon(
+                        Icons.add,
+                        color: Styles.white2,
+                        size: 50,
+                      )),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

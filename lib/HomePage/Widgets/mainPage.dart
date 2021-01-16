@@ -4,7 +4,9 @@ import 'package:Todo_App/Database/todo.dart';
 import 'package:Todo_App/Helper%20Widgets/basic_widget.dart';
 import 'package:Todo_App/HomePage/Functions/homepage_todo_function.dart';
 import 'package:Todo_App/Router/page_router.dart';
+import 'package:Todo_App/Router/provider.dart';
 import 'package:Todo_App/styles/styles.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -19,8 +21,11 @@ class HomePage extends HookWidget {
     final db = useProvider(databaseProvider);
     final mode = useProvider(homePageChangeModeProvider.state);
     final changeMode = useProvider(homePageChangeModeProvider);
-    final widget = useState(homePage);
-    return widget.value(db, mode, changeMode, size);
+    final pageStack = useProvider(pageStackProvider.state);
+    print(pageStack.length);
+    print(pageStack.last);
+    // if (pageStack.last.toString() == "HomePage")
+    return homePage(db, mode, changeMode, size);
   }
 
   Widget homePage(db, mode, changeMode, Size size) {
@@ -66,7 +71,7 @@ class HomePage extends HookWidget {
                               (context, AsyncSnapshot<List<Todo>> snapshot) {
                             if (snapshot.hasData) {
                               final List<String> availableDates = [];
-                              print("databse is called");
+
                               final todos = snapshot.data;
                               return Column(
                                 children: [
@@ -74,9 +79,10 @@ class HomePage extends HookWidget {
                                   const SizedBox(height: 10.0),
                                   if (todos.isEmpty)
                                     Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: size.height * 0.2),
-                                      child: Text("No todos availble"),
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 0.0),
+                                      child:
+                                          Image.asset("assets/Images/man.png"),
                                     )
                                   else
                                     Column(
@@ -103,7 +109,14 @@ class HomePage extends HookWidget {
                                 ],
                               );
                             }
-                            return CircularProgressIndicator();
+                            return Center(
+                              child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: size.height * 0.2),
+                                  child: CupertinoActivityIndicator(
+                                    radius: 20,
+                                  )),
+                            );
                           })),
                 ),
               ),

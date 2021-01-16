@@ -10,9 +10,9 @@ class Toast {
   String message;
   Timer _timer;
   AnimationController animationController;
-  Color backgroundColor = Styles.grey2.withOpacity(0.8);
+  Color backgroundColor = Styles.grey4.withOpacity(0.9);
   Alignment alignment = Alignment.bottomCenter;
-  TextStyle messageStyle = TextStyle(fontSize: 16, color: Styles.white1);
+  TextStyle messageStyle = TextStyle(fontSize: 18, color: Styles.white1);
   Duration duration = const Duration(seconds: 3);
 
   void showToast(context) {

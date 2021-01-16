@@ -8,11 +8,13 @@ class SimpleAccountMenu extends StatefulWidget {
   final BorderRadius borderRadius;
   final Color backgroundColor;
   final Color iconColor;
+  final Function(bool) overLayChanged;
   final ValueChanged<int> onChange;
 
   const SimpleAccountMenu({
     Key key,
     this.icons,
+    this.overLayChanged,
     this.borderRadius,
     this.backgroundColor = const Color(0xfff6961e),
     this.iconColor = Colors.black,
@@ -91,8 +93,10 @@ class _SimpleAccountMenuState extends State<SimpleAccountMenu>
         color: Styles.white1,
         onPressed: () {
           if (isMenuOpen) {
+            widget.overLayChanged(false);
             closeMenu();
           } else {
+            widget.overLayChanged(true);
             openMenu();
           }
         },

@@ -16,6 +16,17 @@ class TimeProvider {
     time = split[0] + ":" + split[1];
   }
 
+  void updateHourIgnoringAmPm(String hour) {
+    final List split = time.split(":");
+
+    if (hour.length == 1)
+      hour = "0" + hour;
+    else if (hour == "12") hour = "00";
+
+    split[0] = hour;
+    time = split[0] + ":" + split[1];
+  }
+
   void updateMinute(String min) {
     final List split = time.split(":");
     if (min.length == 1) min = "0" + min;

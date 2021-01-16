@@ -43,17 +43,22 @@ class _ClockodyState extends State<ClockBody> {
       onPanStart: (DragStartDetails details) {
         String time = calculateTime(details.localPosition, isHourSelected);
 
-        if (isHourSelected)
+        if (isHourSelected) if (widget.digitalClock == DigitalClock.normal)
           widget.timeContainer.updateHour(time, isBeforeNoon);
         else
+          widget.timeContainer.updateHourIgnoringAmPm(time);
+        else
           widget.timeContainer.updateMinute(time);
+
         this.setState(() {});
       },
       onPanUpdate: (DragUpdateDetails details) {
         String time = calculateTime(details.localPosition, isHourSelected);
 
-        if (isHourSelected)
+        if (isHourSelected) if (widget.digitalClock == DigitalClock.normal)
           widget.timeContainer.updateHour(time, isBeforeNoon);
+        else
+          widget.timeContainer.updateHourIgnoringAmPm(time);
         else
           widget.timeContainer.updateMinute(time);
         this.setState(() {});
@@ -113,7 +118,7 @@ class _ClockodyState extends State<ClockBody> {
               ),
             ),
           Padding(
-            padding: const EdgeInsets.only(top: 30.0),
+            padding: const EdgeInsets.only(top: 50.0),
             child: AspectRatio(
                 aspectRatio: 1.0,
                 child: Stack(children: <Widget>[

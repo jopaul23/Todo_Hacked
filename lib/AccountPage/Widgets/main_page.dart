@@ -2,6 +2,8 @@ import 'package:Todo_App/AccountPage/Functions/chart.dart';
 import 'package:Todo_App/Database/provider.dart';
 import 'package:Todo_App/Helper%20Widgets/Graph/f1_graph.dart';
 import 'package:Todo_App/Helper%20Widgets/basic_widget.dart';
+import 'package:Todo_App/Router/page_router.dart';
+import 'package:Todo_App/Router/provider.dart';
 import 'package:Todo_App/styles/images.dart';
 import 'package:Todo_App/styles/styles.dart';
 import 'package:flutter/material.dart';
@@ -28,102 +30,114 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   Widget build(BuildContext context) {
+    print("rebuilding+++++");
     Size size = MediaQuery.of(context).size;
-    return BasicWidget(
-      pageNo: 3,
-      child: Container(
-          height: size.height,
-          decoration: BoxDecoration(
-            gradient: Styles.t1Gradient,
-          ),
-          child: Column(
-            children: [
-              SizedBox(
-                height: size.height * 0.04,
+    return Consumer(builder: (context, watch, _) {
+      final pageStack = watch(pageStackProvider);
+      return WillPopScope(
+        onWillPop: () {
+          pageStack.popWid();
+          return Future.value(true);
+        },
+        child: BasicWidget(
+          pageNo: 3,
+          child: Container(
+              height: size.height,
+              decoration: BoxDecoration(
+                gradient: Styles.t1Gradient,
               ),
-              Image(
-                image: ImportedImages.accountsLarge,
-                height: 50,
-              ),
-              SizedBox(
-                height: size.height * 0.01,
-              ),
-              Container(
-                height: 24,
-                child: Text(
-                  "My account",
-                  style: TextStyle(
-                    fontFamily: GoogleFonts.rubik().fontFamily,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18,
-                    color: Styles.white2,
-                    decoration: TextDecoration.none,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: size.height * 0.02,
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 25),
-                height: size.height - size.height * 0.07 - 24 - 50,
-                decoration: BoxDecoration(
-                  color: Styles.white2.withOpacity(.96),
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30)),
-                ),
+              child: SingleChildScrollView(
                 child: Column(
                   children: [
                     SizedBox(
-                      height: size.height * 0.05,
+                      height: size.height * 0.04,
+                    ),
+                    Image(
+                      image: ImportedImages.accountsLarge,
+                      height: 50,
+                    ),
+                    SizedBox(
+                      height: size.height * 0.01,
                     ),
                     Container(
-                      alignment: Alignment.centerLeft,
-                      height: 25,
+                      height: 24,
                       child: Text(
-                        "Tasks overview",
+                        "My account",
                         style: TextStyle(
                           fontFamily: GoogleFonts.rubik().fontFamily,
-                          fontSize: 20,
-                          color: Styles.grey2,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                          color: Styles.white2,
                           decoration: TextDecoration.none,
                         ),
                       ),
                     ),
                     SizedBox(
-                      height: size.height * 0.04,
+                      height: size.height * 0.02,
                     ),
-                    Row(
-                      children: [
-                        BoxContainer(
-                          text: "Completed tasks",
-                          number: "${_chart.completedTask}",
-                          // number: "${accountFunctions.getCompletedTask()}",
-                          color: Styles.t1Orange,
-                        ),
-                        Spacer(),
-                        BoxContainer(
-                          text: "Pending tasks",
-                          number: "${_chart.pendingTask}",
-                          // number: "${accountFunctions.getPendingTask()}",
-                          color: Styles.red,
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: size.width - size.width / 1.25 - 50,
-                    ),
-                    BarChartTwo(
-                      todoChart: _chart,
-                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 25),
+                      height: size.height - size.height * 0.07 - 24 - 50,
+                      decoration: BoxDecoration(
+                        color: Styles.white2.withOpacity(.96),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30)),
+                      ),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: size.height * 0.05,
+                          ),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            height: 25,
+                            child: Text(
+                              "Tasks overview",
+                              style: TextStyle(
+                                fontFamily: GoogleFonts.rubik().fontFamily,
+                                fontSize: 20,
+                                color: Styles.grey2,
+                                fontWeight: FontWeight.w800,
+                                decoration: TextDecoration.none,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: size.height * 0.04,
+                          ),
+                          Row(
+                            children: [
+                              BoxContainer(
+                                text: "Completed tasks",
+                                number: "${_chart.completedTask}",
+                                // number: "${accountFunctions.getCompletedTask()}",
+                                color: Styles.t1Orange,
+                              ),
+                              Spacer(),
+                              BoxContainer(
+                                text: "Pending tasks",
+                                number: "${_chart.pendingTask}",
+                                // number: "${accountFunctions.getPendingTask()}",
+                                color: Styles.red,
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: size.width - size.width / 1.25 - 50,
+                          ),
+                          BarChartTwo(
+                            todoChart: _chart,
+                          ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
-              )
-            ],
-          )),
-    );
+              )),
+        ),
+      );
+    });
   }
 }
 

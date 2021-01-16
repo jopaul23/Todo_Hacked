@@ -27,10 +27,8 @@ class AddTodos {
       return "${intTime[1]} mins before";
     else if (intTime[1] == 0)
       return "${intTime[0]} hours before";
-    else {
-      print("called");
+    else
       return "${intTime[0]} hours & ${intTime[1]} min before";
-    }
   }
 
   bool formatDate(DateTime date, String hour, String minute) {
@@ -52,10 +50,7 @@ class AddTodos {
     if (message == null) {
       await db.insertTodos(todo);
       final result = await db.getTodo(todo);
-      print(result);
       int id = result[result.length - 1].id;
-      // AlarmCallback.db = db;
-      // AlarmCallback.alarmCallback(10);
       AndroidAlarmManager.oneShotAt(
           todo.remainderTime.value, id, AlarmCallback.alarmCallback,
           exact: true,

@@ -44,6 +44,7 @@ class TodoDao extends DatabaseAccessor<TodoListDataBase> with _$TodoDaoMixin {
   Stream<List<Todo>> searchTodoss(String searchTodo) {
     return (select(todos)
           ..where((u) => u.title.like("%$searchTodo%"))
+          ..where((u) => u.completed.equals(false))
           ..orderBy([
             (u) => OrderingTerm(expression: u.dueDate, mode: OrderingMode.asc),
           ]))
@@ -53,6 +54,7 @@ class TodoDao extends DatabaseAccessor<TodoListDataBase> with _$TodoDaoMixin {
   Stream<List<Todo>> watchFav() {
     return (select(todos)
           ..where((u) => u.notificationOn.equals(true))
+          ..where((u) => u.completed.equals(false))
           ..orderBy([
             (u) => OrderingTerm(expression: u.dueDate, mode: OrderingMode.asc),
           ]))
