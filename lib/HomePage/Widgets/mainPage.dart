@@ -81,8 +81,11 @@ class HomePage extends HookWidget {
                                     Padding(
                                       padding:
                                           EdgeInsets.symmetric(vertical: 0.0),
-                                      child:
-                                          Image.asset("assets/Images/man.png"),
+                                      child: Image.asset(
+                                        "assets/Images/man.png",
+                                        height: 200,
+                                        width: 200,
+                                      ),
                                     )
                                   else
                                     Column(

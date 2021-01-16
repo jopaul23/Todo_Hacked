@@ -16,6 +16,8 @@ import 'package:Todo_App/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:moor/moor.dart' as moor;
 
+import '../../Helper Widgets/Toast/toast.dart';
+
 class TodoAddPage extends StatefulWidget {
   @override
   _TodoAddPageState createState() => _TodoAddPageState();
@@ -185,6 +187,17 @@ class _TodoAddPageState extends State<TodoAddPage> {
                               height: size.height * 0.08,
                             ),
                             InputButton(
+                              text: DateFormat("d MMM y").format(date),
+                              buttoncolor: Styles.white3,
+                              textcolor: Styles.grey2,
+                              icon: Icons.calendar_today_rounded,
+                              width: 300,
+                              onPressed: displayCalender,
+                            ),
+                            SizedBox(
+                              height: size.height * 0.03,
+                            ),
+                            InputButton(
                               text: DateFormat('kk:mm').format(date),
                               buttoncolor: Styles.white3,
                               textcolor: Styles.grey2,
@@ -194,17 +207,6 @@ class _TodoAddPageState extends State<TodoAddPage> {
                                 clock = _createClockOverlay();
                                 Overlay.of(context).insert(clock);
                               },
-                            ),
-                            SizedBox(
-                              height: size.height * 0.03,
-                            ),
-                            InputButton(
-                              text: DateFormat("d MMM y").format(date),
-                              buttoncolor: Styles.white3,
-                              textcolor: Styles.grey2,
-                              icon: Icons.calendar_today_rounded,
-                              width: 300,
-                              onPressed: displayCalender,
                             ),
                             SizedBox(
                               height: size.height * 0.03,
@@ -332,25 +334,29 @@ class _TodoAddPageState extends State<TodoAddPage> {
       return Positioned(
         top: size.height * 0.5 - 200,
         // left: size.width * 0.5 - 200,
-        left: 10,
+        left: (size.width - 350) / 2,
         child: Center(
           child: HomeCalendarPage(
+            //initialDate: date,
             onSelected: (picked) {
-              calenderOverlay.remove();
-
-              String month = picked.month.toString();
-              if (month.length == 1) month = "0" + month;
-              String day = picked.day.toString();
-              if (day.length == 1) day = "0" + day;
-              String hour = date.hour.toString();
-              String minute = date.minute.toString();
-              if (hour.length == 1) hour = "0" + hour;
-              if (minute.length == 1) minute = "0" + minute;
-              String dateString = "${picked.year}-$month-$day $hour:$minute";
-              setState(() {
-                date = DateTime.parse(dateString);
-              });
-              calenderOverlay = null;
+              if (picked.day >= DateTime.now().day) {
+                calenderOverlay.remove();
+                String month = picked.month.toString();
+                if (month.length == 1) month = "0" + month;
+                String day = picked.day.toString();
+                if (day.length == 1) day = "0" + day;
+                String hour = date.hour.toString();
+                String minute = date.minute.toString();
+                if (hour.length == 1) hour = "0" + hour;
+                if (minute.length == 1) minute = "0" + minute;
+                String dateString = "${picked.year}-$month-$day $hour:$minute";
+                setState(() {
+                  date = DateTime.parse(dateString);
+                });
+                calenderOverlay = null;
+              } else {
+                Toast("Invalid date").showToast(context);
+              }
             },
           ),
         ),

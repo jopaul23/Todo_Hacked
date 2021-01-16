@@ -33,13 +33,16 @@ class AddTodos {
 
   bool formatDate(DateTime date, String hour, String minute) {
     final now = DateTime.now();
-
-    if (now.day > date.day ||
-        now.hour >= int.parse(hour) && now.minute >= int.parse(minute)) {
-      const String errorMsg = "Time should greater than current time";
-      Toast toast = Toast(errorMsg);
-      toast.showToast(context);
-      return false;
+    if (DateTime.now().day == date.day) {
+      if (now.day > date.day ||
+          now.hour >= int.parse(hour) && now.minute >= int.parse(minute)) {
+        const String errorMsg = "Time should greater than current time";
+        Toast toast = Toast(errorMsg);
+        toast.showToast(context);
+        return false;
+      } else {
+        return true;
+      }
     } else {
       return true;
     }

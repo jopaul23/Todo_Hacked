@@ -88,9 +88,18 @@ class _ClockodyState extends State<ClockBody> {
               child: Stack(
                 children: [
                   GestureDetector(
-                    onTap: () => this.setState(() {
-                      isBeforeNoon = true;
-                    }),
+                    onTap: () {
+                      if (!isBeforeNoon) {
+                        widget.timeContainer.changeTo12(
+                          widget.timeContainer.time.split(":")[0],
+                        );
+                        print("new time is");
+                        print(widget.timeContainer.time);
+                      }
+                      this.setState(() {
+                        isBeforeNoon = true;
+                      });
+                    },
                     child: Text(
                       "am",
                       style: TextStyle(
@@ -102,9 +111,18 @@ class _ClockodyState extends State<ClockBody> {
                   Padding(
                     padding: const EdgeInsets.only(top: 30.0),
                     child: GestureDetector(
-                      onTap: () => this.setState(() {
-                        isBeforeNoon = false;
-                      }),
+                      onTap: () {
+                        if (isBeforeNoon) {
+                          widget.timeContainer.changeTo24(
+                            widget.timeContainer.time.split(":")[0],
+                          );
+                          print("new time is");
+                          print(widget.timeContainer.time);
+                        }
+                        this.setState(() {
+                          isBeforeNoon = false;
+                        });
+                      },
                       child: Text(
                         "pm",
                         style: TextStyle(
