@@ -46,7 +46,7 @@ class _ToastWidgetState extends State<ToastWidget>
     return Card(
       //shadowColor: Styles.grey1,
       shape: RoundedRectangleBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(30.0))),
+          borderRadius: const BorderRadius.all(Radius.circular(10.0))),
       child: Container(
         // duration: const Duration(milliseconds: 400),
         // width: double.infinity,
@@ -56,7 +56,7 @@ class _ToastWidgetState extends State<ToastWidget>
         alignment: Alignment.centerLeft,
         decoration: BoxDecoration(
           color: widget.backgroundColor,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(10),
         ),
 
         child: Align(
