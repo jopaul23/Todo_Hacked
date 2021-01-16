@@ -355,7 +355,7 @@ class _TodoAddPageState extends State<TodoAddPage> {
                 });
                 calenderOverlay = null;
               } else {
-                Toast("Invalid date").showToast(context);
+                Toast("Ooops! Invalid date").showToast(context);
               }
             },
           ),
