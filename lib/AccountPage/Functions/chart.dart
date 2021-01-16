@@ -3,12 +3,15 @@ import 'package:Todo_App/AccountPage/Functions/user_details.dart';
 class TodoChart {
   int pendingTask = 0, completedTask = 0;
   var _db;
+  int todayPendingTask, todayCompletedTask;
 
   Future init() async {
     _db = UserTodoDetails.database;
 
     pendingTask = (await _db.getPendingTask()).length;
     completedTask = (await _db.getCompletedTask()).length;
+    todayPendingTask = (await _db.getTodyaPendingTask()).length;
+    todayCompletedTask = (await _db.getTodaysCompletedTask()).length;
   }
 
   static createBox(String username) {

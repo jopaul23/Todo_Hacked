@@ -5,8 +5,9 @@ import 'package:Todo_App/styles/styles.dart';
 
 class HomeCalendarPage extends StatefulWidget {
   final Function(DateTime) onSelected;
-
-  const HomeCalendarPage({Key key, this.onSelected}) : super(key: key);
+  final DateTime initalDate;
+  const HomeCalendarPage({Key key, this.onSelected, this.initalDate})
+      : super(key: key);
   @override
   _HomeCalendarPageState createState() => _HomeCalendarPageState();
 }

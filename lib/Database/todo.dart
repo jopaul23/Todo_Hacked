@@ -65,6 +65,20 @@ class TodoDao extends DatabaseAccessor<TodoListDataBase> with _$TodoDaoMixin {
     return (select(todos)..where((u) => u.completed.equals(true))).get();
   }
 
+  Future getTodaysCompletedTask() {
+    return (select(todos)
+          ..where((u) => u.completed.equals(true))
+          ..where((u) => u.dueDate.equals(DateTime.now())))
+        .get();
+  }
+
+  Future getTodyaPendingTask() {
+    return (select(todos)
+          ..where((u) => u.completed.equals(false))
+          ..where((u) => u.dueDate.equals(DateTime.now())))
+        .get();
+  }
+
   Future getPendingTask() {
     return (select(todos)..where((u) => u.completed.equals(false))).get();
   }
