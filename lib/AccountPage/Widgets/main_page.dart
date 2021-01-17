@@ -2,6 +2,7 @@ import 'package:Todo_App/AccountPage/Functions/chart.dart';
 import 'package:Todo_App/Database/provider.dart';
 import 'package:Todo_App/Helper%20Widgets/Graph/f1_graph.dart';
 import 'package:Todo_App/Helper%20Widgets/basic_widget.dart';
+import 'package:Todo_App/HomePage/Functions/homepage_todo_function.dart';
 import 'package:Todo_App/Router/page_router.dart';
 import 'package:Todo_App/Router/provider.dart';
 import 'package:Todo_App/styles/images.dart';
@@ -22,7 +23,9 @@ class _AccountPageState extends State<AccountPage> {
   void initState() {
     _chart = TodoChart();
     _chart.init().then((_) {
-      print(_chart.getChartData().userLoggedDate);
+      print("todayCompletedTask");
+      print(_chart.todayPendingTask);
+
       setState(() {});
     });
 
@@ -34,6 +37,7 @@ class _AccountPageState extends State<AccountPage> {
     Size size = MediaQuery.of(context).size;
     return Consumer(builder: (context, watch, _) {
       final pageStack = watch(pageStackProvider);
+      final changeMode = watch(homePageChangeModeProvider);
       return WillPopScope(
         onWillPop: () {
           pageStack.popWid();
@@ -41,6 +45,10 @@ class _AccountPageState extends State<AccountPage> {
         },
         child: BasicWidget(
           pageNo: 3,
+          onFavClicked: () {
+            changeMode.changeMode(HomePageChangeMode.favorites);
+            PageRouter.sailor.navigate(PageRouter.homePage);
+          },
           child: Container(
               height: size.height,
               decoration: BoxDecoration(
