@@ -79,9 +79,10 @@ class TodoCards extends HookWidget {
                   IconData(todo.tagIconId, fontFamily: 'MaterialIcons'),
                   color: Styles.t1Orange,
                 ),
-                if (todo.dueDate.day < DateTime.now().day ||
-                    todo.dueDate.hour < DateTime.now().hour ||
-                    todo.dueDate.minute < DateTime.now().minute)
+                // if (todo.dueDate.day < DateTime.now().day ||
+                //     todo.dueDate.hour < DateTime.now().hour ||
+                //     todo.dueDate.minute < DateTime.now().minute)
+                if (todo.dueDate.isBefore(DateTime.now()))
                   Container(
                     padding: const EdgeInsets.all(5.0),
                     decoration: BoxDecoration(
@@ -89,7 +90,7 @@ class TodoCards extends HookWidget {
                         borderRadius:
                             const BorderRadius.all(Radius.circular(20.0))),
                     child: Text(
-                      "UnCompleted Task",
+                      "Incompleted Task",
                       style: TextStyle(
                         color: Styles.white1,
                       ),
@@ -108,8 +109,13 @@ class TodoCards extends HookWidget {
                         notificationOn: moor.Value(fav.value),
                         tagIconId: moor.Value(todo.tagIconId),
                       ));
-                      Toast toast = Toast("Added to favourites");
-                      toast.showToast(context);
+                      if (fav.value) {
+                        Toast toast = Toast("Added to favourites");
+                        toast.showToast(context);
+                      } else {
+                        Toast toast = Toast("Removed from favourites");
+                        toast.showToast(context);
+                      }
                     },
                     child: Image(
                       image: fav.value
