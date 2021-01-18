@@ -45,16 +45,20 @@ class _InputButtonState extends State<InputButton> {
             onPressed: widget.onPressed,
             child: Row(
               children: [
-                if (widget.icon != null)
-                  Icon(
-                    widget.icon,
-                    color: Styles.t1Orange,
-                  ),
-                Text(
-                  "    " + widget.text,
-                  style: TextStyle(
-                    color: widget.textcolor,
-                    fontSize: 18,
+                Icon(
+                  widget.icon,
+                  color: Styles.t1Orange,
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: Text(
+                      "" + widget.text,
+                      style: TextStyle(
+                        color: widget.textcolor,
+                        fontSize: 18,
+                      ),
+                    ),
                   ),
                 ),
               ],

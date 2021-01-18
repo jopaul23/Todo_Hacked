@@ -1,21 +1,68 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final timeHourProvider =
-    StateNotifierProvider<TimeHourNotifier>((_) => TimeHourNotifier());
+class TimeProvider {
+  String time = "12:00";
+  void updateHour(String hour, bool isBeforeNoon) {
+    final List split = time.split(":");
+    print(hour);
+    if (isBeforeNoon) {
+      if (hour.length == 1)
+        hour = "0" + hour;
+      else if (hour == "12") hour = "00";
+    } else {
+      hour = (int.parse(hour) + 12).toString();
+    }
+    split[0] = hour;
+    time = split[0] + ":" + split[1];
+  }
 
-final timeMinuteProvider =
-    StateNotifierProvider<TimeMinuteNotifier>((_) => TimeMinuteNotifier());
+  void updateHourIgnoringAmPm(String hour) {
+    final List split = time.split(":");
 
-class TimeHourNotifier extends StateNotifier<String> {
-  TimeHourNotifier() : super("12");
-  void updateTime(String hour) => state = hour;
+    if (hour.length == 1)
+      hour = "0" + hour;
+    else if (hour == "12") hour = "00";
+
+    split[0] = hour;
+    time = split[0] + ":" + split[1];
+  }
+
+  void changeTo24(String hour) {
+    print(hour);
+    final List split = time.split(":");
+
+    split[0] = (int.parse(hour) + 12).toString();
+    time = split[0] + ":" + split[1];
+  }
+
+  void changeTo12(String hour) {
+    final List split = time.split(":");
+    hour = (int.parse(hour) - 12).toString();
+    if (hour.length == 1)
+      hour = "0" + hour;
+    else if (hour == "12") hour = "00";
+
+    split[0] = hour;
+    time = split[0] + ":" + split[1];
+  }
+
+  void updateMinute(String min) {
+    final List split = time.split(":");
+    if (min.length == 1) min = "0" + min;
+    split[1] = min;
+    time = split[0] + ":" + split[1];
+  }
 }
 
-class TimeMinuteNotifier extends StateNotifier<String> {
-  TimeMinuteNotifier() : super("00");
-  void updateTime(String min) => state = min;
-}
+// class TimeMinuteNotifier extends StateNotifier<String> {
+//   static String initialminute;
+
+//   TimeMinuteNotifier() : super(initialminute) {
+//     print(initialminute);
+//   }
+//   void updateTime(String min) => state = min;
+// }
 
 enum TimeChangeMode { minute, hour }
 

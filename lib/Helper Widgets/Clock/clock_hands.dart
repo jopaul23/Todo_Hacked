@@ -5,12 +5,13 @@ import 'package:hooks_riverpod/all.dart';
 import 'Providers/time_provider.dart';
 import 'hand_hour.dart';
 
-class ClockHands extends HookWidget {
+class ClockHands extends StatelessWidget {
+  final String hour, min;
+  final TimeChangeMode mode;
+
+  const ClockHands({Key key, this.hour, this.min, this.mode}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final hour = useProvider(timeHourProvider.state);
-    final mode = useProvider(timeChangeModeProvider.state);
-    final min = useProvider(timeMinuteProvider.state);
     return AspectRatio(
         aspectRatio: 1.0,
         child: Container(

@@ -7,109 +7,136 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
 
 import 'Providers/time_provider.dart';
+import 'clock_digital_display.dart';
 import 'clock_face.dart';
 
-class ClockBody extends HookWidget {
-  final Function(String hour, String minute, bool beforeNoon) onClicked;
-  final bool isBeforeNoon;
-  ClockBody({this.onClicked, this.isBeforeNoon = true});
+class ClockBody extends StatefulWidget {
+  final Function(String hour, String minute) onClicked;
+  final digitalClock;
+  final timeContainer;
+  final bool beforeNoon;
+  const ClockBody(
+      {Key key,
+      this.digitalClock,
+      this.onClicked,
+      this.timeContainer,
+      this.beforeNoon})
+      : super(key: key);
+  @override
+  _ClockodyState createState() => _ClockodyState();
+}
+
+class _ClockodyState extends State<ClockBody> {
+  TimeChangeMode mode = TimeChangeMode.hour;
+  bool isBeforeNoon;
+  @override
+  void initState() {
+    isBeforeNoon = widget.beforeNoon;
+    print(widget.timeContainer.time);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final hour = useProvider(timeHourProvider.state);
-    final min = useProvider(timeMinuteProvider.state);
-    final mode = useProvider(timeChangeModeProvider.state);
-    final bool isHourSelected = mode == TimeChangeMode.hour;
-    final beforeNoon = useState(isBeforeNoon);
+    bool isHourSelected = mode == TimeChangeMode.hour;
     return GestureDetector(
       onPanStart: (DragStartDetails details) {
         String time = calculateTime(details.localPosition, isHourSelected);
 
-        if (isHourSelected)
-          context.read(timeHourProvider).updateTime(time);
+        if (isHourSelected) if (widget.digitalClock == DigitalClock.normal)
+          widget.timeContainer.updateHour(time, isBeforeNoon);
         else
-          context.read(timeMinuteProvider).updateTime(time);
+          widget.timeContainer.updateHourIgnoringAmPm(time);
+        else
+          widget.timeContainer.updateMinute(time);
+
+        this.setState(() {});
       },
       onPanUpdate: (DragUpdateDetails details) {
         String time = calculateTime(details.localPosition, isHourSelected);
-        if (isHourSelected) {
-          context.read(timeHourProvider).updateTime(time);
-        } else
-          context.read(timeMinuteProvider).updateTime(time);
+
+        if (isHourSelected) if (widget.digitalClock == DigitalClock.normal)
+          widget.timeContainer.updateHour(time, isBeforeNoon);
+        else
+          widget.timeContainer.updateHourIgnoringAmPm(time);
+        else
+          widget.timeContainer.updateMinute(time);
+        this.setState(() {});
       },
       child: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 80.0, vertical: 15),
-            child: RichText(
-                text: TextSpan(
-                    text: "$hour",
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        context
-                            .read(timeChangeModeProvider)
-                            .changeMode(TimeChangeMode.hour);
-                      },
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: isHourSelected ? Colors.red : Colors.grey,
-                        fontSize: 40),
-                    children: [
-                  TextSpan(
-                    text: " : ",
-                    style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 40,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.none),
-                  ),
-                  TextSpan(
-                    text: "$min ",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: !isHourSelected ? Colors.red : Colors.grey,
-                        fontSize: 40),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        context
-                            .read(timeChangeModeProvider)
-                            .changeMode(TimeChangeMode.minute);
-                      },
-                  ),
-                ])),
+          ClockDigitalDisplay(
+            time: widget.timeContainer.time,
+            digitalClock: widget.digitalClock,
+            mode: mode,
+            isHourSelected: isHourSelected,
+            onHourSelected: () {
+              this.setState(() {
+                mode = TimeChangeMode.hour;
+              });
+            },
+            onMinuteSelected: () {
+              this.setState(() {
+                mode = TimeChangeMode.minute;
+              });
+            },
           ),
-          Positioned(
-            right: 60,
-            top: 10,
-            child: Stack(
-              children: [
-                GestureDetector(
-                  onTap: () => beforeNoon.value = true,
-                  child: Text(
-                    "am",
-                    style: TextStyle(
-                        color: !beforeNoon.value ? Colors.grey : Styles.red,
-                        fontSize: 25,
-                        decoration: TextDecoration.none),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 30.0),
-                  child: GestureDetector(
-                    onTap: () => beforeNoon.value = false,
+          if (widget.digitalClock == DigitalClock.normal)
+            Positioned(
+              right: 60,
+              top: 10,
+              child: Stack(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      if (!isBeforeNoon) {
+                        widget.timeContainer.changeTo12(
+                          widget.timeContainer.time.split(":")[0],
+                        );
+                        print("new time is");
+                        print(widget.timeContainer.time);
+                      }
+                      this.setState(() {
+                        isBeforeNoon = true;
+                      });
+                    },
                     child: Text(
-                      "pm",
+                      "am",
                       style: TextStyle(
-                          color: beforeNoon.value ? Colors.grey : Styles.red,
+                          color: isBeforeNoon ? Styles.red : Colors.grey,
                           fontSize: 25,
                           decoration: TextDecoration.none),
                     ),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        if (isBeforeNoon) {
+                          widget.timeContainer.changeTo24(
+                            widget.timeContainer.time.split(":")[0],
+                          );
+                          print("new time is");
+                          print(widget.timeContainer.time);
+                        }
+                        this.setState(() {
+                          isBeforeNoon = false;
+                        });
+                      },
+                      child: Text(
+                        "pm",
+                        style: TextStyle(
+                            color: isBeforeNoon ? Colors.grey : Styles.red,
+                            fontSize: 25,
+                            decoration: TextDecoration.none),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
           Padding(
-            padding: const EdgeInsets.only(top: 10.0),
+            padding: const EdgeInsets.only(top: 50.0),
             child: AspectRatio(
                 aspectRatio: 1.0,
                 child: Stack(children: <Widget>[
@@ -120,7 +147,11 @@ class ClockBody extends HookWidget {
                         shape: BoxShape.circle,
                         color: Styles.t1Orange,
                       ),
-                      child: ClockFace(),
+                      child: ClockFace(
+                        hour: widget.timeContainer.time.substring(0, 2),
+                        min: widget.timeContainer.time.substring(3),
+                        mode: mode,
+                      ),
                     ),
                   )
                 ])),
@@ -130,7 +161,9 @@ class ClockBody extends HookWidget {
             right: 30,
             child: TextButton(
               onPressed: () {
-                onClicked(hour, min, beforeNoon.value);
+                String hour = widget.timeContainer.time.substring(0, 2);
+                String min = widget.timeContainer.time.substring(3);
+                widget.onClicked(hour, min);
               },
               child: Text(
                 "OK",

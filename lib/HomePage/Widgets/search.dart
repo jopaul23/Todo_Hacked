@@ -23,6 +23,7 @@ class TodoListSearch extends StatelessWidget {
       child: Consumer(builder: (context, watch, _) {
         final mode = watch(homePageChangeModeProvider);
         return TextField(
+          cursorColor: Styles.grey2,
           style: TextStyle(fontSize: 20, color: Styles.grey2),
           onChanged: (val) {
             HomePageTodoFunction.searchTodos = val;

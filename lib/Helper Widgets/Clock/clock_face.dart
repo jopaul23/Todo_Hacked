@@ -7,10 +7,14 @@ import 'Providers/time_provider.dart';
 import 'clock_dial_painter.dart';
 import 'clock_hands.dart';
 
-class ClockFace extends HookWidget {
+class ClockFace extends StatelessWidget {
+  final String hour, min;
+  final TimeChangeMode mode;
+
+  const ClockFace({Key key, this.hour, this.min, this.mode}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    final mode = useProvider(timeChangeModeProvider.state);
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: AspectRatio(
@@ -22,7 +26,11 @@ class ClockFace extends HookWidget {
           child: Stack(
             children: <Widget>[
               //clock hands go here
-              ClockHands(),
+              ClockHands(
+                hour: hour,
+                min: min,
+                mode: mode,
+              ),
               //centerpoint
               Center(
                 child: Container(

@@ -41,6 +41,7 @@ class InputTextField extends HookWidget {
         ),
         BoxShadowContainer(
           child: TextField(
+            cursorColor: Styles.white1,
             controller: textController,
             onChanged: (String val) {
               if (val.length > maxLength) {
@@ -49,6 +50,7 @@ class InputTextField extends HookWidget {
                     TextPosition(offset: textController.text.length));
               } else
                 noCharacters.value = val.length;
+              onChanged(textController.text);
             },
             textAlign: TextAlign.center,
             style: TextStyle(color: Styles.white1, fontSize: 25),
