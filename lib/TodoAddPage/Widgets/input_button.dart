@@ -1,9 +1,8 @@
-import 'dart:ffi';
-
-import 'package:Todo_App/styles/styles.dart';
 import 'package:flutter/material.dart';
 
-class InputButton extends StatefulWidget {
+import '../../styles/styles.dart';
+
+class InputButton extends StatelessWidget {
   final Color textcolor;
   final Color buttoncolor;
   final String text;
@@ -17,45 +16,34 @@ class InputButton extends StatefulWidget {
       this.buttoncolor,
       this.icon,
       this.width});
-  _InputButtonState createState() => _InputButtonState();
-}
 
-@override
-class _InputButtonState extends State<InputButton> {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        width: widget.width,
+        width: width,
         height: 50,
         margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         padding: EdgeInsets.symmetric(vertical: 2, horizontal: 15),
         decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Styles.grey4.withOpacity(0.03),
-              spreadRadius: 10,
-              blurRadius: 7,
-              offset: Offset(0, 2), // changes position of shadow
-            ),
-          ],
-          color: widget.buttoncolor,
+          boxShadow: [Styles.shadow()],
+          color: buttoncolor,
           borderRadius: BorderRadius.circular(24),
         ),
         child: FlatButton(
-            onPressed: widget.onPressed,
+            onPressed: onPressed,
             child: Row(
               children: [
                 Icon(
-                  widget.icon,
+                  icon,
                   color: Styles.t1Orange,
                 ),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 10.0),
                     child: Text(
-                      "" + widget.text,
+                      text,
                       style: TextStyle(
-                        color: widget.textcolor,
+                        color: textcolor ?? Styles.grey2,
                         fontSize: 18,
                       ),
                     ),

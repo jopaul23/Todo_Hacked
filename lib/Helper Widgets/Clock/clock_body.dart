@@ -1,19 +1,17 @@
 import 'dart:math';
 
-import 'package:Todo_App/styles/styles.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/all.dart';
 
-import 'Providers/time_provider.dart';
+import 'Functions/clock_functions.dart';
 import 'clock_digital_display.dart';
+import '../../styles/styles.dart';
 import 'clock_face.dart';
 
 class ClockBody extends StatefulWidget {
   final Function(String hour, String minute) onClicked;
   final digitalClock;
-  final timeContainer;
+  final ClockFunctions timeContainer;
   final bool beforeNoon;
   const ClockBody(
       {Key key,
@@ -93,8 +91,6 @@ class _ClockodyState extends State<ClockBody> {
                         widget.timeContainer.changeTo12(
                           widget.timeContainer.time.split(":")[0],
                         );
-                        print("new time is");
-                        print(widget.timeContainer.time);
                       }
                       this.setState(() {
                         isBeforeNoon = true;
@@ -116,8 +112,6 @@ class _ClockodyState extends State<ClockBody> {
                           widget.timeContainer.changeTo24(
                             widget.timeContainer.time.split(":")[0],
                           );
-                          print("new time is");
-                          print(widget.timeContainer.time);
                         }
                         this.setState(() {
                           isBeforeNoon = false;

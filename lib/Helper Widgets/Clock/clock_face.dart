@@ -1,11 +1,9 @@
-import 'package:Todo_App/styles/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'Providers/time_provider.dart';
+import 'Functions/clock_functions.dart';
 import 'clock_dial_painter.dart';
 import 'clock_hands.dart';
+import '../../styles/styles.dart';
 
 class ClockFace extends StatelessWidget {
   final String hour, min;

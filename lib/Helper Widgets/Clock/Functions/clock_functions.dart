@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class TimeProvider {
+class ClockFunctions {
   String time = "12:00";
   void updateHour(String hour, bool isBeforeNoon) {
     final List split = time.split(":");

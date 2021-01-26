@@ -1,4 +1,3 @@
-import 'package:Todo_App/Helper%20Widgets/shadow.dart';
 import 'package:Todo_App/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -21,11 +20,13 @@ class InputTextField extends HookWidget {
             alignment: Alignment.centerRight,
             child: Visibility(
               visible: noCharacters.value != 0,
-              child: BoxShadowContainer(
+              child: Container(
                 height: 40,
                 width: 45,
-                radius: BorderRadius.all(Radius.circular(10)),
-                color: Styles.white2,
+                decoration: BoxDecoration(
+                    color: Styles.white2,
+                    borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                    boxShadow: [Styles.shadow()]),
                 child: Container(
                   height: 30,
                   padding: const EdgeInsets.all(8.0),
@@ -39,12 +40,17 @@ class InputTextField extends HookWidget {
             ),
           ),
         ),
-        BoxShadowContainer(
+        Container(
+          decoration: BoxDecoration(
+              color: Styles.white2,
+              borderRadius: const BorderRadius.all(Radius.circular(35.0)),
+              boxShadow: [Styles.shadow()]),
           child: TextField(
             cursorColor: Styles.white1,
             controller: textController,
             onChanged: (String val) {
               if (val.length > maxLength) {
+                // to limit the number of characters to the maxLength..
                 textController.text = textController.text.substring(0, 8);
                 textController.selection = TextSelection.fromPosition(
                     TextPosition(offset: textController.text.length));

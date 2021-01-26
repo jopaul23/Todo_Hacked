@@ -1,9 +1,9 @@
-import 'package:Todo_App/Helper%20Widgets/Clock/remainder.dart';
 import 'package:Todo_App/styles/styles.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import 'Providers/time_provider.dart';
+import '../../Helper%20Widgets/Clock/remainder.dart';
+import 'Functions/clock_functions.dart';
 
 enum DigitalClock { normal, remainder }
 

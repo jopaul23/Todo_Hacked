@@ -1,19 +1,19 @@
 import 'dart:ui';
-
-import 'package:Todo_App/Database/provider.dart';
-import 'package:Todo_App/Database/todo.dart';
-import 'package:Todo_App/Helper%20Widgets/Clock/Providers/time_provider.dart';
-import 'package:Todo_App/Helper%20Widgets/Clock/clock_body.dart';
-import 'package:Todo_App/Helper%20Widgets/Clock/clock_digital_display.dart';
-import 'package:Todo_App/Helper%20Widgets/Toast/toast.dart';
-import 'package:Todo_App/HomePage/Functions/homepage_todo_function.dart';
-import 'package:Todo_App/HomePage/Widgets/edit_todos.dart';
-import 'package:Todo_App/styles/images.dart';
-import 'package:Todo_App/styles/styles.dart';
+import 'package:Todo_App/Overlays/clock_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:moor/moor.dart' as moor;
+
+import '../../Database/todo.dart';
+import '../../Database/provider.dart';
+import '../../Helper%20Widgets/Clock/Functions/clock_functions.dart';
+import '../../Overlays/Toast/toast_overlay.dart';
+import '../../Helper%20Widgets/Clock/clock_body.dart';
+import '../../Helper%20Widgets/Clock/clock_digital_display.dart';
+import '../Functions/homepage_todo_function.dart';
+import '../../styles/images.dart';
+import '../../styles/styles.dart';
 
 class TodoCards extends HookWidget {
   final Todo todo;
@@ -22,6 +22,7 @@ class TodoCards extends HookWidget {
   @override
   Widget build(BuildContext context) {
     debugPrint("building");
+    var clockOverlay;
     final GlobalKey cardKey = GlobalKey();
     final db = useProvider(databaseProvider);
     final fav = useState(false);
@@ -79,9 +80,7 @@ class TodoCards extends HookWidget {
                   IconData(todo.tagIconId, fontFamily: 'MaterialIcons'),
                   color: Styles.t1Orange,
                 ),
-                // if (todo.dueDate.day < DateTime.now().day ||
-                //     todo.dueDate.hour < DateTime.now().hour ||
-                //     todo.dueDate.minute < DateTime.now().minute)
+
                 if (todo.dueDate.isBefore(DateTime.now()))
                   Container(
                     padding: const EdgeInsets.all(5.0),
@@ -164,7 +163,13 @@ class TodoCards extends HookWidget {
                 const SizedBox(width: 5.0),
                 TextButton(
                   onPressed: () {
-                    _createClockOverlay(context, db);
+                    clockOverlay = createClockOverlay(
+                        date: todo.dueDate,
+                        onSelected: (String hour, String minute) {
+                          updateDueDate(context, db, clockOverlay,
+                              hour: hour, minute: minute);
+                        });
+                    Overlay.of(context).insert(clockOverlay);
                   },
                   child: Text(
                     HomePageTodoFunction.formatDueTime(todo.dueDate),
@@ -179,62 +184,25 @@ class TodoCards extends HookWidget {
     );
   }
 
-  void _createClockOverlay(context, db) {
-    var clock;
-    String hour = todo.dueDate.hour.toString();
-    String minute = todo.dueDate.minute.toString();
-    final bool isBeforeNoon = todo.dueDate.hour < 12;
-    TimeProvider timeProvider = TimeProvider()
-      ..updateHour(
-          isBeforeNoon ? hour : "${int.parse(hour) - 12}", isBeforeNoon)
-      ..updateMinute(minute);
-    clock = OverlayEntry(builder: (context) {
-      return Align(
-        alignment: Alignment.center,
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 30.0),
-          decoration: BoxDecoration(
-            color: Styles.white1,
-            borderRadius: const BorderRadius.all(Radius.circular(35.0)),
-            boxShadow: [
-              BoxShadow(
-                color: Styles.grey4.withOpacity(0.01),
-                spreadRadius: 10,
-                blurRadius: 7,
-                offset: Offset(0, 2), // changes position of shadow
-              ),
-            ],
-          ),
-          child: ClockBody(
-              digitalClock: DigitalClock.normal,
-              timeContainer: timeProvider,
-              beforeNoon: isBeforeNoon,
-              onClicked: (String hour, String minute) {
-                String month = todo.dueDate.month.toString();
-                String day = todo.dueDate.day.toString();
-                if (month.length == 1) month = "0" + month;
-                if (day.length == 1) day = "0" + day;
+  void updateDueDate(context, db, clock, {String hour, String minute}) {
+    String month = todo.dueDate.month.toString();
+    String day = todo.dueDate.day.toString();
+    if (month.length == 1) month = "0" + month;
+    if (day.length == 1) day = "0" + day;
 
-                String dateString =
-                    "${todo.dueDate.year}-$month-$day $hour:$minute:00";
+    String dateString = "${todo.dueDate.year}-$month-$day $hour:$minute:00";
+    final updateTodo = TodosCompanion(
+        id: moor.Value(todo.id),
+        tagIconId: moor.Value(todo.tagIconId),
+        title: moor.Value(todo.title),
+        dueDate: moor.Value(DateTime.parse(dateString)),
+        remainderTime: moor.Value(todo.remainderTime),
+        notificationOn: moor.Value(todo.notificationOn),
+        completed: moor.Value(todo.completed));
+    db.updateTodos(updateTodo);
 
-                final updateTodo = TodosCompanion(
-                    id: moor.Value(todo.id),
-                    tagIconId: moor.Value(todo.tagIconId),
-                    title: moor.Value(todo.title),
-                    dueDate: moor.Value(DateTime.parse(dateString)),
-                    remainderTime: moor.Value(todo.remainderTime),
-                    notificationOn: moor.Value(todo.notificationOn),
-                    completed: moor.Value(todo.completed));
-                db.updateTodos(updateTodo);
-
-                Toast toast = Toast("Updated task");
-                toast.showToast(context);
-                clock.remove();
-              }),
-        ),
-      );
-    });
-    Overlay.of(context).insert(clock);
+    Toast toast = Toast("Updated task");
+    toast.showToast(context);
+    clock.remove();
   }
 }

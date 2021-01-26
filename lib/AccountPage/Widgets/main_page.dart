@@ -1,16 +1,14 @@
-import 'package:Todo_App/AccountPage/Functions/chart.dart';
-import 'package:Todo_App/Database/provider.dart';
-import 'package:Todo_App/Helper%20Widgets/Graph/f1_graph.dart';
-import 'package:Todo_App/Helper%20Widgets/basic_widget.dart';
-import 'package:Todo_App/HomePage/Functions/homepage_todo_function.dart';
-import 'package:Todo_App/Router/page_router.dart';
-import 'package:Todo_App/Router/provider.dart';
-import 'package:Todo_App/styles/images.dart';
-import 'package:Todo_App/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import '../Functions/chart.dart';
+import '../../Helper%20Widgets/basic_widget.dart';
+import '../../HomePage/Functions/homepage_todo_function.dart';
+import '../../Router/page_router.dart';
+import '../../styles/images.dart';
+import '../../styles/styles.dart';
+import 'Graph/f1_graph.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage();
@@ -35,12 +33,11 @@ class _AccountPageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     print("rebuilding+++++");
     Size size = MediaQuery.of(context).size;
+    final textTheme = Theme.of(context).textTheme;
     return Consumer(builder: (context, watch, _) {
-      final pageStack = watch(pageStackProvider);
       final changeMode = watch(homePageChangeModeProvider);
       return WillPopScope(
         onWillPop: () {
-          pageStack.popWid();
           return Future.value(true);
         },
         child: BasicWidget(
@@ -55,6 +52,7 @@ class _AccountPageState extends State<AccountPage> {
                 gradient: Styles.t1Gradient,
               ),
               child: SingleChildScrollView(
+                padding: const EdgeInsets.only(bottom: 20.0),
                 child: Column(
                   children: [
                     SizedBox(
@@ -69,16 +67,7 @@ class _AccountPageState extends State<AccountPage> {
                     ),
                     Container(
                       height: 24,
-                      child: Text(
-                        "My account",
-                        style: TextStyle(
-                          fontFamily: GoogleFonts.rubik().fontFamily,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 18,
-                          color: Styles.white2,
-                          decoration: TextDecoration.none,
-                        ),
-                      ),
+                      child: Text("My account", style: textTheme.headline3),
                     ),
                     SizedBox(
                       height: size.height * 0.02,
@@ -100,33 +89,23 @@ class _AccountPageState extends State<AccountPage> {
                           Container(
                             alignment: Alignment.centerLeft,
                             height: 25,
-                            child: Text(
-                              "Tasks overview",
-                              style: TextStyle(
-                                fontFamily: GoogleFonts.rubik().fontFamily,
-                                fontSize: 20,
-                                color: Styles.grey2,
-                                fontWeight: FontWeight.w800,
-                                decoration: TextDecoration.none,
-                              ),
-                            ),
+                            child: Text("Tasks overview",
+                                style: textTheme.headline2),
                           ),
                           SizedBox(
                             height: size.height * 0.04,
                           ),
                           Row(
                             children: [
-                              BoxContainer(
+                              boxContainer(
                                 text: "Completed tasks",
                                 number: "${_chart.completedTask}",
-                                // number: "${accountFunctions.getCompletedTask()}",
                                 color: Styles.t1Orange,
                               ),
                               Spacer(),
-                              BoxContainer(
+                              boxContainer(
                                 text: "Pending tasks",
                                 number: "${_chart.pendingTask}",
-                                // number: "${accountFunctions.getPendingTask()}",
                                 color: Styles.red,
                               )
                             ],
@@ -134,6 +113,8 @@ class _AccountPageState extends State<AccountPage> {
                           SizedBox(
                             height: size.width - size.width / 1.25 - 50,
                           ),
+
+                          // Graph
                           BarChartTwo(
                             todoChart: _chart,
                           ),
@@ -147,16 +128,8 @@ class _AccountPageState extends State<AccountPage> {
       );
     });
   }
-}
 
-class BoxContainer extends StatelessWidget {
-  final Color color;
-  final String number;
-  final String text;
-
-  const BoxContainer({this.number, this.color, this.text});
-
-  Widget build(BuildContext context) {
+  boxContainer({Color color, String number, String text}) {
     Size size = MediaQuery.of(context).size;
     return Container(
       padding: EdgeInsets.symmetric(vertical: 15),
@@ -165,14 +138,7 @@ class BoxContainer extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(30)),
         color: Styles.white2,
-        boxShadow: [
-          BoxShadow(
-            color: Styles.grey4.withOpacity(0.02),
-            spreadRadius: 7,
-            blurRadius: 7,
-            offset: Offset(0, 2), // changes position of shadow
-          ),
-        ],
+        boxShadow: [Styles.shadow()],
       ),
       child: Column(
         children: [
@@ -183,7 +149,6 @@ class BoxContainer extends StatelessWidget {
               number,
               style: TextStyle(
                   decoration: TextDecoration.none,
-                  fontFamily: GoogleFonts.rubik().fontFamily,
                   fontSize: 60,
                   fontWeight: FontWeight.w600,
                   color: color),
@@ -196,7 +161,6 @@ class BoxContainer extends StatelessWidget {
               text,
               style: TextStyle(
                   decoration: TextDecoration.none,
-                  fontFamily: GoogleFonts.rubik().fontFamily,
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                   color: Styles.grey2),

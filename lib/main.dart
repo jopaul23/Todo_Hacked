@@ -1,5 +1,5 @@
-import 'package:Todo_App/AccountPage/Functions/chart.dart';
 import 'package:Todo_App/HomePage/Widgets/mainPage.dart';
+import 'package:Todo_App/styles/styles.dart';
 import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,19 +23,28 @@ void main() async {
   runApp(ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void dispose() {
+    debugPrint("App is Closeing");
+    closeHiveBox();
+    super.dispose();
+  }
+
+  closeHiveBox() async => await Hive.close();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Todo App',
       onGenerateRoute: PageRouter.sailor.generator(),
       navigatorKey: PageRouter.sailor.navigatorKey,
-      theme: ThemeData(
-        fontFamily: GoogleFonts.rubik().fontFamily,
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+      theme: Styles.themeData(),
       home: UserTodoDetails.hiveBox.isEmpty ? WelcomeScreen() : HomePage(),
     );
   }

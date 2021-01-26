@@ -1,9 +1,9 @@
 import 'package:Todo_App/AccountPage/Functions/chart.dart';
-import 'package:Todo_App/AccountPage/Functions/user_details.dart';
-import 'package:Todo_App/Helper%20Widgets/Graph/graph.dart';
 import 'package:Todo_App/styles/styles.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+
+import 'graph.dart';
 
 class BarChartTwo extends StatefulWidget {
   final TodoChart todoChart;

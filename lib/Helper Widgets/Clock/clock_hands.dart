@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/all.dart';
 
-import 'Providers/time_provider.dart';
+import 'Functions/clock_functions.dart';
 import 'hand_hour.dart';
 
 class ClockHands extends StatelessWidget {
