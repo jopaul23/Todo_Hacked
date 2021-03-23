@@ -1,33 +1,51 @@
+import 'package:Todo_App/Database/Todo_model.dart';
 import 'package:Todo_App/Database/provider.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:sailor/sailor.dart';
 
 import '../../Styles/styles.dart';
 import '../Functions/addTodos.dart';
+import 'add_title.dart';
 import 'appBar.dart';
 import 'input_button.dart';
 import '../../Overlays/clock_overlay.dart';
 import '../../Overlays/reminder_clock_overlay.dart';
 import '../../Overlays/calender_overlay.dart';
-import '../../Helper Widgets/Clock/clock_digital_display.dart';
+import '../../Helper Widgets/Clock/Display Time/clock_digital_display.dart';
 
-class TodoAddPage extends StatefulWidget {
+class TodoAddPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final args = Sailor.args<TodoModel>(context);
+    return TodoAdd(todos: args);
+  }
+}
+
+class TodoAdd extends StatefulWidget {
+  final TodoModel todos;
+
+  const TodoAdd({Key key, this.todos}) : super(key: key);
   @override
   _TodoAddPageState createState() => _TodoAddPageState();
 }
 
-class _TodoAddPageState extends State<TodoAddPage> {
+class _TodoAddPageState extends State<TodoAdd> {
   TextEditingController _controller;
   AddTodos addTodos;
-  bool tagOverlay = false;
+  bool isUpdateTodo = false;
   OverlayEntry clockOverlay, reminderOverlay, calenderOverlay;
   @override
   void initState() {
-    _controller = TextEditingController();
-    addTodos = AddTodos(() {
-      this.setState(() {});
-    });
+    if (widget.todos == null) {
+      addTodos = AddTodos();
+    } else {
+      addTodos = AddTodos(todo: widget.todos);
+      isUpdateTodo = true;
+    }
+    _controller = TextEditingController(text: addTodos.title ?? "");
+    debugPrint(addTodos.reminder.split(":").toString());
     super.initState();
   }
 
@@ -75,30 +93,7 @@ class _TodoAddPageState extends State<TodoAddPage> {
                       ),
 
                       // TextField
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: size.width * 0.1),
-                        height: size.height * 0.06,
-                        child: TextField(
-                          autofocus: true,
-                          controller: _controller,
-                          cursorHeight: 40,
-                          onChanged: (String val) {
-                            if (val.length > 15) {
-                              _controller.text =
-                                  _controller.text.substring(0, 15);
-
-                              _controller.selection =
-                                  TextSelection.fromPosition(TextPosition(
-                                      offset: _controller.text.length));
-                            }
-                          },
-                          style: Theme.of(context).textTheme.bodyText1,
-                          decoration: InputDecoration(
-                            hintText: "Add your text",
-                          ),
-                        ),
-                      ),
+                      AddTitle(controller: _controller),
                       SizedBox(
                         height: size.height * 0.05,
                       ),
@@ -158,9 +153,11 @@ class _TodoAddPageState extends State<TodoAddPage> {
                                     onSelected: (String hour, String minute) {
                                       clockOverlay.remove();
                                       clockOverlay = null;
-                                      addTodos.updateDueDate(
-                                          context, addTodos.dueDate,
-                                          hour: hour, minute: minute);
+                                      this.setState(() {
+                                        addTodos.updateDueDate(
+                                            context, addTodos.dueDate,
+                                            hour: hour, minute: minute);
+                                      });
                                     });
                                 Overlay.of(context).insert(clockOverlay);
                               },
@@ -172,33 +169,24 @@ class _TodoAddPageState extends State<TodoAddPage> {
                             // Reminder Overlay
                             InputButton(
                               text: addTodos.reminder != null
-                                  ? addTodos.formatReminder()
+                                  ? "Remind me on " + addTodos.reminder
                                   : "Set Reminder",
                               icon: Icons.notifications,
                               buttoncolor: Styles.white3,
                               width: 300,
                               onPressed: () {
                                 reminderOverlay = createReminderOverlay(
-                                    hour: addTodos.reminder == null
-                                        ? "00"
-                                        : addTodos.reminder.split(":")[0],
-                                    minute: addTodos.reminder == null
-                                        ? "00"
-                                        : addTodos.reminder.split(":")[1],
+                                    hour: int.parse(
+                                        addTodos.reminder.split(":")[0]),
+                                    minute: int.parse(
+                                        addTodos.reminder.split(":")[1]),
                                     clock: DigitalClock.remainder,
-                                    onSelected: (Duration duration) {
+                                    onSelected: (String hour, String minute) {
                                       reminderOverlay.remove();
                                       reminderOverlay = null;
-                                      final String hour =
-                                          duration.inHours.toString().length ==
-                                                  1
-                                              ? "0${duration.inHours}"
-                                              : duration.inHours.toString();
-                                      final minute = duration.inMinutes;
+
                                       setState(() {
-                                        addTodos.reminder =
-                                            "$hour:${minute - int.parse(hour) * 60}";
-                                        print(addTodos.reminder);
+                                        addTodos.reminder = "$hour:$minute";
                                       });
                                     });
                                 Overlay.of(context).insert(reminderOverlay);
@@ -210,15 +198,16 @@ class _TodoAddPageState extends State<TodoAddPage> {
 
                             // Add task button
                             InputButton(
-                                text: "Add task",
+                                text: isUpdateTodo ? "Update Task" : "Add task",
                                 buttoncolor: Styles.t1Orange,
                                 textcolor: Styles.white3,
                                 width: 200,
                                 onPressed: () {
                                   addTodos.title = _controller.text;
-                                  print(addTodos.title);
+
                                   addTodos.add(
                                       context,
+                                      isUpdateTodo,
                                       clockOverlay == null &&
                                           reminderOverlay == null &&
                                           calenderOverlay == null);

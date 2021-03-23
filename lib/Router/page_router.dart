@@ -51,12 +51,11 @@ class PageRouter {
       ),
       SailorRoute(
         name: todoAddPage,
-        // params: [SailorParam(name: "id", isRequired: true)],
         builder: (context, args, params) {
           debugPrint("addpage  is stacked or removed");
           return Consumer(builder: (context, watch, _) {
-            final page = watch(pageStackProvider);
-            page.addWidget(TodoAddPage());
+            // final page = watch(pageStackProvider);
+            // page.addWidget();
             return TodoAddPage();
           });
         },

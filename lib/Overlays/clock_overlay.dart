@@ -1,7 +1,7 @@
+import 'package:Todo_App/Helper%20Widgets/Clock/analog_clock.dart';
 import 'package:flutter/material.dart';
 
-import '../Helper Widgets/Clock/clock_digital_display.dart';
-import '../Helper Widgets/Clock/clock_body.dart';
+import '../Helper Widgets/Clock/Display Time/clock_digital_display.dart';
 import '../Helper Widgets/Clock/Functions/clock_functions.dart';
 import '../Styles/styles.dart';
 
@@ -9,13 +9,11 @@ OverlayEntry createClockOverlay(
     {DateTime date,
     DigitalClock clock = DigitalClock.normal,
     Function(String hour, String minute) onSelected}) {
-  String hour = date.hour.toString();
-  String minute = date.minute.toString();
+  ClockController clockController = ClockController()
+    ..isBeforeNoon = date.hour < 12
+    ..updateHour(date.hour)
+    ..updateMinute(date.minute);
 
-  final bool isBeforeNoon = date.hour < 12;
-  ClockFunctions timeProvider = ClockFunctions()
-    ..updateHour(isBeforeNoon ? hour : "${int.parse(hour) - 12}", isBeforeNoon)
-    ..updateMinute(minute);
   return OverlayEntry(builder: (context) {
     return Align(
       alignment: Alignment.center,
@@ -28,18 +26,29 @@ OverlayEntry createClockOverlay(
               color: Styles.white1,
               borderRadius: const BorderRadius.all(Radius.circular(35.0)),
               boxShadow: [Styles.shadow()]),
-          child: ClockBody(
-            digitalClock: clock,
-            timeContainer: timeProvider,
-            beforeNoon: isBeforeNoon,
-            onClicked: onSelected,
-            // DateTime time;
-            // final duration =
-            //     Duration(hours: int.parse(hour), minutes: int.parse(minute));
-            // if (!date.isAfter(date))
-            //   time = date.subtract(duration);
-            // else
-            //   time = date.add(duration);
+          child: Stack(
+            children: [
+              AnalogClock(
+                  clockController: clockController,
+                  padding: const EdgeInsets.only(top: 50, left: 40.0)),
+              Align(
+                  alignment: Alignment.bottomRight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 50.0, bottom: 8.0),
+                    child: TextButton(
+                      onPressed: () {
+                        onSelected(clockController.hourInString,
+                            clockController.minuteInString);
+                      },
+                      child: Text("Ok",
+                          style: TextStyle(
+                              color: Colors.red,
+                              decoration: TextDecoration.none,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold)),
+                    ),
+                  )),
+            ],
           ),
         ),
       ),

@@ -21,9 +21,6 @@ class HomePage extends HookWidget {
     final db = useProvider(databaseProvider);
     final mode = useProvider(homePageChangeModeProvider.state);
     final changeMode = useProvider(homePageChangeModeProvider);
-    final pageStack = useProvider(pageStackProvider.state);
-    print(pageStack.length);
-    print(pageStack.last);
     // if (pageStack.last.toString() == "HomePage")
     return homePage(db, mode, changeMode, size);
   }

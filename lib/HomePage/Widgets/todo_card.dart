@@ -1,5 +1,8 @@
 import 'dart:ui';
+import 'package:Todo_App/Database/Todo_model.dart';
 import 'package:Todo_App/Overlays/clock_overlay.dart';
+import 'package:Todo_App/Router/page_router.dart';
+import 'package:Todo_App/TodoAddPage/Functions/addTodos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -7,10 +10,7 @@ import 'package:moor/moor.dart' as moor;
 
 import '../../Database/todo.dart';
 import '../../Database/provider.dart';
-import '../../Helper%20Widgets/Clock/Functions/clock_functions.dart';
 import '../../Overlays/Toast/toast_overlay.dart';
-import '../../Helper%20Widgets/Clock/clock_body.dart';
-import '../../Helper%20Widgets/Clock/clock_digital_display.dart';
 import '../Functions/homepage_todo_function.dart';
 import '../../styles/images.dart';
 import '../../styles/styles.dart';
@@ -21,15 +21,11 @@ class TodoCards extends HookWidget {
   const TodoCards({Key key, this.todo, this.onCompleted}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    debugPrint("building");
-    var clockOverlay;
-    final GlobalKey cardKey = GlobalKey();
     final db = useProvider(databaseProvider);
     final fav = useState(false);
     fav.value = todo.notificationOn;
 
     return Container(
-      key: cardKey,
       margin: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 30.0),
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       decoration: BoxDecoration(
@@ -80,7 +76,6 @@ class TodoCards extends HookWidget {
                   IconData(todo.tagIconId, fontFamily: 'MaterialIcons'),
                   color: Styles.t1Orange,
                 ),
-
                 if (todo.dueDate.isBefore(DateTime.now()))
                   Container(
                     padding: const EdgeInsets.all(5.0),
@@ -123,9 +118,7 @@ class TodoCards extends HookWidget {
                       height: 20,
                       width: 20,
                     )),
-
                 const SizedBox(width: 5.0),
-                // Icon(Icons.check_box_outline_blank_rounded)
                 Checkbox(
                   onChanged: (bool value) async {
                     final updateTodo = TodosCompanion(
@@ -163,13 +156,15 @@ class TodoCards extends HookWidget {
                 const SizedBox(width: 5.0),
                 TextButton(
                   onPressed: () {
-                    clockOverlay = createClockOverlay(
-                        date: todo.dueDate,
-                        onSelected: (String hour, String minute) {
-                          updateDueDate(context, db, clockOverlay,
-                              hour: hour, minute: minute);
-                        });
-                    Overlay.of(context).insert(clockOverlay);
+                    PageRouter.sailor.navigate(PageRouter.todoAddPage,
+                        args: TodoModel(
+                            id: todo.id,
+                            title: todo.title,
+                            dueDate: todo.dueDate,
+                            tagIconId: todo.tagIconId,
+                            completed: todo.completed,
+                            notificationOn: todo.notificationOn,
+                            remainderTime: todo.remainderTime));
                   },
                   child: Text(
                     HomePageTodoFunction.formatDueTime(todo.dueDate),
