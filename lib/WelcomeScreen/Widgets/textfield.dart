@@ -11,6 +11,10 @@ class InputTextField extends HookWidget {
     const int maxLength = 8;
     final noCharacters = useState(0);
     final textController = useTextEditingController();
+    const TextStyle noCharacterStyle =
+        TextStyle(fontWeight: FontWeight.bold, color: Styles.t1Orange);
+    const TextStyle textFieldStyle =
+        TextStyle(color: Styles.white1, fontSize: 25);
 
     return Column(
       children: [
@@ -32,8 +36,7 @@ class InputTextField extends HookWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     "${noCharacters.value}/$maxLength",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Styles.t1Orange),
+                    style: noCharacterStyle,
                   ),
                 ),
               ),
@@ -49,29 +52,30 @@ class InputTextField extends HookWidget {
             cursorColor: Styles.white1,
             controller: textController,
             onChanged: (String val) {
-              if (val.length > maxLength) {
-                // to limit the number of characters to the maxLength..
-                textController.text = textController.text.substring(0, 8);
-                textController.selection = TextSelection.fromPosition(
-                    TextPosition(offset: textController.text.length));
-              } else
-                noCharacters.value = val.length;
-              onChanged(textController.text);
+              onChange(val, textController, noCharacters, maxLength);
             },
             textAlign: TextAlign.center,
-            style: TextStyle(color: Styles.white1, fontSize: 25),
+            style: textFieldStyle,
             decoration: InputDecoration(
               counterText: "",
               hintText: labelText,
-              hintStyle: TextStyle(
-                color: Styles.white1.withOpacity(.59),
-                fontSize: 25,
-              ),
+              // hintStyle: Theme.of(context).tex,
               border: InputBorder.none,
             ),
           ),
         ),
       ],
     );
+  }
+
+  void onChange(String val, textController, noCharacters, maxLength) {
+    if (val.length > maxLength) {
+      // to limit the number of characters to the maxLength..
+      textController.text = textController.text.substring(0, 8);
+      textController.selection = TextSelection.fromPosition(
+          TextPosition(offset: textController.text.length));
+    } else
+      noCharacters.value = val.length;
+    onChanged(textController.text);
   }
 }

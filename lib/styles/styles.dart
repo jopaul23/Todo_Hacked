@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 abstract class Styles {
-  static Gradient t1Gradient = LinearGradient(
+  static const Gradient t1Gradient = LinearGradient(
     begin: Alignment.topRight,
     end: Alignment.bottomLeft,
     colors: [
@@ -10,25 +10,25 @@ abstract class Styles {
       Color(0xffffd100),
     ],
   );
-  static Color t1Orange = Color(0xfff6961e);
+  static const Color t1Orange = Color(0xfff6961e);
 
-  static Color cream = Color(0xfff2f6e7);
+  static const Color cream = Color(0xfff2f6e7);
 
-  static Color white1 = Color(0xffffffff);
-  static Color white2 = Color(0xfff6f6f6);
-  static Color white3 = Color(0xfff2f2f2);
+  static const Color white1 = Color(0xffffffff);
+  static const Color white2 = Color(0xfff6f6f6);
+  static const Color white3 = Color(0xfff2f2f2);
 
-  static Color grey1 = Color(0xffb3b3b3);
-  static Color grey2 = Color(0xff666666);
-  static Color grey3 = Color(0xff4d4d4d);
-  static Color grey4 = Color(0xff333333);
+  static const Color grey1 = Color(0xffb3b3b3);
+  static const Color grey2 = Color(0xff666666);
+  static const Color grey3 = Color(0xff4d4d4d);
+  static const Color grey4 = Color(0xff333333);
   static BoxShadow shadow({color}) => BoxShadow(
         color: color ?? Styles.grey4.withOpacity(0.02),
         spreadRadius: 10,
         blurRadius: 7,
         offset: Offset(0, 2), // changes position of shadow
       );
-  static Color red = Color(0xffff4a59);
+  static const Color red = Color(0xffff4a59);
 
   static ThemeData themeData() => ThemeData(
       fontFamily: GoogleFonts.rubik().fontFamily,
