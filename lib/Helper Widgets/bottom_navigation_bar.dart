@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 
 class NavigationBar extends StatelessWidget {
   final int pageNum;
-  const NavigationBar({@required this.pageNum});
+  final Function() onFavClicked, onHomeClicked;
+  const NavigationBar(
+      {@required this.pageNum, this.onFavClicked, this.onHomeClicked});
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
@@ -30,6 +32,7 @@ class NavigationBar extends StatelessWidget {
         children: [
           TextButton(
             onPressed: () {
+              if (onHomeClicked != null) onHomeClicked();
               if (pageNum != 1) PageRouter.sailor.navigate(PageRouter.homePage);
             },
             child: Container(
@@ -44,10 +47,7 @@ class NavigationBar extends StatelessWidget {
             ),
           ),
           TextButton(
-            onPressed: () {
-              if (pageNum != 2)
-                PageRouter.sailor.navigate(PageRouter.favorites);
-            },
+            onPressed: onFavClicked,
             child: Container(
               width: size.width / 5.1,
               child: Image(

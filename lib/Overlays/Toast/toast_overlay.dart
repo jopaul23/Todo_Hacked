@@ -1,8 +1,8 @@
 import 'dart:async';
-
-import 'package:Todo_App/Helper%20Widgets/Toast/toastWidget.dart';
-import 'package:Todo_App/styles/styles.dart';
 import 'package:flutter/material.dart';
+
+import '../../Styles/styles.dart';
+import 'toastWidget.dart';
 
 class Toast {
   OverlayEntry _toastOverlay;

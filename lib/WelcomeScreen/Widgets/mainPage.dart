@@ -1,18 +1,17 @@
-import 'package:Todo_App/Helper%20Widgets/button.dart';
-import 'package:Todo_App/Helper%20Widgets/textfield.dart';
-import 'package:Todo_App/Router/page_router.dart';
 import 'package:flutter/material.dart';
-import 'package:Todo_App/styles/styles.dart';
-import 'package:Todo_App/styles/images.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
-class WelcomeScreen extends StatefulWidget {
-  @override
-  _WelcomeScreenState createState() => _WelcomeScreenState();
-}
+import '../../AccountPage/Functions/chart.dart';
+import '../../Overlays/Toast/toast_overlay.dart';
+import 'textfield.dart';
+import '../../Helper%20Widgets/button.dart';
+import '../../Router/page_router.dart';
+import '../../styles/styles.dart';
 
-class _WelcomeScreenState extends State<WelcomeScreen> {
+class WelcomeScreen extends HookWidget {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final name = useState("");
     return Scaffold(
       body: ListView(
         padding: EdgeInsets.zero,
@@ -48,6 +47,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ),
                 InputTextField(
                   labelText: "Nickname",
+                  onChanged: (val) {
+                    print(val);
+                    name.value = val;
+                  },
                 ),
                 SizedBox(
                   height: size.height * 0.1,
@@ -55,7 +58,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 Button(
                   text: "CONTINUE",
                   onPressed: () {
-                    PageRouter.sailor.navigate(PageRouter.homePage);
+                    onToogleContinueBtn(context, name.value);
                   },
                   textcolor: Styles.t1Orange,
                   buttoncolor: Styles.white1,
@@ -66,5 +69,15 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         ],
       ),
     );
+  }
+
+  void onToogleContinueBtn(context, String name) {
+    if (name.isNotEmpty) {
+      TodoChart.createBox(name);
+
+      PageRouter.sailor.navigate(PageRouter.homePage);
+    } else {
+      Toast("Nick Name should not be empty")..showToast(context);
+    }
   }
 }

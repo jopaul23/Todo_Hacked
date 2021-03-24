@@ -1,0 +1,33 @@
+import 'package:Todo_App/AccountPage/Functions/user_details.dart';
+
+class TodoChart {
+  int pendingTask = 0, completedTask = 0;
+  var _db;
+  int todayPendingTask, todayCompletedTask;
+
+  Future init() async {
+    _db = UserTodoDetails.database;
+
+    pendingTask = (await _db.getPendingTask()).length;
+    completedTask = (await _db.getCompletedTask()).length;
+    todayPendingTask = (await _db.getTodyaPendingTask()).length;
+    todayCompletedTask = (await _db.getTodaysCompletedTask()).length;
+  }
+
+  static createBox(String username) {
+    UserTodoDetails userTodoDetails = UserTodoDetails()
+      ..userName = username
+      ..lastModifedDate = DateTime.now().subtract(Duration(days: 1))
+      ..userLoggedDate = DateTime.now();
+    UserTodoDetails.hiveBox.put(0, userTodoDetails);
+  }
+
+  void updateChart(List newData) {
+    final UserTodoDetails details = UserTodoDetails.hiveBox.getAt(0);
+    details.chartData = newData;
+    details.lastModifedDate = DateTime.now();
+    details.save();
+  }
+
+  UserTodoDetails getChartData() => UserTodoDetails.hiveBox.getAt(0);
+}

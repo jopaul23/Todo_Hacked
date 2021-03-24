@@ -1,10 +1,15 @@
+import 'package:Todo_App/AccountPage/Functions/chart.dart';
 import 'package:Todo_App/styles/styles.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
+import 'graph.dart';
+
 class BarChartTwo extends StatefulWidget {
-  final List<List<double>> weeklyData;
-  const BarChartTwo({Key key, @required this.weeklyData}) : super(key: key);
+  final TodoChart todoChart;
+
+  const BarChartTwo({Key key, this.todoChart}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => BarChartTwoState();
 }
@@ -14,6 +19,23 @@ class BarChartTwoState extends State<BarChartTwo> {
   final Color rightBarColor = const Color(0xffff5182);
   final double width = 9;
   int touchedGroupIndex;
+  List weeklyData = [];
+  Graph graph = Graph();
+  @override
+  void initState() {
+    weeklyData = graph.graphValues(widget.todoChart);
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant BarChartTwo oldWidget) {
+    setState(() {
+      print("fsds ${widget.todoChart.pendingTask}");
+      weeklyData = graph.graphValues(widget.todoChart);
+    });
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +78,7 @@ class BarChartTwoState extends State<BarChartTwo> {
 
   BarChartData _mainBarData() {
     return BarChartData(
-      maxY: 20,
+      maxY: graph.yMultiple.toDouble() * 4,
       titlesData: _buildAxes(),
       borderData: FlBorderData(
         show: true,
@@ -89,19 +111,19 @@ class BarChartTwoState extends State<BarChartTwo> {
         getTitles: (double value) {
           switch (value.toInt()) {
             case 0:
-              return 'Mn';
+              return "${graph.n}";
             case 1:
-              return 'Te';
+              return "${graph.n + 1}";
             case 2:
-              return 'Wd';
+              return "${graph.n + 2}";
             case 3:
-              return 'Tu';
+              return "${graph.n + 3}";
             case 4:
-              return 'Fr';
+              return "${graph.n + 4}";
             case 5:
-              return 'St';
+              return "${graph.n + 5}";
             case 6:
-              return 'Sn';
+              return "${graph.n + 6}";
             default:
               return '';
           }
@@ -114,16 +136,16 @@ class BarChartTwoState extends State<BarChartTwo> {
         margin: 10,
         reservedSize: 14,
         getTitles: (value) {
-          if (value == 0) {
-            return '0';
-          } else if (value == 5) {
-            return '5';
-          } else if (value == 10) {
-            return '10';
-          } else if (value == 15) {
-            return '15';
-          } else if (value == 20) {
-            return '20';
+          if (value == graph.yMultiple * 0) {
+            return '${graph.yMultiple * 0}';
+          } else if (value == graph.yMultiple * 1) {
+            return '${graph.yMultiple * 1}';
+          } else if (value == graph.yMultiple * 2) {
+            return '${graph.yMultiple * 2}';
+          } else if (value == graph.yMultiple * 3) {
+            return '${graph.yMultiple * 3}';
+          } else if (value == graph.yMultiple * 4) {
+            return '${graph.yMultiple * 4}';
           } else {
             return '';
           }
@@ -135,9 +157,18 @@ class BarChartTwoState extends State<BarChartTwo> {
   // Function to draw all the bars.
   List<BarChartGroupData> _buildAllBars() {
     return List.generate(
+<<<<<<< HEAD:lib/Helper Widgets/Graph/f1_graph.dart
       widget.weeklyData.length, // y1                 // y2
       (index) => _buildBar(
           index, widget.weeklyData[index][0], widget.weeklyData[index][1]),
+=======
+      weeklyData.length, // y1                 // y2
+      (index) => _buildBar(
+        index,
+        weeklyData[index][0].toDouble(),
+        weeklyData[index][1].toDouble(),
+      ),
+>>>>>>> 312bf3b05ed95335dfb7c807b80f7d52fed7a1b7:lib/AccountPage/Widgets/Graph/f1_graph.dart
     );
   }
 

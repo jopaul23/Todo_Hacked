@@ -1,81 +1,104 @@
-import 'package:Todo_App/Database/todo.dart';
-import 'package:Todo_App/Helper%20Widgets/Toast/toast.dart';
-import 'package:Todo_App/Notification/alarm_manager.dart';
-import 'package:Todo_App/Router/page_router.dart';
+import 'package:Todo_App/AccountPage/Functions/user_details.dart';
+import 'package:Todo_App/Database/Todo_model.dart';
 import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:moor/moor.dart' as moor;
+
+import '../../Database/todo.dart';
+import '../../Notification/alarm_callback.dart';
+import '../../Router/page_router.dart';
+import '../../Overlays/Toast/toast_overlay.dart';
 
 class AddTodos {
-  dynamic db;
-  BuildContext context;
-  AddTodos(context);
-  String validateTitleText(String text) {
-    if (text.isEmpty)
-      return "Title should not be empty";
-    else if (text.length > 15) return "Title character exceeds";
-    return null;
+  var db; //database Reference
+  IconData tagIcon = Icons.person;
+  DateTime dueDate = DateTime.now();
+  final TodoModel todo;
+
+  String title, reminder = "00:00";
+  AddTodos({this.todo}) {
+    db = UserTodoDetails.database;
+    if (todo != null) {
+      title = todo.title;
+      dueDate = todo.dueDate;
+      tagIcon = IconData(todo.tagIconId);
+      reminder = "${todo.remainderTime.hour}:${todo.remainderTime.minute}";
+    }
   }
 
-  String formatDate(
-      DateTime date, String hour, String minute, bool isBeforeNoon) {
-    final now = DateTime.now();
+  void updateDueDate(BuildContext context, DateTime date,
+      {String hour, String minute}) {
+    String _addZeros(String text) {
+      if (text.length == 1) return "0" + text;
+      return text;
+    }
 
-    if (!isBeforeNoon) {
-      if (now.day < date.day ||
-          now.hour <= int.parse(hour) + 12 && now.minute <= int.parse(minute)) {
-        // checks if the time is before Noon ie AM
-        if (hour != "12")
-          hour = (12 + int.parse(hour)).toString();
-        else if (hour == "12") // if it AM then change 12 to 00
-          hour = "00";
-        String month = date.month.toString();
-        if (month.length == 1) month = "0" + month;
-        String day = date.day.toString();
-        if (day.length == 1) day = "0" + day;
-        String dateString = "${date.year}-$month-$day $hour:$minute";
-        return dateString;
+    final month = _addZeros(date.month.toString());
+    final day = _addZeros(date.day.toString());
+    hour = hour ?? _addZeros(date.hour.toString());
+    minute = minute ?? _addZeros(date.minute.toString());
+
+    final String dateString = "${date.year}-$month-$day $hour:$minute:00";
+    dueDate = DateTime.parse(dateString);
+  }
+
+  _updateData() => TodosCompanion(
+      id: moor.Value(todo.id),
+      tagIconId: moor.Value(tagIcon.codePoint),
+      title: moor.Value(title),
+      dueDate: moor.Value(dueDate),
+      remainderTime: moor.Value(DateTime.now().add(Duration(
+          hours: int.parse(reminder.split(":")[0]),
+          minutes: int.parse(reminder.split(":")[1])))),
+      notificationOn: moor.Value(todo.notificationOn),
+      completed: moor.Value(todo.completed));
+
+  _addData() => TodosCompanion(
+      tagIconId: moor.Value(tagIcon.codePoint),
+      title: moor.Value(title),
+      remainderTime: moor.Value(DateTime.now().add(Duration(
+          hours: int.parse(reminder.split(":")[0]),
+          minutes: int.parse(reminder.split(":")[1])))),
+      dueDate: moor.Value(dueDate),
+      notificationOn: moor.Value(false));
+
+  void add(
+      BuildContext context, bool shouldUpdate, bool overlayWindowClosed) async {
+    String errorMsg = "";
+    if (!overlayWindowClosed)
+      errorMsg = "Close the current window";
+    else if (title == null || title.isEmpty) {
+      errorMsg = "Title should not be empty";
+    }
+    if (dueDate.isBefore(DateTime.now()))
+      errorMsg = "Oops! DueDate cannot be past";
+
+    if (errorMsg.isEmpty) {
+      var todo;
+
+      if (shouldUpdate) {
+        todo = _updateData();
+        await db.updateTodos(todo);
+      } else {
+        todo = _addData();
+        await db.insertTodos(todo);
       }
-      showError();
-    } else if (now.day < date.day ||
-        now.hour <= int.parse(hour) && now.minute <= int.parse(minute)) {
-    } else
-      showError();
-    return null;
-  }
+      final result = await db.getTodo(todo);
+      int id = result[result.length - 1].id;
+      AndroidAlarmManager.oneShotAt(
+          todo.remainderTime.value, id, AlarmCallback.alarmCallback,
+          exact: true,
+          allowWhileIdle: true,
+          wakeup: true,
+          rescheduleOnReboot: true,
+          alarmClock: true);
 
-  void showError() {
-    const String errorMsg = "Time should greater than current time";
-    Toast toast = Toast(errorMsg);
-    toast.showToast(context);
-  }
-
-  _alarmCallback() {
-    print("[*] Called from AlarmManager");
-    NotificationManager n = new NotificationManager();
-    n.initNotificationManager();
-    n.showNotificationWithDefaultSound("Title", "This is the body");
-
-    return;
-  }
-
-  void add(TodosCompanion todo) {
-    String message = validateTitleText(todo.title.value);
-    if (message == null) {
-      db.insertTodos(todo);
-      // _alarmCallback();
-      // AndroidAlarmManager.oneShotAt(
-      //         DateTime.now().add(Duration(seconds: 5)), 0, _alarmCallback,
-      //         exact: true,
-      //         allowWhileIdle: true,
-      //         wakeup: true,
-      //         rescheduleOnReboot: true,
-      //         alarmClock: true);
-
-      Toast toast = Toast("Todo Added ");
+      Toast toast = Toast(shouldUpdate ? "Updated Task" : "Todo Added ");
       toast.showToast(context);
       PageRouter.sailor.navigate(PageRouter.homePage);
     } else {
-      Toast toast = Toast("$message");
+      Toast toast = Toast("$errorMsg");
       toast.showToast(context);
     }
   }

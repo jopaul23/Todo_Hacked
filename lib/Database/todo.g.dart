@@ -10,17 +10,15 @@ part of 'todo.dart';
 class Todo extends DataClass implements Insertable<Todo> {
   final int id;
   final String title;
-  final String tagName;
-  final String tagColor;
-  final String remainderTime;
+  final int tagIconId;
+  final DateTime remainderTime;
   final DateTime dueDate;
   final bool completed;
   final bool notificationOn;
   Todo(
       {@required this.id,
       @required this.title,
-      @required this.tagName,
-      @required this.tagColor,
+      @required this.tagIconId,
       this.remainderTime,
       this.dueDate,
       @required this.completed,
@@ -36,11 +34,9 @@ class Todo extends DataClass implements Insertable<Todo> {
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       title:
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}title']),
-      tagName: stringType
-          .mapFromDatabaseResponse(data['${effectivePrefix}tag_name']),
-      tagColor: stringType
-          .mapFromDatabaseResponse(data['${effectivePrefix}tag_color']),
-      remainderTime: stringType
+      tagIconId: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}tag_icon_id']),
+      remainderTime: dateTimeType
           .mapFromDatabaseResponse(data['${effectivePrefix}remainder_time']),
       dueDate: dateTimeType
           .mapFromDatabaseResponse(data['${effectivePrefix}due_date']),
@@ -59,14 +55,11 @@ class Todo extends DataClass implements Insertable<Todo> {
     if (!nullToAbsent || title != null) {
       map['title'] = Variable<String>(title);
     }
-    if (!nullToAbsent || tagName != null) {
-      map['tag_name'] = Variable<String>(tagName);
-    }
-    if (!nullToAbsent || tagColor != null) {
-      map['tag_color'] = Variable<String>(tagColor);
+    if (!nullToAbsent || tagIconId != null) {
+      map['tag_icon_id'] = Variable<int>(tagIconId);
     }
     if (!nullToAbsent || remainderTime != null) {
-      map['remainder_time'] = Variable<String>(remainderTime);
+      map['remainder_time'] = Variable<DateTime>(remainderTime);
     }
     if (!nullToAbsent || dueDate != null) {
       map['due_date'] = Variable<DateTime>(dueDate);
@@ -85,12 +78,9 @@ class Todo extends DataClass implements Insertable<Todo> {
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       title:
           title == null && nullToAbsent ? const Value.absent() : Value(title),
-      tagName: tagName == null && nullToAbsent
+      tagIconId: tagIconId == null && nullToAbsent
           ? const Value.absent()
-          : Value(tagName),
-      tagColor: tagColor == null && nullToAbsent
-          ? const Value.absent()
-          : Value(tagColor),
+          : Value(tagIconId),
       remainderTime: remainderTime == null && nullToAbsent
           ? const Value.absent()
           : Value(remainderTime),
@@ -112,9 +102,8 @@ class Todo extends DataClass implements Insertable<Todo> {
     return Todo(
       id: serializer.fromJson<int>(json['id']),
       title: serializer.fromJson<String>(json['title']),
-      tagName: serializer.fromJson<String>(json['tagName']),
-      tagColor: serializer.fromJson<String>(json['tagColor']),
-      remainderTime: serializer.fromJson<String>(json['remainderTime']),
+      tagIconId: serializer.fromJson<int>(json['tagIconId']),
+      remainderTime: serializer.fromJson<DateTime>(json['remainderTime']),
       dueDate: serializer.fromJson<DateTime>(json['dueDate']),
       completed: serializer.fromJson<bool>(json['completed']),
       notificationOn: serializer.fromJson<bool>(json['notificationOn']),
@@ -126,9 +115,8 @@ class Todo extends DataClass implements Insertable<Todo> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'title': serializer.toJson<String>(title),
-      'tagName': serializer.toJson<String>(tagName),
-      'tagColor': serializer.toJson<String>(tagColor),
-      'remainderTime': serializer.toJson<String>(remainderTime),
+      'tagIconId': serializer.toJson<int>(tagIconId),
+      'remainderTime': serializer.toJson<DateTime>(remainderTime),
       'dueDate': serializer.toJson<DateTime>(dueDate),
       'completed': serializer.toJson<bool>(completed),
       'notificationOn': serializer.toJson<bool>(notificationOn),
@@ -138,17 +126,15 @@ class Todo extends DataClass implements Insertable<Todo> {
   Todo copyWith(
           {int id,
           String title,
-          String tagName,
-          String tagColor,
-          String remainderTime,
+          int tagIconId,
+          DateTime remainderTime,
           DateTime dueDate,
           bool completed,
           bool notificationOn}) =>
       Todo(
         id: id ?? this.id,
         title: title ?? this.title,
-        tagName: tagName ?? this.tagName,
-        tagColor: tagColor ?? this.tagColor,
+        tagIconId: tagIconId ?? this.tagIconId,
         remainderTime: remainderTime ?? this.remainderTime,
         dueDate: dueDate ?? this.dueDate,
         completed: completed ?? this.completed,
@@ -159,8 +145,7 @@ class Todo extends DataClass implements Insertable<Todo> {
     return (StringBuffer('Todo(')
           ..write('id: $id, ')
           ..write('title: $title, ')
-          ..write('tagName: $tagName, ')
-          ..write('tagColor: $tagColor, ')
+          ..write('tagIconId: $tagIconId, ')
           ..write('remainderTime: $remainderTime, ')
           ..write('dueDate: $dueDate, ')
           ..write('completed: $completed, ')
@@ -175,23 +160,18 @@ class Todo extends DataClass implements Insertable<Todo> {
       $mrjc(
           title.hashCode,
           $mrjc(
-              tagName.hashCode,
+              tagIconId.hashCode,
               $mrjc(
-                  tagColor.hashCode,
-                  $mrjc(
-                      remainderTime.hashCode,
-                      $mrjc(
-                          dueDate.hashCode,
-                          $mrjc(completed.hashCode,
-                              notificationOn.hashCode))))))));
+                  remainderTime.hashCode,
+                  $mrjc(dueDate.hashCode,
+                      $mrjc(completed.hashCode, notificationOn.hashCode)))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is Todo &&
           other.id == this.id &&
           other.title == this.title &&
-          other.tagName == this.tagName &&
-          other.tagColor == this.tagColor &&
+          other.tagIconId == this.tagIconId &&
           other.remainderTime == this.remainderTime &&
           other.dueDate == this.dueDate &&
           other.completed == this.completed &&
@@ -201,17 +181,15 @@ class Todo extends DataClass implements Insertable<Todo> {
 class TodosCompanion extends UpdateCompanion<Todo> {
   final Value<int> id;
   final Value<String> title;
-  final Value<String> tagName;
-  final Value<String> tagColor;
-  final Value<String> remainderTime;
+  final Value<int> tagIconId;
+  final Value<DateTime> remainderTime;
   final Value<DateTime> dueDate;
   final Value<bool> completed;
   final Value<bool> notificationOn;
   const TodosCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
-    this.tagName = const Value.absent(),
-    this.tagColor = const Value.absent(),
+    this.tagIconId = const Value.absent(),
     this.remainderTime = const Value.absent(),
     this.dueDate = const Value.absent(),
     this.completed = const Value.absent(),
@@ -220,21 +198,18 @@ class TodosCompanion extends UpdateCompanion<Todo> {
   TodosCompanion.insert({
     this.id = const Value.absent(),
     @required String title,
-    @required String tagName,
-    @required String tagColor,
+    @required int tagIconId,
     this.remainderTime = const Value.absent(),
     this.dueDate = const Value.absent(),
     this.completed = const Value.absent(),
     this.notificationOn = const Value.absent(),
   })  : title = Value(title),
-        tagName = Value(tagName),
-        tagColor = Value(tagColor);
+        tagIconId = Value(tagIconId);
   static Insertable<Todo> custom({
     Expression<int> id,
     Expression<String> title,
-    Expression<String> tagName,
-    Expression<String> tagColor,
-    Expression<String> remainderTime,
+    Expression<int> tagIconId,
+    Expression<DateTime> remainderTime,
     Expression<DateTime> dueDate,
     Expression<bool> completed,
     Expression<bool> notificationOn,
@@ -242,8 +217,7 @@ class TodosCompanion extends UpdateCompanion<Todo> {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (title != null) 'title': title,
-      if (tagName != null) 'tag_name': tagName,
-      if (tagColor != null) 'tag_color': tagColor,
+      if (tagIconId != null) 'tag_icon_id': tagIconId,
       if (remainderTime != null) 'remainder_time': remainderTime,
       if (dueDate != null) 'due_date': dueDate,
       if (completed != null) 'completed': completed,
@@ -254,17 +228,15 @@ class TodosCompanion extends UpdateCompanion<Todo> {
   TodosCompanion copyWith(
       {Value<int> id,
       Value<String> title,
-      Value<String> tagName,
-      Value<String> tagColor,
-      Value<String> remainderTime,
+      Value<int> tagIconId,
+      Value<DateTime> remainderTime,
       Value<DateTime> dueDate,
       Value<bool> completed,
       Value<bool> notificationOn}) {
     return TodosCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
-      tagName: tagName ?? this.tagName,
-      tagColor: tagColor ?? this.tagColor,
+      tagIconId: tagIconId ?? this.tagIconId,
       remainderTime: remainderTime ?? this.remainderTime,
       dueDate: dueDate ?? this.dueDate,
       completed: completed ?? this.completed,
@@ -281,14 +253,11 @@ class TodosCompanion extends UpdateCompanion<Todo> {
     if (title.present) {
       map['title'] = Variable<String>(title.value);
     }
-    if (tagName.present) {
-      map['tag_name'] = Variable<String>(tagName.value);
-    }
-    if (tagColor.present) {
-      map['tag_color'] = Variable<String>(tagColor.value);
+    if (tagIconId.present) {
+      map['tag_icon_id'] = Variable<int>(tagIconId.value);
     }
     if (remainderTime.present) {
-      map['remainder_time'] = Variable<String>(remainderTime.value);
+      map['remainder_time'] = Variable<DateTime>(remainderTime.value);
     }
     if (dueDate.present) {
       map['due_date'] = Variable<DateTime>(dueDate.value);
@@ -307,8 +276,7 @@ class TodosCompanion extends UpdateCompanion<Todo> {
     return (StringBuffer('TodosCompanion(')
           ..write('id: $id, ')
           ..write('title: $title, ')
-          ..write('tagName: $tagName, ')
-          ..write('tagColor: $tagColor, ')
+          ..write('tagIconId: $tagIconId, ')
           ..write('remainderTime: $remainderTime, ')
           ..write('dueDate: $dueDate, ')
           ..write('completed: $completed, ')
@@ -336,36 +304,33 @@ class $TodosTable extends Todos with TableInfo<$TodosTable, Todo> {
   @override
   GeneratedTextColumn get title => _title ??= _constructTitle();
   GeneratedTextColumn _constructTitle() {
-    return GeneratedTextColumn('title', $tableName, false,
-        minTextLength: 3, maxTextLength: 16);
+    return GeneratedTextColumn(
+      'title',
+      $tableName,
+      false,
+    );
   }
 
-  final VerificationMeta _tagNameMeta = const VerificationMeta('tagName');
-  GeneratedTextColumn _tagName;
+  final VerificationMeta _tagIconIdMeta = const VerificationMeta('tagIconId');
+  GeneratedIntColumn _tagIconId;
   @override
-  GeneratedTextColumn get tagName => _tagName ??= _constructTagName();
-  GeneratedTextColumn _constructTagName() {
-    return GeneratedTextColumn('tag_name', $tableName, false,
-        minTextLength: 1, maxTextLength: 6);
-  }
-
-  final VerificationMeta _tagColorMeta = const VerificationMeta('tagColor');
-  GeneratedTextColumn _tagColor;
-  @override
-  GeneratedTextColumn get tagColor => _tagColor ??= _constructTagColor();
-  GeneratedTextColumn _constructTagColor() {
-    return GeneratedTextColumn('tag_color', $tableName, false,
-        minTextLength: 1, maxTextLength: 7);
+  GeneratedIntColumn get tagIconId => _tagIconId ??= _constructTagIconId();
+  GeneratedIntColumn _constructTagIconId() {
+    return GeneratedIntColumn(
+      'tag_icon_id',
+      $tableName,
+      false,
+    );
   }
 
   final VerificationMeta _remainderTimeMeta =
       const VerificationMeta('remainderTime');
-  GeneratedTextColumn _remainderTime;
+  GeneratedDateTimeColumn _remainderTime;
   @override
-  GeneratedTextColumn get remainderTime =>
+  GeneratedDateTimeColumn get remainderTime =>
       _remainderTime ??= _constructRemainderTime();
-  GeneratedTextColumn _constructRemainderTime() {
-    return GeneratedTextColumn(
+  GeneratedDateTimeColumn _constructRemainderTime() {
+    return GeneratedDateTimeColumn(
       'remainder_time',
       $tableName,
       true,
@@ -401,20 +366,12 @@ class $TodosTable extends Todos with TableInfo<$TodosTable, Todo> {
       _notificationOn ??= _constructNotificationOn();
   GeneratedBoolColumn _constructNotificationOn() {
     return GeneratedBoolColumn('notification_on', $tableName, false,
-        defaultValue: Constant(false));
+        defaultValue: Constant(true));
   }
 
   @override
-  List<GeneratedColumn> get $columns => [
-        id,
-        title,
-        tagName,
-        tagColor,
-        remainderTime,
-        dueDate,
-        completed,
-        notificationOn
-      ];
+  List<GeneratedColumn> get $columns =>
+      [id, title, tagIconId, remainderTime, dueDate, completed, notificationOn];
   @override
   $TodosTable get asDslTable => this;
   @override
@@ -435,17 +392,11 @@ class $TodosTable extends Todos with TableInfo<$TodosTable, Todo> {
     } else if (isInserting) {
       context.missing(_titleMeta);
     }
-    if (data.containsKey('tag_name')) {
-      context.handle(_tagNameMeta,
-          tagName.isAcceptableOrUnknown(data['tag_name'], _tagNameMeta));
+    if (data.containsKey('tag_icon_id')) {
+      context.handle(_tagIconIdMeta,
+          tagIconId.isAcceptableOrUnknown(data['tag_icon_id'], _tagIconIdMeta));
     } else if (isInserting) {
-      context.missing(_tagNameMeta);
-    }
-    if (data.containsKey('tag_color')) {
-      context.handle(_tagColorMeta,
-          tagColor.isAcceptableOrUnknown(data['tag_color'], _tagColorMeta));
-    } else if (isInserting) {
-      context.missing(_tagColorMeta);
+      context.missing(_tagIconIdMeta);
     }
     if (data.containsKey('remainder_time')) {
       context.handle(

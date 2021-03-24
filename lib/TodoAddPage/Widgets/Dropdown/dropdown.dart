@@ -4,15 +4,17 @@ import 'package:Todo_App/styles/styles.dart';
 import 'arrow_clipper.dart';
 
 class SimpleAccountMenu extends StatefulWidget {
-  final List<Icon> icons;
+  final List<IconData> icons;
   final BorderRadius borderRadius;
   final Color backgroundColor;
   final Color iconColor;
+  final Function(OverlayEntry) overlayAdded;
   final ValueChanged<int> onChange;
 
   const SimpleAccountMenu({
     Key key,
     this.icons,
+    this.overlayAdded,
     this.borderRadius,
     this.backgroundColor = const Color(0xfff6961e),
     this.iconColor = Colors.black,
@@ -32,11 +34,11 @@ class _SimpleAccountMenuState extends State<SimpleAccountMenu>
   OverlayEntry _overlayEntry;
   BorderRadius _borderRadius;
   AnimationController _animationController;
-  Icon selectedIcon;
+  IconData selectedIcon;
 
   @override
   void initState() {
-    selectedIcon = Icon(Icons.person);
+    selectedIcon = Icons.person;
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 250),
@@ -46,8 +48,8 @@ class _SimpleAccountMenuState extends State<SimpleAccountMenu>
     super.initState();
   }
 
-  void iconDataSwap(List<Icon> icons, int index) {
-    Icon tempIcon = selectedIcon;
+  void iconDataSwap(List<IconData> icons, int index) {
+    IconData tempIcon = selectedIcon;
     selectedIcon = icons[index];
     icons[index] = tempIcon;
   }
@@ -74,6 +76,7 @@ class _SimpleAccountMenuState extends State<SimpleAccountMenu>
     findButton();
     _animationController.forward();
     _overlayEntry = _overlayEntryBuilder();
+    widget.overlayAdded(_overlayEntry);
     Overlay.of(context).insert(_overlayEntry);
     isMenuOpen = !isMenuOpen;
   }
@@ -87,12 +90,14 @@ class _SimpleAccountMenuState extends State<SimpleAccountMenu>
         borderRadius: _borderRadius,
       ),
       child: IconButton(
-        icon: selectedIcon,
+        icon: Icon(selectedIcon),
         color: Styles.white1,
         onPressed: () {
           if (isMenuOpen) {
+            // widget.overLayChanged(false);
             closeMenu();
           } else {
+            // widget.overLayChanged(true);
             openMenu();
           }
         },
@@ -151,7 +156,7 @@ class _SimpleAccountMenuState extends State<SimpleAccountMenu>
                             child: Container(
                               width: buttonSize.width,
                               height: buttonSize.height,
-                              child: widget.icons[index],
+                              child: Icon(widget.icons[index]),
                             ),
                           );
                         }),

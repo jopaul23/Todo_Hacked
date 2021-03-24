@@ -1,9 +1,9 @@
 import 'dart:math' as math;
 
-import 'package:Todo_App/styles/styles.dart';
 import 'package:flutter/material.dart';
 
-import 'Providers/time_provider.dart';
+import '../../styles/styles.dart';
+import 'Functions/clock_functions.dart';
 
 class ClockDialPainter extends CustomPainter {
   final Paint tickPaint;

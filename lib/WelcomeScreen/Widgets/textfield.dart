@@ -1,4 +1,3 @@
-import 'package:Todo_App/Helper%20Widgets/shadow.dart';
 import 'package:Todo_App/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -12,6 +11,10 @@ class InputTextField extends HookWidget {
     const int maxLength = 8;
     final noCharacters = useState(0);
     final textController = useTextEditingController();
+    const TextStyle noCharacterStyle =
+        TextStyle(fontWeight: FontWeight.bold, color: Styles.t1Orange);
+    const TextStyle textFieldStyle =
+        TextStyle(color: Styles.white1, fontSize: 25);
 
     return Column(
       children: [
@@ -21,49 +24,58 @@ class InputTextField extends HookWidget {
             alignment: Alignment.centerRight,
             child: Visibility(
               visible: noCharacters.value != 0,
-              child: BoxShadowContainer(
+              child: Container(
                 height: 40,
                 width: 45,
-                radius: BorderRadius.all(Radius.circular(10)),
-                color: Styles.white2,
+                decoration: BoxDecoration(
+                    color: Styles.white2,
+                    borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                    boxShadow: [Styles.shadow()]),
                 child: Container(
                   height: 30,
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     "${noCharacters.value}/$maxLength",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Styles.t1Orange),
+                    style: noCharacterStyle,
                   ),
                 ),
               ),
             ),
           ),
         ),
-        BoxShadowContainer(
+        Container(
+          decoration: BoxDecoration(
+              color: Styles.white2,
+              borderRadius: const BorderRadius.all(Radius.circular(35.0)),
+              boxShadow: [Styles.shadow()]),
           child: TextField(
+            cursorColor: Styles.white1,
             controller: textController,
             onChanged: (String val) {
-              if (val.length > maxLength) {
-                textController.text = textController.text.substring(0, 8);
-                textController.selection = TextSelection.fromPosition(
-                    TextPosition(offset: textController.text.length));
-              } else
-                noCharacters.value = val.length;
+              onChange(val, textController, noCharacters, maxLength);
             },
             textAlign: TextAlign.center,
-            style: TextStyle(color: Styles.white1, fontSize: 25),
+            style: textFieldStyle,
             decoration: InputDecoration(
               counterText: "",
               hintText: labelText,
-              hintStyle: TextStyle(
-                color: Styles.white1.withOpacity(.59),
-                fontSize: 25,
-              ),
+              // hintStyle: Theme.of(context).tex,
               border: InputBorder.none,
             ),
           ),
         ),
       ],
     );
+  }
+
+  void onChange(String val, textController, noCharacters, maxLength) {
+    if (val.length > maxLength) {
+      // to limit the number of characters to the maxLength..
+      textController.text = textController.text.substring(0, 8);
+      textController.selection = TextSelection.fromPosition(
+          TextPosition(offset: textController.text.length));
+    } else
+      noCharacters.value = val.length;
+    onChanged(textController.text);
   }
 }

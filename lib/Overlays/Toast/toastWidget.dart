@@ -1,4 +1,3 @@
-import 'package:Todo_App/styles/styles.dart';
 import 'package:flutter/material.dart';
 
 class ToastWidget extends StatefulWidget {
@@ -36,29 +35,26 @@ class _ToastWidgetState extends State<ToastWidget>
   }
 
   @override
-  Widget build(BuildContext context) {
-    debugPrint("toast wdiget");
-    print(_animationController.value);
-    return Align(alignment: widget.alignment, child: _toastWidget());
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
+
+  @override
+  Widget build(BuildContext context) =>
+      Align(alignment: widget.alignment, child: _toastWidget());
 
   Widget _toastWidget() {
     return Card(
-      //shadowColor: Styles.grey1,
       shape: RoundedRectangleBorder(
           borderRadius: const BorderRadius.all(Radius.circular(10.0))),
       child: Container(
-        // duration: const Duration(milliseconds: 400),
-        // width: double.infinity,
-        //margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-        //padding: const EdgeInsets.only(left: 20.0),
         height: _animationController.value * 50,
         alignment: Alignment.centerLeft,
         decoration: BoxDecoration(
           color: widget.backgroundColor,
           borderRadius: BorderRadius.circular(10),
         ),
-
         child: Align(
           alignment: Alignment.center,
           child: Text(
