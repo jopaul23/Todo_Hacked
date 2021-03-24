@@ -7,11 +7,24 @@ import 'AccountPage/Functions/user_details.dart';
 import 'Router/page_router.dart';
 import 'package:hive/hive.dart';
 import 'WelcomeScreen/Widgets/mainPage.dart';
-import 'load_resources.dart';
+import 'package:hooks_riverpod/all.dart';
+
+import 'Database/provider.dart';
+import 'package:path_provider/path_provider.dart' as pathProvider;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  load(); //loading resources
+  final appDocumentDir = await pathProvider.getApplicationDocumentsDirectory();
+  Hive.init(appDocumentDir.path);
+  Hive.registerAdapter(UserTodoDetailsAdapter());
+  UserTodoDetails.hiveBox = await Hive.openBox('user_todo');
+  ProviderContainer db = ProviderContainer();
+  UserTodoDetails.database = db.read(databaseProvider);
+  // await AndroidAlarmManager.initialize();
+
+  PageRouter.createRoutes();
+
+  PageRouter.createRoutes();
   runApp(ProviderScope(child: MyApp()));
 }
 

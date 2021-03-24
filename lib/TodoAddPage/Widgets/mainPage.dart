@@ -65,9 +65,6 @@ class _TodoAddPageState extends State<TodoAdd> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Consumer(builder: (context, watch, _) {
-      final db = watch(databaseProvider);
-      if (addTodos.db == null) addTodos.db = db;
-
       return WillPopScope(
         onWillPop: () {
           closeAllOverlay();

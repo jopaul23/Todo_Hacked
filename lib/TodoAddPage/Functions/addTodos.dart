@@ -1,3 +1,4 @@
+import 'package:Todo_App/AccountPage/Functions/user_details.dart';
 import 'package:Todo_App/Database/Todo_model.dart';
 import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,6 +18,7 @@ class AddTodos {
 
   String title, reminder = "00:00";
   AddTodos({this.todo}) {
+    db = UserTodoDetails.database;
     if (todo != null) {
       title = todo.title;
       dueDate = todo.dueDate;
