@@ -18,8 +18,9 @@ import '../../Helper Widgets/Clock/Display Time/clock_digital_display.dart';
 class TodoAddPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final args = Sailor.args<TodoModel>(context);
-    return TodoAdd(todos: args);
+    // final args;
+    // Sailor.args<TodoModel>(context);
+    return TodoAdd();
   }
 }
 

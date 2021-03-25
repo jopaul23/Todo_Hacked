@@ -1,3 +1,4 @@
+import 'package:Todo_App/Database/todo.dart';
 import 'package:Todo_App/HomePage/Widgets/mainPage.dart';
 import 'package:Todo_App/styles/styles.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +19,9 @@ void main() async {
   Hive.init(appDocumentDir.path);
   Hive.registerAdapter(UserTodoDetailsAdapter());
   UserTodoDetails.hiveBox = await Hive.openBox('user_todo');
-  ProviderContainer db = ProviderContainer();
-  UserTodoDetails.database = db.read(databaseProvider);
+  // ProviderContainer db = ProviderContainer();
+  // UserTodoDetails.database = db.read(databaseProvider);
+  UserTodoDetails.database = TodoDao(TodoListDataBase());
   // await AndroidAlarmManager.initialize();
 
   PageRouter.createRoutes();

@@ -38,7 +38,8 @@ dependencies:
   sailor: ^0.7.1
   sqlite3_flutter_libs: null
   table_calendar: ^2.3.3
-
+  flutter_bloc:
+  equatable:
 dev_dependencies:
   flutter_test:
     sdk: flutter

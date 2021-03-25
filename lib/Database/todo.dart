@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:Todo_App/Database/todo_model.dart';
 import 'package:path/path.dart' as p;
 import 'package:moor/ffi.dart';
 import 'package:moor/moor.dart';
@@ -41,14 +42,23 @@ class TodoDao extends DatabaseAccessor<TodoListDataBase> with _$TodoDaoMixin {
         .watch();
   }
 
-  Stream<List<Todo>> searchTodoss(String searchTodo) {
+  Future<List<Todo>> getAllTodos() {
+    return (select(todos)
+          ..where((u) => u.completed.equals(false))
+          ..orderBy([
+            (u) => OrderingTerm(expression: u.dueDate, mode: OrderingMode.asc),
+          ]))
+        .get();
+  }
+
+  Future<List<Todo>> searchTodoss(String searchTodo) {
     return (select(todos)
           ..where((u) => u.title.like("%$searchTodo%"))
           ..where((u) => u.completed.equals(false))
           ..orderBy([
             (u) => OrderingTerm(expression: u.dueDate, mode: OrderingMode.asc),
           ]))
-        .watch();
+        .get();
   }
 
   Stream<List<Todo>> watchFav() {
@@ -92,6 +102,23 @@ class TodoDao extends DatabaseAccessor<TodoListDataBase> with _$TodoDaoMixin {
   Future insertTodos(Insertable<Todo> todo) => into(todos).insert(todo);
   Future updateTodos(Insertable<Todo> todo) => update(todos).replace(todo);
   Future deleteTodos(Insertable<Todo> todo) => delete(todos).delete(todo);
+
+  TodoModel convertTodoModel(Todo element) => TodoModel(
+      id: element.id,
+      title: element.title,
+      tagIconId: element.tagIconId,
+      completed: element.completed,
+      dueDate: element.dueDate,
+      notificationOn: element.notificationOn);
+
+  TodosCompanion convertTodosCompanion(TodoModel todo) => TodosCompanion(
+      id: Value(todo.id),
+      tagIconId: Value(todo.tagIconId),
+      dueDate: Value(todo.dueDate),
+      remainderTime: Value(todo.remainderTime),
+      notificationOn: Value(todo.notificationOn),
+      title: Value(todo.title),
+      completed: Value(true));
 }
 
 LazyDatabase _openConnection() {

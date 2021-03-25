@@ -1,22 +1,17 @@
-import 'package:Todo_App/AccountPage/Functions/user_details.dart';
-import 'package:Todo_App/Database/todo.dart';
+import 'package:Todo_App/Database/bloc/database_bloc_bloc.dart';
 import 'package:Todo_App/Database/todo_model.dart';
-import 'package:Todo_App/HomePage/Functions/homepage_todo_function.dart';
 import 'package:Todo_App/Overlays/Toast/toast_overlay.dart';
-import 'package:Todo_App/Router/page_router.dart';
-import 'package:Todo_App/Styles/images.dart';
 import 'package:Todo_App/Styles/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:moor/moor.dart' as moor;
+import 'package:intl/intl.dart';
 
 class TodoCard extends HookWidget {
-  final Todo todo;
+  final TodoModel todo;
 
   const TodoCard(this.todo);
   Widget build(BuildContext context) {
-    final fav = useState(false);
-    fav.value = todo.notificationOn;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -41,21 +36,9 @@ class TodoCard extends HookWidget {
                 ),
               ),
             Spacer(),
-            TextButton(
-                onPressed: () {
-                  addTofav(context, fav);
-                },
-                child: Image(
-                  image: fav.value
-                      ? ImportedImages.heartOn
-                      : ImportedImages.heartOff,
-                  height: 20,
-                  width: 20,
-                )),
-            const SizedBox(width: 5.0),
             Checkbox(
               onChanged: (bool value) async {
-                markAsCompleted(context, value);
+                markAsCompleted(context);
               },
               value: false,
             )
@@ -78,18 +61,18 @@ class TodoCard extends HookWidget {
             const SizedBox(width: 5.0),
             TextButton(
               onPressed: () {
-                PageRouter.sailor.navigate(PageRouter.todoAddPage,
-                    args: TodoModel(
-                        id: todo.id,
-                        title: todo.title,
-                        dueDate: todo.dueDate,
-                        tagIconId: todo.tagIconId,
-                        completed: todo.completed,
-                        notificationOn: todo.notificationOn,
-                        remainderTime: todo.remainderTime));
+                // PageRouter.sailor.navigate(PageRouter.todoAddPage,
+                //     args: TodoModel(
+                //         id: todo.id,
+                //         title: todo.title,
+                //         dueDate: todo.dueDate,
+                //         tagIconId: todo.tagIconId,
+                //         completed: todo.completed,
+                //         notificationOn: todo.notificationOn,
+                //         remainderTime: todo.remainderTime));
               },
               child: Text(
-                HomePageTodoFunction.formatDueTime(todo.dueDate),
+                formatDueTime(todo.dueDate),
                 style: TextStyle(fontSize: 15, color: Styles.grey4),
               ),
             )
@@ -99,38 +82,12 @@ class TodoCard extends HookWidget {
     );
   }
 
-  void addTofav(context, fav) {
-    fav.value = !fav.value;
-    UserTodoDetails.database.updateTodos(TodosCompanion(
-      id: moor.Value(todo.id),
-      completed: moor.Value(todo.completed),
-      title: moor.Value(todo.title),
-      dueDate: moor.Value(todo.dueDate),
-      remainderTime: moor.Value(DateTime.now()),
-      notificationOn: moor.Value(fav.value),
-      tagIconId: moor.Value(todo.tagIconId),
-    ));
-    if (fav.value) {
-      Toast toast = Toast("Added to favourites");
-      toast.showToast(context);
-    } else {
-      Toast toast = Toast("Removed from favourites");
-      toast.showToast(context);
-    }
+  String formatDueTime(DateTime date) {
+    return DateFormat("EEE,kk:mm").format(date);
   }
 
-  void markAsCompleted(context, bool value) {
-    final updateTodo = TodosCompanion(
-        id: moor.Value(todo.id),
-        tagIconId: moor.Value(todo.tagIconId),
-        dueDate: moor.Value(todo.dueDate),
-        remainderTime: moor.Value(todo.remainderTime),
-        notificationOn: moor.Value(todo.notificationOn),
-        title: moor.Value(todo.title),
-        completed: moor.Value(value));
-
-    UserTodoDetails.database.updateTodos(updateTodo);
-
+  void markAsCompleted(context) {
+    BlocProvider.of<DatabaseBlocBloc>(context).add(MarkAsCompleted(todo));
     Toast toast = Toast("Marked as completed");
     toast.showToast(context);
   }

@@ -4,8 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../Functions/chart.dart';
 import '../../Helper%20Widgets/basic_widget.dart';
-import '../../HomePage/Functions/homepage_todo_function.dart';
-import '../../Router/page_router.dart';
 import '../../styles/images.dart';
 import '../../styles/styles.dart';
 import 'Graph/f1_graph.dart';
@@ -35,17 +33,12 @@ class _AccountPageState extends State<AccountPage> {
     Size size = MediaQuery.of(context).size;
     final textTheme = Theme.of(context).textTheme;
     return Consumer(builder: (context, watch, _) {
-      final changeMode = watch(homePageChangeModeProvider);
       return WillPopScope(
         onWillPop: () {
           return Future.value(true);
         },
         child: BasicWidget(
           pageNo: 3,
-          onFavClicked: () {
-            changeMode.changeMode(HomePageChangeMode.favorites);
-            PageRouter.sailor.navigate(PageRouter.homePage);
-          },
           child: Container(
               height: size.height,
               decoration: BoxDecoration(
