@@ -1,16 +1,14 @@
 import 'package:Todo_App/Database/todo.dart';
 import 'package:Todo_App/HomePage/Widgets/mainPage.dart';
-import 'package:Todo_App/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'AccountPage/Functions/user_details.dart';
 
 import 'Router/page_router.dart';
 import 'package:hive/hive.dart';
+import 'Themes/themes/light_orange.dart';
 import 'WelcomeScreen/Widgets/mainPage.dart';
 import 'package:hooks_riverpod/all.dart';
-
-import 'Database/provider.dart';
 import 'package:path_provider/path_provider.dart' as pathProvider;
 
 void main() async {
@@ -51,7 +49,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Todo App',
       onGenerateRoute: PageRouter.sailor.generator(),
       navigatorKey: PageRouter.sailor.navigatorKey,
-      theme: Styles.themeData(),
+      theme: themeData(),
       home: UserTodoDetails.hiveBox.isEmpty ? WelcomeScreen() : HomePage(),
     );
   }

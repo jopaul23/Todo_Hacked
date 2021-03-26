@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-import '../../Styles/styles.dart';
 import 'toastWidget.dart';
 
 class Toast {
@@ -10,9 +9,11 @@ class Toast {
   String message;
   Timer _timer;
   AnimationController animationController;
-  Color backgroundColor = Styles.grey4.withOpacity(0.9);
+  //Color backgroundColor = Styles.grey4.withOpacity(0.9);
   Alignment alignment = Alignment.bottomCenter;
-  TextStyle messageStyle = TextStyle(fontSize: 18, color: Styles.white1);
+  TextStyle messageStyle = TextStyle(
+    fontSize: 18, //color: Styles.white1
+  );
   Duration duration = const Duration(seconds: 3);
 
   void showToast(context) {
@@ -20,7 +21,7 @@ class Toast {
       _toastOverlay = OverlayEntry(builder: (context) {
         return ToastWidget(
           alignment: alignment,
-          backgroundColor: backgroundColor,
+          //     backgroundColor: backgroundColor,
           message: message,
           messageStyle: messageStyle,
         );

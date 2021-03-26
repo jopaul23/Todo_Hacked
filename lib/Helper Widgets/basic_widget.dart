@@ -1,9 +1,9 @@
 import 'package:Todo_App/Router/page_router.dart';
-import 'package:Todo_App/styles/styles.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'bottom_navigation_bar.dart';
+import '../Themes/colors.dart' as appColors;
 
 class BasicWidget extends StatelessWidget {
   final Widget child;
@@ -15,7 +15,7 @@ class BasicWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
+    final theme = Theme.of(context);
     return SafeArea(
       child: Scaffold(
         body: Stack(
@@ -41,20 +41,13 @@ class BasicWidget extends StatelessWidget {
                       width: 65,
                       height: 65,
                       decoration: BoxDecoration(
-                          color: Styles.t1Orange,
+                          color: theme.primaryColor,
                           shape: BoxShape.circle,
-                          // borderRadius: const BorderRadius.all(Radius.circular(30.0)),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Styles.grey1.withOpacity(0.3),
-                              spreadRadius: 5,
-                              blurRadius: 20,
-                            ),
-                          ]),
+                          boxShadow: [appColors.shadow]),
                       child: Icon(
                         Icons.add,
-                        color: Styles.white2,
                         size: 50,
+                        color: theme.accentColor,
                       )),
                 ),
               ),

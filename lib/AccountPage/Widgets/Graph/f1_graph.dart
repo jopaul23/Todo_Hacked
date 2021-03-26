@@ -1,9 +1,9 @@
 import 'package:Todo_App/AccountPage/Functions/chart.dart';
-import 'package:Todo_App/styles/styles.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 import 'graph.dart';
+import '../../../Themes/colors.dart' as appColors;
 
 class BarChartTwo extends StatefulWidget {
   final TodoChart todoChart;
@@ -21,6 +21,7 @@ class BarChartTwoState extends State<BarChartTwo> {
   int touchedGroupIndex;
   List weeklyData = [];
   Graph graph = Graph();
+  var theme;
   @override
   void initState() {
     weeklyData = graph.graphValues(widget.todoChart);
@@ -39,19 +40,13 @@ class BarChartTwoState extends State<BarChartTwo> {
 
   @override
   Widget build(BuildContext context) {
+    theme = Theme.of(context);
     return Container(
       height: 250,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18.0),
-        color: Styles.white2,
-        boxShadow: [
-          BoxShadow(
-            color: Styles.grey4.withOpacity(0.02),
-            spreadRadius: 7,
-            blurRadius: 7,
-            offset: Offset(0, 2), // changes position of shadow
-          ),
-        ],
+        color: theme.accentColor,
+        boxShadow: [appColors.shadow],
       ),
       margin: EdgeInsets.all(10.0),
       padding: const EdgeInsets.all(16),
@@ -103,10 +98,6 @@ class BarChartTwoState extends State<BarChartTwo> {
       // Build X axis.
       bottomTitles: SideTitles(
         showTitles: true,
-        // textStyle: TextStyle(
-        //     color: const Color(0xff7589a2),
-        //     fontWeight: FontWeight.bold,
-        //     fontSize: 14),
         margin: 20,
         getTitles: (double value) {
           switch (value.toInt()) {
@@ -174,12 +165,12 @@ class BarChartTwoState extends State<BarChartTwo> {
       barRods: [
         BarChartRodData(
           y: y1,
-          colors: [Styles.t1Orange, Styles.t1Orange.withOpacity(0.9)],
+          colors: [theme.primaryColor, theme.primaryColor.withOpacity(0.9)],
           width: width,
         ),
         BarChartRodData(
           y: y2,
-          colors: [Styles.red, Styles.red.withOpacity(0.9)],
+          colors: [theme.errorColor, theme.errorColor.withOpacity(0.9)],
           width: width,
         ),
       ],

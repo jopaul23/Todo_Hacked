@@ -1,4 +1,3 @@
-import 'package:Todo_App/Styles/styles.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -20,6 +19,7 @@ class TimeDisplay extends HookWidget {
     final mode = useProvider(timeChangeModeProvider);
     final modeValue = useProvider(timeChangeModeProvider.state);
     final isBeforeNoon = useState(clockController.isBeforeNoon);
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.only(top: 15.0),
       child: Row(
@@ -40,7 +40,9 @@ class TimeDisplay extends HookWidget {
             text: TextSpan(
                 text: "am\n",
                 style: TextStyle(
-                    color: isBeforeNoon.value ? Styles.red : Colors.grey,
+                    color: isBeforeNoon.value
+                        ? theme.errorColor
+                        : theme.primaryColorDark,
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
                     decoration: TextDecoration.none),
@@ -56,7 +58,9 @@ class TimeDisplay extends HookWidget {
                   TextSpan(
                     text: "pm",
                     style: TextStyle(
-                        color: isBeforeNoon.value ? Colors.grey : Styles.red,
+                        color: !isBeforeNoon.value
+                            ? theme.errorColor
+                            : theme.primaryColorDark,
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
                         decoration: TextDecoration.none),

@@ -5,8 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../Functions/chart.dart';
 import '../../Helper%20Widgets/basic_widget.dart';
 import '../../styles/images.dart';
-import '../../styles/styles.dart';
 import 'Graph/f1_graph.dart';
+import '../../Themes/colors.dart' as appColors;
 
 class AccountPage extends StatefulWidget {
   const AccountPage();
@@ -29,109 +29,113 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   Widget build(BuildContext context) {
-    print("rebuilding+++++");
+    debugPrint("rebuilding+++++");
     Size size = MediaQuery.of(context).size;
     final textTheme = Theme.of(context).textTheme;
-    return Consumer(builder: (context, watch, _) {
-      return WillPopScope(
-        onWillPop: () {
-          return Future.value(true);
-        },
-        child: BasicWidget(
-          pageNo: 3,
-          child: Container(
-              height: size.height,
-              decoration: BoxDecoration(
-                gradient: Styles.t1Gradient,
-              ),
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.only(bottom: 20.0),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: size.height * 0.04,
+    final theme = Theme.of(context);
+    return WillPopScope(
+      onWillPop: () {
+        return Future.value(true);
+      },
+      child: BasicWidget(
+        pageNo: 3,
+        child: Container(
+            height: size.height,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [theme.colorScheme.primary, theme.colorScheme.secondary],
+            )),
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.only(bottom: 20.0),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: size.height * 0.04,
+                  ),
+                  Image(
+                    image: ImportedImages.accountsLarge,
+                    height: 50,
+                  ),
+                  SizedBox(
+                    height: size.height * 0.01,
+                  ),
+                  Container(
+                    height: 24,
+                    child: Text("My account", style: textTheme.headline3),
+                  ),
+                  SizedBox(
+                    height: size.height * 0.02,
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 25),
+                    height: size.height - size.height * 0.07 - 24 - 50,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).accentColor,
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30)),
                     ),
-                    Image(
-                      image: ImportedImages.accountsLarge,
-                      height: 50,
-                    ),
-                    SizedBox(
-                      height: size.height * 0.01,
-                    ),
-                    Container(
-                      height: 24,
-                      child: Text("My account", style: textTheme.headline3),
-                    ),
-                    SizedBox(
-                      height: size.height * 0.02,
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 25),
-                      height: size.height - size.height * 0.07 - 24 - 50,
-                      decoration: BoxDecoration(
-                        color: Styles.white2.withOpacity(.96),
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30)),
-                      ),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: size.height * 0.05,
-                          ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            height: 25,
-                            child: Text("Tasks overview",
-                                style: textTheme.headline2),
-                          ),
-                          SizedBox(
-                            height: size.height * 0.04,
-                          ),
-                          Row(
-                            children: [
-                              boxContainer(
-                                text: "Completed tasks",
-                                number: "${_chart.completedTask}",
-                                color: Styles.t1Orange,
-                              ),
-                              Spacer(),
-                              boxContainer(
-                                text: "Pending tasks",
-                                number: "${_chart.pendingTask}",
-                                color: Styles.red,
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: size.width - size.width / 1.25 - 50,
-                          ),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: size.height * 0.05,
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          height: 25,
+                          child: Text("Tasks overview",
+                              style: textTheme.headline3),
+                        ),
+                        SizedBox(
+                          height: size.height * 0.04,
+                        ),
+                        Row(
+                          children: [
+                            boxContainer(
+                              theme,
+                              text: "Completed tasks",
+                              number: "${_chart.completedTask}",
+                              color: theme.primaryColor,
+                            ),
+                            Spacer(),
+                            boxContainer(
+                              theme,
+                              text: "Pending tasks",
+                              number: "${_chart.pendingTask}",
+                              color: theme.errorColor,
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: size.width - size.width / 1.25 - 50,
+                        ),
 
-                          // Graph
-                          BarChartTwo(
-                            todoChart: _chart,
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              )),
-        ),
-      );
-    });
+                        // Graph
+                        BarChartTwo(
+                          todoChart: _chart,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            )),
+      ),
+    );
   }
 
-  boxContainer({Color color, String number, String text}) {
+  boxContainer(theme, {Color color, String number, String text}) {
     Size size = MediaQuery.of(context).size;
     return Container(
       padding: EdgeInsets.symmetric(vertical: 15),
       height: size.width / 3,
       width: size.width / 2.5,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(30)),
-        color: Styles.white2,
-        boxShadow: [Styles.shadow()],
+        borderRadius: const BorderRadius.all(Radius.circular(30)),
+        color: theme.accentColor,
+        boxShadow: [appColors.shadow],
       ),
       child: Column(
         children: [
@@ -156,7 +160,7 @@ class _AccountPageState extends State<AccountPage> {
                   decoration: TextDecoration.none,
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
-                  color: Styles.grey2),
+                  color: appColors.grey2),
             ),
           ),
         ],

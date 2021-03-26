@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'Functions/clock_functions.dart';
 import 'clock_dial_painter.dart';
 import 'hand_hour.dart';
-import '../../styles/styles.dart';
 
 class ClockFace extends StatelessWidget {
   final int hour, min;
@@ -19,8 +18,9 @@ class ClockFace extends StatelessWidget {
         aspectRatio: 1.0,
         child: Container(
           width: double.infinity,
-          decoration:
-              BoxDecoration(shape: BoxShape.circle, color: Styles.white1),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle, //color: Styles.white1
+          ),
           child: Stack(
             children: <Widget>[
               //clock hands go here
@@ -43,7 +43,7 @@ class ClockFace extends StatelessWidget {
                   height: 15.0,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Styles.t1Orange,
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
               ),

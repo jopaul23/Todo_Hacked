@@ -1,4 +1,3 @@
-import 'package:Todo_App/styles/styles.dart';
 import 'package:flutter/material.dart';
 
 class Calender extends StatelessWidget {
@@ -8,10 +7,7 @@ class Calender extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = TextStyle(
-        color: Styles.white2,
-        fontWeight: FontWeight.bold,
-        decoration: TextDecoration.none);
+    final theme = Theme.of(context);
     const List<String> weekDays = [
       "mon",
       "tue",
@@ -27,7 +23,7 @@ class Calender extends StatelessWidget {
       children: [
         Padding(
             padding: const EdgeInsets.only(top: 30.0, left: 30.0, bottom: 20.0),
-            child: Text(getMonth(), style: style.copyWith(fontSize: 25))),
+            child: Text(getMonth(), style: theme.textTheme.headline2)),
         Column(
           children: [
             Row(
@@ -36,7 +32,7 @@ class Calender extends StatelessWidget {
                   return Text(
                     "${weekDays[index]}",
                     style: TextStyle(
-                        color: Styles.white1.withOpacity(0.7),
+                        color: theme.accentColor,
                         fontSize: 14,
                         decoration: TextDecoration.none,
                         fontWeight: FontWeight.normal),
@@ -53,14 +49,14 @@ class Calender extends StatelessWidget {
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: days[index] == "${date.day}"
-                            ? Styles.white1
+                            ? theme.primaryColorLight
                             : Colors.transparent),
                     child: Text(
                       "${days[index]}",
                       style: TextStyle(
                           color: days[index] == "${date.day}"
-                              ? Styles.t1Orange
-                              : Styles.white1.withOpacity(0.7),
+                              ? theme.primaryColor
+                              : theme.accentColor,
                           fontSize: 16,
                           decoration: TextDecoration.none,
                           fontWeight: FontWeight.normal),
