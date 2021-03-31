@@ -76,47 +76,49 @@ class _AccountPageState extends State<AccountPage> {
                             topLeft: Radius.circular(30),
                             topRight: Radius.circular(30)),
                       ),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: size.height * 0.05,
-                          ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            height: 25,
-                            child: Text("Tasks overview",
-                                style: textTheme.headline3),
-                          ),
-                          SizedBox(
-                            height: size.height * 0.04,
-                          ),
-                          Row(
-                            children: [
-                              boxContainer(
-                                theme,
-                                text: "Completed tasks",
-                                number: "${_chart.completedTask}",
-                                color: theme.primaryColor,
-                              ),
-                              Spacer(),
-                              boxContainer(
-                                theme,
-                                text: "Pending tasks",
-                                number: "${_chart.pendingTask}",
-                                color: theme.errorColor,
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: size.width - size.width / 1.25 - 50,
-                          ),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: size.height * 0.05,
+                            ),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              height: 25,
+                              child: Text("Tasks overview",
+                                  style: textTheme.headline3),
+                            ),
+                            SizedBox(
+                              height: size.height * 0.04,
+                            ),
+                            Row(
+                              children: [
+                                boxContainer(
+                                  theme,
+                                  text: "Completed tasks",
+                                  number: "${_chart.completedTask}",
+                                  color: theme.primaryColor,
+                                ),
+                                Spacer(),
+                                boxContainer(
+                                  theme,
+                                  text: "Pending tasks",
+                                  number: "${_chart.pendingTask}",
+                                  color: theme.errorColor,
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: size.width - size.width / 1.25 - 50,
+                            ),
 
-                          // Graph
-                          BarChartTwo(
-                            todoChart: _chart,
-                          ),
-                          Container(height: 80, child: SwitchThemes())
-                        ],
+                            // Graph
+                            BarChartTwo(
+                              todoChart: _chart,
+                            ),
+                            Container(height: 80, child: SwitchThemes())
+                          ],
+                        ),
                       ),
                     ),
                   ],

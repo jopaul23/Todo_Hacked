@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:hexcolor/hexcolor.dart';
 import '../colors.dart';
 
 enum AppThemes { LightOranage, DarkViolet, DarkPurple, LightGreen, LightBlue }
 
 final Map appThemeMap = {
   AppThemes.LightOranage: themeData(t1Orange),
-  AppThemes.DarkViolet: themeData(Color(0xff2c5364)),
-  AppThemes.DarkPurple: themeData(Color(0xff734b6d)),
-  AppThemes.LightGreen: themeData(Color(0xff45b549)),
-  AppThemes.LightBlue: themeData(Color(0xff00799a)),
+  AppThemes.DarkViolet: themeData(HexColor("2c5364")),
+  AppThemes.DarkPurple: themeData(HexColor("734b6d")),
+  AppThemes.LightGreen: themeData(HexColor("45b549")),
+  AppThemes.LightBlue: themeData(HexColor("00799a")),
 };
 
 ThemeData themeData(Color primaryColor) => ThemeData(

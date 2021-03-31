@@ -37,6 +37,7 @@ dependencies:
   hooks_riverpod: ^0.12.1
   moor: null
   path: null
+  hexcolor: ^2.0.3
   path_provider: null
   sailor: ^0.7.1
   sqlite3_flutter_libs: null

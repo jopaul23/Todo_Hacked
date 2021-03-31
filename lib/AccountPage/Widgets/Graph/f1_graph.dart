@@ -147,18 +147,12 @@ class BarChartTwoState extends State<BarChartTwo> {
   // Function to draw all the bars.
   List<BarChartGroupData> _buildAllBars() {
     return List.generate(
-<<<<<<< HEAD:lib/Helper Widgets/Graph/f1_graph.dart
-      widget.weeklyData.length, // y1                 // y2
-      (index) => _buildBar(
-          index, widget.weeklyData[index][0], widget.weeklyData[index][1]),
-=======
       weeklyData.length, // y1                 // y2
       (index) => _buildBar(
         index,
         weeklyData[index][0].toDouble(),
         weeklyData[index][1].toDouble(),
       ),
->>>>>>> 312bf3b05ed95335dfb7c807b80f7d52fed7a1b7:lib/AccountPage/Widgets/Graph/f1_graph.dart
     );
   }
 
