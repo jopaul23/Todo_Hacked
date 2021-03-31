@@ -20,7 +20,7 @@ class TodoCardLayout extends StatelessWidget {
       decoration: BoxDecoration(
         color: theme.accentColor,
         borderRadius: const BorderRadius.all(Radius.circular(30.0)),
-        boxShadow: [appColors.shadow],
+        boxShadow: [appColors.shadow.scale(10)],
       ),
       child: Dismissible(
           direction: DismissDirection.startToEnd,

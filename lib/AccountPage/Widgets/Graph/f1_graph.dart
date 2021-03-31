@@ -34,7 +34,6 @@ class BarChartTwoState extends State<BarChartTwo> {
       print("fsds ${widget.todoChart.pendingTask}");
       weeklyData = graph.graphValues(widget.todoChart);
     });
-    // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
   }
 
@@ -46,7 +45,7 @@ class BarChartTwoState extends State<BarChartTwo> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18.0),
         color: theme.accentColor,
-        boxShadow: [appColors.shadow],
+        boxShadow: [appColors.shadow.scale(2)],
       ),
       margin: EdgeInsets.all(10.0),
       padding: const EdgeInsets.all(16),

@@ -12,7 +12,7 @@ class TodoListSearch extends StatelessWidget {
       height: 50,
       margin: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
       decoration: BoxDecoration(
-          color: theme.primaryColorLight,
+          color: theme.dialogBackgroundColor,
           borderRadius: const BorderRadius.all(Radius.circular(30.0)),
           boxShadow: [appColors.shadow]),
       child: Consumer(builder: (context, watch, _) {

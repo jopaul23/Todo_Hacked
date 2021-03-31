@@ -22,7 +22,7 @@ class Calender extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-            padding: const EdgeInsets.only(top: 30.0, left: 30.0, bottom: 20.0),
+            padding: const EdgeInsets.only(top: 23.0, left: 10.0, bottom: 20.0),
             child: Text(getMonth(), style: theme.textTheme.headline2)),
         Column(
           children: [
