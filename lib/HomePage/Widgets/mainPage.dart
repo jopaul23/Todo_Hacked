@@ -1,48 +1,57 @@
 import 'package:Todo_App/Helper%20Widgets/basic_widget.dart';
-import 'package:Todo_App/HomePage/Functions/homepage_todo_function.dart';
-import 'package:Todo_App/styles/styles.dart';
+import 'package:Todo_App/Router/page_router.dart';
+import 'package:Todo_App/Themes/bloc/themebloc_bloc.dart';
+import 'package:Todo_App/Themes/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'calender.dart';
 import 'todo_lisitng.dart';
 
-class HomePage extends HookWidget {
+class HomePage extends StatelessWidget {
+  // ignore: close_sinks
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final mode = useProvider(homePageChangeModeProvider.state);
-    final changeMode = useProvider(homePageChangeModeProvider);
-
+    final theme = Theme.of(context);
     return WillPopScope(
-      onWillPop: () => Future.value(false),
-      child: BasicWidget(
-        pageNo: mode == HomePageChangeMode.favorites ? 2 : 1,
-        onFavClicked: () {
-          changeMode.changeMode(HomePageChangeMode.favorites);
-        },
-        onHomeClicked: () {
-          changeMode.changeMode(HomePageChangeMode.normal);
-        },
-        child: Container(
+        onWillPop: () => Future.value(false),
+        child: BasicWidget(
+            child: Container(
           height: size.height,
           decoration: BoxDecoration(
-            gradient: Styles.t1Gradient,
-          ),
+              gradient: gradientMap[
+                  BlocProvider.of<ThemeblocBloc>(context).state.theme]),
           child: Stack(
             children: <Widget>[
               //top calender
               Calender(DateTime.now()),
-
+              Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: CircleAvatar(
+                      backgroundColor: black,
+                      radius: 24,
+                      child: TextButton(
+                          onPressed: () {
+                            PageRouter.sailor.navigate(PageRouter.accountPage);
+                          },
+                          child:
+                              Icon(FontAwesomeIcons.user, color: Colors.white)),
+                    ),
+                  )),
               Padding(
                 padding: EdgeInsets.only(top: 160),
                 child: Container(
                   height: size.height,
                   padding: const EdgeInsets.only(top: 5),
                   decoration: BoxDecoration(
-                      color: Styles.white2.withOpacity(.96),
-                      borderRadius: BorderRadius.only(
+                      color: theme.accentColor,
+                      borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(40.0),
                           topRight: Radius.circular(40.0))),
                   child: SingleChildScrollView(
@@ -52,8 +61,6 @@ class HomePage extends HookWidget {
               ),
             ],
           ),
-        ),
-      ),
-    );
+        )));
   }
 }

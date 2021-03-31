@@ -2,7 +2,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../../styles/styles.dart';
 import 'Functions/clock_functions.dart';
 
 class ClockDialPainter extends CustomPainter {
@@ -17,7 +16,7 @@ class ClockDialPainter extends CustomPainter {
           textDirection: TextDirection.rtl,
         ),
         textStyle = TextStyle(
-            color: Styles.t1Orange,
+            // color: Styles.t1Orange,
             fontSize: 18.0,
             fontWeight: FontWeight.w500) {
     tickPaint.color = Colors.blueGrey;

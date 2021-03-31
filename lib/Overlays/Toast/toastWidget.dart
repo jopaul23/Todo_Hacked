@@ -1,20 +1,12 @@
 import 'package:flutter/material.dart';
 
-class ToastWidget extends StatefulWidget {
-  final TextStyle messageStyle;
-  final Color backgroundColor;
-  final String message;
-  final Alignment alignment;
-  final Function() onClose;
+import 'toast_overlay.dart';
 
-  const ToastWidget(
-      {Key key,
-      this.messageStyle,
-      this.backgroundColor,
-      this.message,
-      this.onClose,
-      this.alignment})
-      : super(key: key);
+class ToastWidget extends StatefulWidget {
+  final Toast toast;
+
+  const ToastWidget({Key key, this.toast}) : super(key: key);
+
   @override
   _ToastWidgetState createState() => _ToastWidgetState();
 }
@@ -42,7 +34,7 @@ class _ToastWidgetState extends State<ToastWidget>
 
   @override
   Widget build(BuildContext context) =>
-      Align(alignment: widget.alignment, child: _toastWidget());
+      Align(alignment: widget.toast.alignment, child: _toastWidget());
 
   Widget _toastWidget() {
     return Card(
@@ -52,14 +44,14 @@ class _ToastWidgetState extends State<ToastWidget>
         height: _animationController.value * 50,
         alignment: Alignment.centerLeft,
         decoration: BoxDecoration(
-          color: widget.backgroundColor,
+          color: widget.toast.backgroundColor,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Align(
           alignment: Alignment.center,
           child: Text(
-            "${widget.message}",
-            style: widget.messageStyle,
+            "${widget.toast.message}",
+            style: widget.toast.messageStyle,
           ),
         ),
       ),

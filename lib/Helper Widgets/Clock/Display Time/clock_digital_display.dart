@@ -1,4 +1,3 @@
-import 'package:Todo_App/styles/styles.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -22,11 +21,12 @@ class ClockDigitalDisplay extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    if (digitalClock == DigitalClock.normal) return normalTimedisplay();
-    return digitalTimeDisplay();
+    if (digitalClock == DigitalClock.normal) return normalTimedisplay(context);
+    return digitalTimeDisplay(context);
   }
 
-  Widget normalTimedisplay() {
+  Widget normalTimedisplay(context) {
+    final theme = Theme.of(context);
     return RichText(
         text: TextSpan(
             text: clockController.hourInString,
@@ -36,13 +36,15 @@ class ClockDigitalDisplay extends StatelessWidget {
               },
             style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: mode == TimeChangeMode.hour ? Colors.red : Colors.grey,
+                color: mode == TimeChangeMode.hour
+                    ? theme.errorColor
+                    : theme.primaryColorDark,
                 fontSize: 40),
             children: [
           TextSpan(
             text: " : ",
             style: TextStyle(
-                color: Colors.black,
+                color: theme.primaryColorDark,
                 fontSize: 40,
                 decoration: TextDecoration.none),
           ),
@@ -50,7 +52,9 @@ class ClockDigitalDisplay extends StatelessWidget {
             text: clockController.minuteInString,
             style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: mode == TimeChangeMode.minute ? Colors.red : Colors.grey,
+                color: mode == TimeChangeMode.minute
+                    ? theme.errorColor
+                    : theme.primaryColorDark,
                 fontSize: 40),
             recognizer: TapGestureRecognizer()
               ..onTap = () {
@@ -60,7 +64,8 @@ class ClockDigitalDisplay extends StatelessWidget {
         ]));
   }
 
-  Widget digitalTimeDisplay() {
+  Widget digitalTimeDisplay(context) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
       child: Row(
@@ -71,21 +76,13 @@ class ClockDigitalDisplay extends StatelessWidget {
             time: clockController.hourInString,
             onPressed: onHourSelected,
             backGroundColor: mode == TimeChangeMode.hour
-                ? Styles.t1Orange.withOpacity(0.9)
-                : Colors.grey,
+                ? theme.primaryColor
+                : theme.primaryColorDark,
           ),
           SizedBox(
             width: 10,
           ),
-          Text(
-            ":",
-            style: TextStyle(
-              color: Styles.red,
-              fontSize: 40,
-              decoration: TextDecoration.none,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          Text(":", style: theme.textTheme.bodyText2.copyWith(fontSize: 40)),
           SizedBox(
             width: 10,
           ),
@@ -93,9 +90,9 @@ class ClockDigitalDisplay extends StatelessWidget {
             timeType: "MIN",
             onPressed: onMinuteSelected,
             time: clockController.minuteInString,
-            backGroundColor: mode != TimeChangeMode.hour
-                ? Styles.t1Orange.withOpacity(0.9)
-                : Colors.grey,
+            backGroundColor: mode == TimeChangeMode.hour
+                ? theme.primaryColor
+                : theme.primaryColorDark,
           ),
         ],
       ),

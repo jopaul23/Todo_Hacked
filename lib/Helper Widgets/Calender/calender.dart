@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:Todo_App/styles/styles.dart';
+
+import '../../Themes/colors.dart' as appColors;
 
 class HomeCalendarPage extends StatefulWidget {
   final Function(DateTime) onSelected;
@@ -23,21 +23,15 @@ class _HomeCalendarPageState extends State<HomeCalendarPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
           width: 350,
           decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Styles.grey4.withOpacity(0.02),
-                spreadRadius: 7,
-                blurRadius: 7,
-                offset: Offset(0, 2), // changes position of shadow
-              ),
-            ],
-            color: Styles.white1,
+            boxShadow: [appColors.shadow],
+            // color: Styles.white1,
             borderRadius: BorderRadius.all(Radius.circular(30)),
           ),
           child: Column(
@@ -52,32 +46,21 @@ class _HomeCalendarPageState extends State<HomeCalendarPage> {
                   },
                   calendarStyle: CalendarStyle(
                       todayColor: Colors.white.withOpacity(0.3),
-                      selectedColor: Styles.white1,
-                      todayStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 22.0,
-                          color: Styles.grey4)),
+                      selectedColor: theme.primaryColorLight,
+                      todayStyle: theme.textTheme.headline3),
                   headerStyle: HeaderStyle(
                     centerHeaderTitle: true,
-                    // formatButtonDecoration: BoxDecoration(
-                    //   color: Colors.brown,
-                    //   borderRadius: BorderRadius.circular(22.0),
-                    // ),
-                    // formatButtonTextStyle: TextStyle(color: Colors.white),
-                    // formatButtonShowsNext: false,
                   ),
                   onDaySelected: (date, events, _) {
                     selectedDate = date;
                   },
                   builders: CalendarBuilders(
                     selectedDayBuilder: (context, date, events) {
-                      print(date); //print the selected date
-                      // if (date < DateTime.now()) {
                       return Container(
                           margin: const EdgeInsets.all(5.0),
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            color: Styles.t1Orange,
+                            color: theme.primaryColor,
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
@@ -90,7 +73,7 @@ class _HomeCalendarPageState extends State<HomeCalendarPage> {
                         margin: const EdgeInsets.all(5.0),
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                            color: Styles.grey1.withOpacity(0.6),
+                            //  color: Styles.grey1.withOpacity(0.6),
                             borderRadius: BorderRadius.circular(20)),
                         child: Text(
                           date.day.toString(),
@@ -102,15 +85,12 @@ class _HomeCalendarPageState extends State<HomeCalendarPage> {
               ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: FlatButton(
+                child: TextButton(
                   onPressed: () {
                     widget.onSelected(selectedDate);
                   },
                   child: Text("OK",
-                      style: TextStyle(
-                          fontSize: 30,
-                          color: Styles.red,
-                          fontWeight: FontWeight.bold)),
+                      style: theme.textTheme.bodyText2.copyWith(fontSize: 30)),
                 ),
               )
             ],

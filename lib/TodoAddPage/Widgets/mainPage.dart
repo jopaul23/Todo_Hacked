@@ -5,10 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:sailor/sailor.dart';
 
-import '../../Styles/styles.dart';
 import '../Functions/addTodos.dart';
 import 'add_title.dart';
-import 'appBar.dart';
 import 'input_button.dart';
 import '../../Overlays/clock_overlay.dart';
 import '../../Overlays/reminder_clock_overlay.dart';
@@ -18,8 +16,9 @@ import '../../Helper Widgets/Clock/Display Time/clock_digital_display.dart';
 class TodoAddPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final args = Sailor.args<TodoModel>(context);
-    return TodoAdd(todos: args);
+    // final args;
+    // Sailor.args<TodoModel>(context);
+    return TodoAdd();
   }
 }
 
@@ -72,15 +71,9 @@ class _TodoAddPageState extends State<TodoAdd> {
         },
         child: SafeArea(
           child: Scaffold(
-            backgroundColor: Styles.cream,
+            // backgroundColor: Styles.cream,
             body: Stack(
               children: [
-                TodoAddPageAppBar(
-                  onBackButtonPressed: closeAllOverlay,
-                  onSelected: (IconData icon) {
-                    addTodos.tagIcon = icon;
-                  },
-                ),
                 Padding(
                     padding: EdgeInsets.only(top: size.height * 0.098),
                     child:
@@ -102,9 +95,9 @@ class _TodoAddPageState extends State<TodoAdd> {
                         padding:
                             EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                         decoration: BoxDecoration(
-                            color: Styles.white3,
+                            //     color: Styles.white3,
                             boxShadow: [
-                              Styles.shadow(),
+                              //        Styles.shadow(),
                             ],
                             borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(25),
@@ -122,7 +115,7 @@ class _TodoAddPageState extends State<TodoAdd> {
                                   .format(addTodos.dueDate),
                               icon: Icons.calendar_today_rounded,
                               width: 300,
-                              buttoncolor: Styles.white3,
+                              //   buttoncolor: Styles.white3,
                               onPressed: () {
                                 calenderOverlay =
                                     createCalenderOverlay(onSelected: (date) {
@@ -143,7 +136,7 @@ class _TodoAddPageState extends State<TodoAdd> {
                                   DateFormat('kk:mm').format(addTodos.dueDate),
                               icon: Icons.access_time,
                               width: 300,
-                              buttoncolor: Styles.white3,
+                              //  buttoncolor: Styles.white3,
                               onPressed: () {
                                 clockOverlay = createClockOverlay(
                                     date: addTodos.dueDate,
@@ -169,7 +162,7 @@ class _TodoAddPageState extends State<TodoAdd> {
                                   ? "Remind me on " + addTodos.reminder
                                   : "Set Reminder",
                               icon: Icons.notifications,
-                              buttoncolor: Styles.white3,
+                              //  buttoncolor: Styles.white3,
                               width: 300,
                               onPressed: () {
                                 reminderOverlay = createReminderOverlay(
@@ -196,8 +189,8 @@ class _TodoAddPageState extends State<TodoAdd> {
                             // Add task button
                             InputButton(
                                 text: isUpdateTodo ? "Update Task" : "Add task",
-                                buttoncolor: Styles.t1Orange,
-                                textcolor: Styles.white3,
+                                //   buttoncolor: Styles.t1Orange,
+                                // textcolor: Styles.white3,
                                 width: 200,
                                 onPressed: () {
                                   addTodos.title = _controller.text;

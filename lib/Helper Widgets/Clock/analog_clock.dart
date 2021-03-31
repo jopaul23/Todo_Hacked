@@ -1,4 +1,3 @@
-import 'package:Todo_App/Styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
@@ -48,7 +47,7 @@ class AnalogClock extends HookWidget {
                       width: 200,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Styles.t1Orange,
+                        color: Theme.of(context).primaryColor,
                       ),
                       child: ClockFace(
                         hour: hour.value,

@@ -6,12 +6,12 @@ import '../../Overlays/Toast/toast_overlay.dart';
 import 'textfield.dart';
 import '../../Helper%20Widgets/button.dart';
 import '../../Router/page_router.dart';
-import '../../styles/styles.dart';
 
 class WelcomeScreen extends HookWidget {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     final name = useState("");
+    final theme = Theme.of(context);
     return Scaffold(
       body: ListView(
         padding: EdgeInsets.zero,
@@ -19,8 +19,11 @@ class WelcomeScreen extends HookWidget {
           Container(
             height: size.height,
             decoration: BoxDecoration(
-              gradient: Styles.t1Gradient,
-            ),
+                gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [theme.colorScheme.primary, theme.colorScheme.secondary],
+            )),
             child: Column(
               children: [
                 SizedBox(
@@ -39,7 +42,7 @@ class WelcomeScreen extends HookWidget {
                   child: Text(
                     "Welcome, Please enter your beautiful name",
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 25, color: Styles.white1),
+                    style: theme.textTheme.headline2,
                   ),
                 ),
                 SizedBox(
@@ -48,7 +51,6 @@ class WelcomeScreen extends HookWidget {
                 InputTextField(
                   labelText: "Nickname",
                   onChanged: (val) {
-                    print(val);
                     name.value = val;
                   },
                 ),
@@ -60,8 +62,7 @@ class WelcomeScreen extends HookWidget {
                   onPressed: () {
                     onToogleContinueBtn(context, name.value);
                   },
-                  textcolor: Styles.t1Orange,
-                  buttoncolor: Styles.white1,
+                  textcolor: theme.primaryColor,
                 ),
               ],
             ),

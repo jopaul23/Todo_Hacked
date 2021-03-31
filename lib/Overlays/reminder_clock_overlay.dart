@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../Helper Widgets/Clock/Display Time/clock_digital_display.dart';
 import '../Helper Widgets/Clock/Functions/clock_functions.dart';
-import '../Styles/styles.dart';
+import '../Themes/colors.dart';
 
 OverlayEntry createReminderOverlay(
     {int hour,
@@ -25,9 +25,10 @@ OverlayEntry createReminderOverlay(
           height: 400,
           width: 400,
           decoration: BoxDecoration(
-              color: Styles.white1,
-              borderRadius: const BorderRadius.all(Radius.circular(35.0)),
-              boxShadow: [Styles.shadow()]),
+            //      color: Styles.white1,
+            borderRadius: const BorderRadius.all(Radius.circular(35.0)),
+            //   boxShadow: [Styles.shadow()]
+          ),
           child: Stack(
             children: [
               AnalogClock(

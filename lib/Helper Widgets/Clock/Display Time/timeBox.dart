@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:Todo_App/styles/styles.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../Themes/colors.dart' as appColors;
 
 class TimeBox extends StatelessWidget {
   final String timeType;
@@ -25,21 +25,14 @@ class TimeBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return GestureDetector(
       onTap: onPressed,
       child: Container(
         decoration: BoxDecoration(
           color: backGroundColor,
-          // color: Styles.t1Orange.withOpacity(0.9),
-          borderRadius: BorderRadius.circular(25),
-          boxShadow: [
-            BoxShadow(
-              color: Styles.grey4.withOpacity(0.02),
-              spreadRadius: 7,
-              blurRadius: 7,
-              offset: Offset(0, 2), // changes position of shadow
-            ),
-          ],
+          borderRadius: const BorderRadius.all(Radius.circular(25)),
+          boxShadow: [appColors.shadow],
         ),
         height: 80,
         width: 70,
@@ -48,16 +41,8 @@ class TimeBox extends StatelessWidget {
             Spacer(),
             Align(
                 alignment: Alignment.center,
-                child: Text(
-                  "$time",
-                  style: TextStyle(
-                    fontSize: 40,
-                    fontFamily: GoogleFonts.rubik().fontFamily,
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.none,
-                    color: Styles.white1,
-                  ),
-                )),
+                child: Text("$time",
+                    style: theme.textTheme.headline2.copyWith(fontSize: 40))),
             SizedBox(
               height: 5,
             ),
@@ -66,7 +51,7 @@ class TimeBox extends StatelessWidget {
               style: TextStyle(
                   fontSize: 12,
                   decoration: TextDecoration.none,
-                  color: Styles.white1.withOpacity(0.8)),
+                  color: theme.primaryColorLight),
             ),
           ],
         ),

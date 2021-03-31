@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../styles/styles.dart';
-
 class InputButton extends StatelessWidget {
   final Color textcolor;
   final Color buttoncolor;
@@ -25,7 +23,7 @@ class InputButton extends StatelessWidget {
         margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         padding: EdgeInsets.symmetric(vertical: 2, horizontal: 15),
         decoration: BoxDecoration(
-          boxShadow: [Styles.shadow()],
+          // boxShadow: [Styles.shadow()],
           color: buttoncolor,
           borderRadius: BorderRadius.circular(24),
         ),
@@ -35,7 +33,7 @@ class InputButton extends StatelessWidget {
               children: [
                 Icon(
                   icon,
-                  color: Styles.t1Orange,
+                  //     color: Styles.t1Orange,
                 ),
                 Expanded(
                   child: Padding(
@@ -43,7 +41,7 @@ class InputButton extends StatelessWidget {
                     child: Text(
                       text,
                       style: TextStyle(
-                        color: textcolor ?? Styles.grey2,
+                        //color: textcolor ?? Styles.grey2,
                         fontSize: 18,
                       ),
                     ),

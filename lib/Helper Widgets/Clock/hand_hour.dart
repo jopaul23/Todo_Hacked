@@ -2,7 +2,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../../styles/styles.dart';
 import 'Functions/clock_functions.dart';
 
 class HourHandPainter extends CustomPainter {
@@ -12,7 +11,7 @@ class HourHandPainter extends CustomPainter {
   final TimeChangeMode mode;
   HourHandPainter({this.hours, this.minutes, this.mode})
       : hourHandPaint = new Paint() {
-    hourHandPaint.color = Styles.grey2;
+    // hourHandPaint.color = Styles.grey2;
     hourHandPaint.strokeWidth = 4.0;
 
     //hourHandPaint.style = PaintingStyle.fill;

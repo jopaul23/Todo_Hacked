@@ -1,6 +1,7 @@
-import 'package:Todo_App/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+
+import '../../Themes/colors.dart' as appColors;
 
 class InputTextField extends HookWidget {
   final String labelText;
@@ -11,10 +12,9 @@ class InputTextField extends HookWidget {
     const int maxLength = 8;
     final noCharacters = useState(0);
     final textController = useTextEditingController();
-    const TextStyle noCharacterStyle =
-        TextStyle(fontWeight: FontWeight.bold, color: Styles.t1Orange);
-    const TextStyle textFieldStyle =
-        TextStyle(color: Styles.white1, fontSize: 25);
+    final theme = Theme.of(context);
+    final TextStyle noCharacterStyle =
+        TextStyle(fontWeight: FontWeight.bold, color: theme.primaryColor);
 
     return Column(
       children: [
@@ -28,9 +28,9 @@ class InputTextField extends HookWidget {
                 height: 40,
                 width: 45,
                 decoration: BoxDecoration(
-                    color: Styles.white2,
+                    color: theme.accentColor,
                     borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-                    boxShadow: [Styles.shadow()]),
+                    boxShadow: [appColors.shadow]),
                 child: Container(
                   height: 30,
                   padding: const EdgeInsets.all(8.0),
@@ -45,17 +45,18 @@ class InputTextField extends HookWidget {
         ),
         Container(
           decoration: BoxDecoration(
-              color: Styles.white2,
-              borderRadius: const BorderRadius.all(Radius.circular(35.0)),
-              boxShadow: [Styles.shadow()]),
+            // color: Styles.white2,
+            borderRadius: const BorderRadius.all(Radius.circular(35.0)),
+            // boxShadow: [Styles.shadow()]
+          ),
           child: TextField(
-            cursorColor: Styles.white1,
+            // cursorColor: Styles.white1,
             controller: textController,
             onChanged: (String val) {
               onChange(val, textController, noCharacters, maxLength);
             },
             textAlign: TextAlign.center,
-            style: textFieldStyle,
+            style: theme.textTheme.headline2,
             decoration: InputDecoration(
               counterText: "",
               hintText: labelText,
