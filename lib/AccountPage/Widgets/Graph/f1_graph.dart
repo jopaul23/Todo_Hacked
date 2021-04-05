@@ -1,4 +1,4 @@
-import 'package:Todo_App/AccountPage/Functions/chart.dart';
+import 'package:todo_app/AccountPage/Functions/chart.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 

@@ -63,7 +63,6 @@ class WelcomeScreen extends HookWidget {
                   onPressed: () {
                     onToogleContinueBtn(context, name.value);
                   },
-                  textcolor: theme.primaryColor,
                 ),
               ],
             ),

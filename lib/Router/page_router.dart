@@ -1,11 +1,10 @@
-import 'package:Todo_App/AccountPage/Widgets/main_page.dart';
-import 'package:Todo_App/HomePage/Widgets/mainPage.dart';
-import 'package:Todo_App/Router/provider.dart';
-import 'package:Todo_App/TodoAddPage/Widgets/mainPage.dart';
-import 'package:Todo_App/WelcomeScreen/Widgets/mainPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:sailor/sailor.dart';
+import 'package:todo_app/AccountPage/Widgets/main_page.dart';
+import 'package:todo_app/HomePage/Widgets/mainPage.dart';
+import 'package:todo_app/TodoAddPage/Widgets/mainPage.dart';
+import 'package:todo_app/WelcomeScreen/Widgets/mainPage.dart';
 
 class PageRouter {
   static final String welcomePage = "/welcomePage";
@@ -29,12 +28,7 @@ class PageRouter {
       SailorRoute(
         name: accountPage,
         builder: (context, args, params) {
-          debugPrint("account  is stacked or removed");
-          return Consumer(builder: (context, watch, _) {
-            final page = watch(pageStackProvider);
-            page.addWidget(AccountPage());
-            return AccountPage();
-          });
+          return AccountPage();
         },
       ),
       SailorRoute(
@@ -42,22 +36,15 @@ class PageRouter {
         defaultTransitions: [SailorTransition.fade_in],
         defaultTransitionDuration: const Duration(milliseconds: 300),
         builder: (context, args, params) {
-          return Consumer(builder: (context, watch, _) {
-            final page = watch(pageStackProvider);
-            page.addWidget(HomePage());
-            return HomePage();
-          });
+          return HomePage();
         },
       ),
       SailorRoute(
         name: todoAddPage,
         builder: (context, args, params) {
           debugPrint("addpage  is stacked or removed");
-          return Consumer(builder: (context, watch, _) {
-            // final page = watch(pageStackProvider);
-            // page.addWidget();
-            return TodoAddPage();
-          });
+
+          return TodoAddPage();
         },
       ),
     ]);

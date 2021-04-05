@@ -1,7 +1,7 @@
-import 'package:Todo_App/Themes/bloc/themebloc_bloc.dart';
-import 'package:Todo_App/Themes/themes/light.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_app/Themes/bloc/themebloc_bloc.dart';
+import 'package:todo_app/Themes/themes/light.dart';
 
 class SwitchThemes extends StatefulWidget {
   @override

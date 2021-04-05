@@ -1,7 +1,7 @@
-import 'package:Todo_App/Database/bloc/database_bloc_bloc.dart';
-import 'package:Todo_App/Database/todo_model.dart';
+import 'package:todo_app/Database/bloc/database_bloc_bloc.dart';
+import 'package:todo_app/Database/todo_model.dart';
 import 'package:intl/intl.dart';
-import 'package:Todo_App/HomePage/Widgets/todo_Card_layout.dart';
+import 'package:todo_app/HomePage/Widgets/todo_Card_layout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

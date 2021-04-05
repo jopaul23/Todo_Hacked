@@ -1,7 +1,7 @@
 import 'dart:ui';
-import 'package:Todo_App/Database/bloc/database_bloc_bloc.dart';
-import 'package:Todo_App/Database/todo_model.dart';
-import 'package:Todo_App/Overlays/Toast/toast_overlay.dart';
+import 'package:todo_app/Database/bloc/database_bloc_bloc.dart';
+import 'package:todo_app/Database/todo_model.dart';
+import 'package:todo_app/Overlays/Toast/toast_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'todo_card.dart';

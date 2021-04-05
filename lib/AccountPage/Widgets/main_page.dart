@@ -1,10 +1,9 @@
-import 'package:Todo_App/Themes/bloc/themebloc_bloc.dart';
-import 'package:Todo_App/Themes/colors.dart';
+import 'package:todo_app/Themes/bloc/themebloc_bloc.dart';
+import 'package:todo_app/Themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../Functions/chart.dart';
-import '../../Helper%20Widgets/basic_widget.dart';
 import '../../styles/images.dart';
 import 'Graph/f1_graph.dart';
 import '../../Themes/colors.dart' as appColors;
@@ -113,9 +112,9 @@ class _AccountPageState extends State<AccountPage> {
                             ),
 
                             // Graph
-                            BarChartTwo(
-                              todoChart: _chart,
-                            ),
+                            // BarChartTwo(
+                            //   todoChart: _chart,
+                            // ),
                             Container(height: 80, child: SwitchThemes())
                           ],
                         ),

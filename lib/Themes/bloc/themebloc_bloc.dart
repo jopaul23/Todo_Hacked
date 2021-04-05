@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:Todo_App/Themes/themes/light.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:todo_app/Themes/themes/light.dart';
 
 part 'themebloc_event.dart';
 part 'themebloc_state.dart';

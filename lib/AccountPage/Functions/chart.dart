@@ -1,4 +1,4 @@
-import 'package:Todo_App/AccountPage/Functions/user_details.dart';
+import 'package:todo_app/AccountPage/Functions/user_details.dart';
 
 class TodoChart {
   int pendingTask = 0, completedTask = 0;

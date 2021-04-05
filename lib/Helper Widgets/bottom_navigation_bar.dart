@@ -1,5 +1,5 @@
-import 'package:Todo_App/Router/page_router.dart';
-import 'package:Todo_App/styles/images.dart';
+import 'package:todo_app/Router/page_router.dart';
+import 'package:todo_app/styles/images.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../Themes/colors.dart' as appColors;

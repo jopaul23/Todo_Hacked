@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:Todo_App/AccountPage/Functions/user_details.dart';
-import 'package:Todo_App/Database/todo_model.dart';
+import 'package:todo_app/AccountPage/Functions/user_details.dart';
+import 'package:todo_app/Database/todo_model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 

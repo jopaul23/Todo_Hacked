@@ -1,11 +1,10 @@
-import 'package:Todo_App/Helper%20Widgets/basic_widget.dart';
-import 'package:Todo_App/Router/page_router.dart';
-import 'package:Todo_App/Themes/bloc/themebloc_bloc.dart';
-import 'package:Todo_App/Themes/colors.dart';
+import 'package:todo_app/Helper%20Widgets/basic_widget.dart';
+import 'package:todo_app/Router/page_router.dart';
+import 'package:todo_app/Themes/bloc/themebloc_bloc.dart';
+import 'package:todo_app/Themes/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'calender.dart';
 import 'todo_lisitng.dart';
@@ -45,7 +44,7 @@ class HomePage extends StatelessWidget {
                     ),
                   )),
               Padding(
-                padding: EdgeInsets.only(top: 160),
+                padding: EdgeInsets.only(top: size.height * 0.2),
                 child: Container(
                   height: size.height,
                   padding: const EdgeInsets.only(top: 5),

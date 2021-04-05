@@ -1,4 +1,4 @@
-import 'package:Todo_App/Router/page_router.dart';
+import 'package:todo_app/TodoAddPage/Widgets/addpage_layout.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +11,7 @@ class BasicWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     return SafeArea(
       child: Scaffold(
         body: Stack(
@@ -22,7 +23,7 @@ class BasicWidget extends StatelessWidget {
                 alignment: Alignment.bottomRight,
                 child: InkWell(
                   onTap: () {
-                    PageRouter.sailor.navigate(PageRouter.todoAddPage);
+                    addPage(context);
                   },
                   child: Container(
                       width: 65,
@@ -43,5 +44,16 @@ class BasicWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void addPage(context) {
+    OverlayEntry entry;
+
+    entry = OverlayEntry(
+        builder: (context) => AddPageLayout(
+              entry: entry,
+              size: MediaQuery.of(context).size,
+            ));
+    Overlay.of(context).insert(entry);
   }
 }

@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:Todo_App/Database/todo_model.dart';
+import 'package:todo_app/Database/todo_model.dart';
 import 'package:path/path.dart' as p;
 import 'package:moor/ffi.dart';
 import 'package:moor/moor.dart';

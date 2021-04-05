@@ -1,9 +1,7 @@
-import 'package:Todo_App/Database/Todo_model.dart';
-import 'package:Todo_App/Database/provider.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:sailor/sailor.dart';
+import 'package:todo_app/Database/todo_model.dart';
 
 import '../Functions/addTodos.dart';
 import 'add_title.dart';

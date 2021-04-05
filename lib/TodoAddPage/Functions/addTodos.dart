@@ -1,9 +1,9 @@
-import 'package:Todo_App/AccountPage/Functions/user_details.dart';
-import 'package:Todo_App/Database/Todo_model.dart';
 import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:moor/moor.dart' as moor;
+import 'package:todo_app/AccountPage/Functions/user_details.dart';
+import 'package:todo_app/Database/todo_model.dart';
 
 import '../../Database/todo.dart';
 import '../../Notification/alarm_callback.dart';
@@ -86,13 +86,13 @@ class AddTodos {
       }
       final result = await db.getTodo(todo);
       int id = result[result.length - 1].id;
-      AndroidAlarmManager.oneShotAt(
-          todo.remainderTime.value, id, AlarmCallback.alarmCallback,
-          exact: true,
-          allowWhileIdle: true,
-          wakeup: true,
-          rescheduleOnReboot: true,
-          alarmClock: true);
+      // AndroidAlarmManager.oneShotAt(
+      //     todo.remainderTime.value, id, AlarmCallback.alarmCallback,
+      //     exact: true,
+      //     allowWhileIdle: true,
+      //     wakeup: true,
+      //     rescheduleOnReboot: true,
+      //     alarmClock: true);
 
       Toast toast = Toast(shouldUpdate ? "Updated Task" : "Todo Added ");
       toast.showToast(context);
