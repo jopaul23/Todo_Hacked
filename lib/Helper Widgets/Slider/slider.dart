@@ -87,7 +87,7 @@ class _CustomSliderState extends State<CustomSlider> {
       final double a = (dx / (startDx + widget.width) * (widget.colors.length));
       sliderBgColor = widget.colors[a.truncate()];
 
-      sliderBgColor = sliderBgColor.withAlpha(_getDecimalPart(a));
+      sliderBgColor = sliderBgColor.withAlpha(_alphaValue(a));
 
       // print(a);
       this.setState(() {
@@ -101,7 +101,7 @@ class _CustomSliderState extends State<CustomSlider> {
     return box.localToGlobal(Offset.zero).dx;
   }
 
-  int _getDecimalPart(double num) {
+  int _alphaValue(double num) {
     int decimal = int.tryParse(num.toString().split(".")[1].substring(0, 2));
     int oldRange = 99 - 0;
     int newRange = 255 - 170;
